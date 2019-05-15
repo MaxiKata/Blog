@@ -23,31 +23,31 @@ class UserController
         $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
 
         if(empty($lastname) || empty($firstname) || empty($email) || empty($username) || empty($password) || empty($confirmation)) {
-            header("Location: index.php?error=emptyfields&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&username=" . $username ."&access=user");
+            header("Location:index.php?error=emptyfields&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&username=" . $username ."&access=user");
             exit();
         }
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $username)){
-            header("Location: index.php?error=invalidemailusername&lastname=" . $lastname . "&firstname=" . $firstname . "&access=user");
+            header("Location:index.php?error=invalidemailusername&lastname=" . $lastname . "&firstname=" . $firstname . "&access=user");
             exit();
         }
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            header("Location: index.php?error=invalidemail&lastname=" . $lastname . "&firstname=" . $firstname . "&username=" . $username . "&access=user");
+            header("Location:index.php?error=invalidemail&lastname=" . $lastname . "&firstname=" . $firstname . "&username=" . $username . "&access=user");
             exit();
         }
         elseif(!preg_match("/^[a-zA-Z0-9]*$/", $username)){
-            header("Location: index.php?error=invalidusername&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&access=user");
+            header("Location:index.php?error=invalidusername&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&access=user");
             exit();
         }
         elseif($password !== $confirmation){
-            header("Location: index.php?error=passwordcheck&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&username=" . $username . "&access=user");
+            header("Location:index.php?error=passwordcheck&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&username=" . $username . "&access=user");
             exit();
         }
         elseif(self::checkUser($username)){
-            header("Location: index.php?error=usernametaken&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&access=user");
+            header("Location:index.php?error=usernametaken&lastname=" . $lastname . "&firstname=" . $firstname . "&email=" . $email . "&access=user");
             exit();
         }
         elseif(self::checkEmail($email)){
-            header("Location: index.php?error=emailused&lastname=" . $lastname . "&firstname=" . $firstname . "&username=" . $username . "&access=user");
+            header("Location:index.php?error=emailused&lastname=" . $lastname . "&firstname=" . $firstname . "&username=" . $username . "&access=user");
             exit();
         }
         else{
@@ -63,7 +63,7 @@ class UserController
             $register = new UserManager();
             $register->register($user);
 
-            header('Location: index.php?success=register&access=user');
+            header('Location:index.php?success=register&access=user');
         }
     }
 
@@ -73,7 +73,7 @@ class UserController
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
         if(empty($usernamemail) || empty($password)){
-            header("Location: index.php?error=emptyfields&username=" . $usernamemail . "&access=user");
+            header("Location:index.php?error=emptyfields&username=" . $usernamemail . "&access=user");
             exit();
         }
         else{
@@ -81,7 +81,7 @@ class UserController
             $user = $userManager->getInformation($usernamemail, $usernamemail);
 
             if(empty($user->getUsername()) || empty($user->getEmail())){
-                header("Location: index.php?error=nouser&access=user");
+                header("Location:index.php?error=nouser&access=user");
             }
             else{
                 $pass_check = password_verify($password, $user->getPassword());
@@ -94,11 +94,11 @@ class UserController
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['Statut_id'] = $user->getStatut();
 
-                    header("Location: index.php?success=login&username=" . $usernamemail . "&access=user");
+                    header("Location:index.php?success=login&username=" . $usernamemail . "&access=user");
                     exit();
                 }
                 else{
-                    header("Location: index.php?error=wrongpassword&username=" . $usernamemail . "&access=user");
+                    header("Location:index.php?error=wrongpassword&username=" . $usernamemail . "&access=user");
                     exit();
                 }
             }
@@ -110,7 +110,7 @@ class UserController
         session_start();
         session_unset();
         session_destroy();
-        header("Location: index.php?success=logout&access=user");
+        header("Location:index.php?success=logout&access=user");
     }
 
     public function listAction()
@@ -124,13 +124,14 @@ class UserController
             require_once ('View/User/userlist.php');
         }
         else{
-            header('Location: index.php?error=accessdenied');
+            header('Location:index.php?error=accessdenied');
         }
     }
 
     public function profilAction()
     {
         session_start();
+
         if(isset($_SESSION['Statut_id']) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
             $userid = htmlspecialchars($_GET['userid'], ENT_QUOTES);
 
@@ -138,7 +139,7 @@ class UserController
             $useredit = $user->getUser($userid);
 
             if($useredit->getId() == NULL){
-                header('Location: index.php?access=userlist&error=nouser');
+                header('Location:index.php?access=userlist&error=nouser');
             }
             elseif($_SESSION['id'] == $useredit->getId() || $_SESSION['Statut_id'] == 2){
                 require_once ('View/User/EditUser.php');
@@ -149,30 +150,123 @@ class UserController
 
         }
         else{
-            header('Location: index.php?error=accessdenied');
+            header('Location:index.php?error=accessdenied');
         }
     }
 
     public function updateAction()
     {
         session_start();
-        $lastname = htmlspecialchars($_POST['lastname'], ENT_QUOTES);
-        $firstname = htmlspecialchars($_POST['firstname'], ENT_QUOTES);
-        $email = htmlspecialchars($_POST['email'], ENT_QUOTES);
-        $username = htmlspecialchars($_POST['username'], ENT_QUOTES);
-        $oldpassword = htmlspecialchars($_POST['oldpassword'], ENT_QUOTES);
-        $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
-        $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
         $userId = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
         if(isset($_SESSION['id']) && is_numeric($userId)){
             $userManager = new UserManager();
             $getUser = $userManager->getUser($userId);
             if(!empty($getUser->getId())){
-                if($_SESSION['id'] == $getUser->getId() || $_SESSION['id'] == 2){
-                    $user = $userManager->updateUser()
+                if($_SESSION['id'] == $getUser->getId() || $_SESSION['Statut_id'] == 2){
+                    $lastname = empty(htmlspecialchars($_POST['lastname'], ENT_QUOTES)) ? $getUser->getLastname() : htmlspecialchars($_POST['lastname'], ENT_QUOTES) ;
+                    $firstname = empty(htmlspecialchars($_POST['firstname'], ENT_QUOTES)) ? $getUser->getFirstname() : htmlspecialchars($_POST['firstname'], ENT_QUOTES);
+                    $email = empty(htmlspecialchars($_POST['email'], ENT_QUOTES)) ? $getUser->getEmail() : htmlspecialchars($_POST['email'], ENT_QUOTES);
+                    $username = empty(htmlspecialchars($_POST['username'], ENT_QUOTES)) ? $getUser->getUsername() : htmlspecialchars($_POST['username'], ENT_QUOTES);
+                    $oldpassword = htmlspecialchars($_POST['oldpassword'], ENT_QUOTES);
+                    $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
+                    $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
+
+                    if($_SESSION['Statut_id'] == 2){
+                        if(empty($password) || empty($confirmation)){
+                            $user = new User();
+                            $user->setId($getUser->getId());
+                            $user->setLastname($lastname);
+                            $user->setFirstname($firstname);
+                            $user->setEmail($email);
+                            $user->setUsername($username);
+
+                            $userupdate = $userManager->easyUpdateUser($user);
+
+                            header("Location:index.php?userid={$userupdate->getId()}&success=update&access=user!profil");
+                        }
+                        elseif($password == $confirmation){
+                            $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+
+                            $user = new User();
+                            $user->setId($getUser->getId());
+                            $user->setLastname($lastname);
+                            $user->setFirstname($firstname);
+                            $user->setEmail($email);
+                            $user->setUsername($username);
+                            $user->setPassword($pass_hash);
+
+                            $userupdate = $userManager->hardUpdateUser($user);
+                            header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                        }
+                        else{
+                            header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                        }
+                    }
+                    elseif(!empty($oldpassword)){
+                        $pass_check = password_verify($oldpassword, $getUser->getPassword());
+                        if($pass_check == true){
+                            if(empty($password) || empty($confirmation)){
+                                $user = new User();
+                                $user->setId($getUser->getId());
+                                $user->setLastname($lastname);
+                                $user->setFirstname($firstname);
+                                $user->setEmail($email);
+                                $user->setUsername($username);
+
+                                $userupdate = $userManager->easyUpdateUser($user);
+                                session_start();
+                                $_SESSION['nickname'] = $userupdate->getUsername();
+                                $_SESSION['firstname'] = $userupdate->getFirstname();
+                                $_SESSION['lastname'] = $userupdate->getLastname();
+                                $_SESSION['email'] = $userupdate->getEmail();
+
+                                header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                            }
+                            elseif($password == $confirmation){
+                                $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+
+                                $user = new User();
+                                $user->setId($getUser->getId());
+                                $user->setLastname($lastname);
+                                $user->setFirstname($firstname);
+                                $user->setEmail($email);
+                                $user->setUsername($username);
+                                $user->setPassword($pass_hash);
+
+                                $userupdate = $userManager->hardUpdateUser($user);
+                                session_start();
+                                $_SESSION['id'] = $userupdate->getId();
+                                $_SESSION['nickname'] = $userupdate->getUsername();
+                                $_SESSION['firstname'] = $userupdate->getFirstname();
+                                $_SESSION['lastname'] = $userupdate->getLastname();
+                                $_SESSION['email'] = $userupdate->getEmail();
+                                $_SESSION['Statut_id'] = $userupdate->getStatut();
+
+                                header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                            }
+                            else{
+                                header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                            }
+                        }
+                        else{
+                            header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpassword&access=user!profil");
+                        }
+                    }
+                    else{
+                        header("Location:index.php?userid=". $getUser->getId() ."&error=passwordempty&access=user!profil");
+                    }
+                }
+                else{
+                    header("Location:index.php?userid=". $getUser->getId() . "&error=wrongstatut&access=user!list");
                 }
             }
+            else{
+                header("Location:index.php?error=nouser&access=user!list");
+            }
+        }
+        else{
+            header("Location:index.php?error=accessdenied&access=user!list");
         }
     }
 

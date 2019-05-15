@@ -38,7 +38,7 @@ require_once('View/layout.php'); ?>
             </div>
             <div>
                 <label for="oldpassword">Ancien mot de passe</label>
-                <input type="password" id="oldpassword" name="password"/>
+                <input type="password" id="oldpassword" name="oldpassword"/>
             </div>
             <div>
                 <label for="password">Nouveau mot de passe</label>
