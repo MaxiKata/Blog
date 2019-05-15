@@ -1,0 +1,44 @@
+body{
+    margin-top: -48px;
+    padding-top: 100px;
+}
+
+nav{
+    background: rgba(51,102,255,0.4) ;
+    color : black;
+}
+nav a{
+    color : black;
+    font-size: 1.4rem;
+}
+nav ul{
+    list-style-type:none;
+    text-align:center;
+}
+nav li{
+    background-color: rgba(204,204,204,0.4);
+    float:left;
+}
+nav li a {
+    display:block;
+    text-decoration:none;
+}
+nav li ul{
+    padding: 0;
+    display: none;
+    position: absolute;
+}
+nav ul li:hover ul{
+    display:block;
+}
+nav li:hover ul li{
+    float:none;
+}
+
+.cover{
+    height:500px;
+    overflow:hidden;
+}
+.cover img {
+    margin-top: -50%;
+}
