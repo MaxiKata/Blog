@@ -1,0 +1,21 @@
+{
+    "name": "vendor/blog",
+    "description": "Vendor blog",
+    "authors": [
+        {
+            "name": "Guilhemmaxime",
+            "email": "guilhemmaxime@gmail.com"
+        }
+    ],
+    "require": {
+        "tracy/tracy": "^2.6"
+    },
+    "autoload": {
+        "classmap": [
+            "Model",
+            "App/Controller",
+            "App/Entity",
+            "router.php"
+        ]
+    }
+}
