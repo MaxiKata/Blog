@@ -87,5 +87,38 @@ class UserManager extends Manager
 
         return $newUser;
     }
+    public function easyUpdateUser(User $user)
+    {
+
+        $userId = $user->getId();
+        $lastname = $user->getLastname();
+        $firstname = $user->getFirstname();
+        $email = $user->getEmail();
+        $nickname = $user->getUsername();
+
+        $db = $this->dbConnect();
+        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ? WHERE id = ?');
+        $update->execute(array($lastname, $firstname, $email, $nickname, $userId));
+
+        $newUser = self::getUser($userId);
+
+        return $newUser;
+    }
+    public function hardUpdateUser(User $user)
+    {
+        $userId = $user->getId();
+        $lastname = $user->getLastname();
+        $firstname = $user->getFirstname();
+        $email = $user->getEmail();
+        $nickname = $user->getUsername();
+        $password = $user->getPassword();
+
+        $db = $this->dbConnect();
+        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, password = ? WHERE id = ?');
+        $update->execute(array($lastname, $firstname, $email, $nickname, $password, $userId));
+
+        $newUser = self::getUser($userId);
+        return $newUser;
+    }
 }
 
