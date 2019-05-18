@@ -1,11 +1,11 @@
 <?php
 
 
-    $com_id = htmlspecialchars($comments['com_id'], ENT_QUOTES);
-    $dateComUpdate_fr = htmlspecialchars($comments['dateComUpdate_fr'], ENT_QUOTES);
-    $com_content = htmlspecialchars($comments['com_content'], ENT_QUOTES);
-    $com_uid = htmlspecialchars($comments['com_uid'], ENT_QUOTES);
-    $p_id = htmlspecialchars($comments['p_id'], ENT_QUOTES);
+    $com_id = $comments->getId();
+    $dateComUpdate_fr = $comments->getDateComUpdate();
+    $com_content = $comments->getContent();
+    $com_uid = $comments->getUserID();
+    $p_id = $comments->getPostID();
 
 $title = 'Mettre à jour le commentaire';
 require_once('View/layout.php');
@@ -15,7 +15,7 @@ if(isset($_SESSION['Statut_id'])){
         <body>
         <?php require ('View/header.php'); ?>
 
-        <p><a href="<?=  $directory ?>/index.php?access=post">Retour à l'article</a></p>
+        <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
 
         <form action="<?= $directory ?>/index.php" method="post">
             <div>
