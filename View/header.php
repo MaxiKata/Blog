@@ -19,10 +19,10 @@
                         if($_SESSION['Statut_id'] == 2){ ?>
                             <ul>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?=  $directory ?>/index.php?access=newpost">Nouvel Article</a>
+                                    <a class="nav-link" href="<?=  $directory ?>/index.php?access=blog!newpost">Nouvel Article</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?=  $directory ?>/index.php?access=draftlist">Liste brouillon</a>
+                                    <a class="nav-link" href="<?=  $directory ?>/index.php?access=blog!draftlist">Liste brouillon</a>
                                 </li>
                             </ul>
                         <?php }
