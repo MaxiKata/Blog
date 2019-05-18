@@ -12,7 +12,7 @@ if(isset($_SESSION['Statut_id'])){
 
     <h1><?= $title ?></h1>
 
-    <form action="<?= $directory ?>/index.php" method="post">
+    <form action="<?= $directory ?>/index.php?access=blog!newarticle" method="post">
         <div>
             <label for="title">Titre de votre article</label>
             <textarea type="text" id="title" name="title"></textarea>
