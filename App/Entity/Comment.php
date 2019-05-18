@@ -11,9 +11,11 @@ class Comment
     private $dateComCreate;
     private $dateComUpdate;
     private $statut_id;
-    private $user_iD;
+    private $user_Id;
     private $Post_id;
     private $UserId_edit;
+    private $u_username;
+    private $us_username;
 
     /**
      * Comment constructor.
@@ -105,17 +107,17 @@ class Comment
     /**
      * @return mixed
      */
-    public function getUserID()
+    public function getUserId()
     {
-        return $this->user_iD;
+        return $this->user_Id;
     }
 
     /**
      * @param mixed $user_iD
      */
-    public function setUserID($user_iD)
+    public function setUserID($user_Id)
     {
-        $this->user_iD = $user_iD;
+        $this->user_Id = $user_Id;
     }
 
     /**
@@ -148,6 +150,38 @@ class Comment
     public function setUserIdEdit($UserId_edit)
     {
         $this->UserId_edit = $UserId_edit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUUsername()
+    {
+        return $this->u_username;
+    }
+
+    /**
+     * @param mixed $u_username
+     */
+    public function setUUsername($u_username)
+    {
+        $this->u_username = $u_username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsUsername()
+    {
+        return $this->us_username;
+    }
+
+    /**
+     * @param mixed $us_username
+     */
+    public function setUsUsername($us_username)
+    {
+        $this->us_username = $us_username;
     }
 
 

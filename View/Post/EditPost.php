@@ -1,18 +1,11 @@
 <?php
-foreach($posts as $post)
-{
-    $p_title = htmlspecialchars($post['p_title'], ENT_QUOTES);
-    $p_id = htmlspecialchars($post['p_id'], ENT_QUOTES);
-    $p_dateUpd = htmlspecialchars($post['datePostUpdate_fr'], ENT_QUOTES);
-    $p_content = htmlspecialchars($post['p_content'], ENT_QUOTES);
-    $p_category = htmlspecialchars($post['p_category'], ENT_QUOTES);
-    if ($counter > 1)
-        break;
 
-    $counter++;
-}
+    $title = $post->getTitle();
+    $p_id = $post->getId();
+    $p_dateUpd = $post->getDateUpdate() ;
+    $p_content = $post->getContent();
+    $p_category = $post->getCategory();
 
-$title = $p_title;
 require_once('View/layout.php');
 
 if(isset($_SESSION['Statut_id'])){
@@ -21,9 +14,9 @@ if(isset($_SESSION['Statut_id'])){
         <?php require ('View/header.php'); ?>
 
         <h1><?= $title ?></h1> <em>le <?= $p_dateUpd ?></em>
-        <p><a href="<?=  $directory ?>/index.php?access=draftlist">Retour à la liste des billets</a></p>
+        <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id ?>&access=blog!read">Retour à l'article</a></p>
 
-        <form action="<?= $directory ?>/index.php" method="post">
+        <form action="<?= $directory ?>/index.php?access=blog!updatearticle" method="post">
             <div>
                 <label for="title">Titre de votre article</label>
                 <textarea type="text" id="title" name="title"><?= $title; ?></textarea>
@@ -37,13 +30,13 @@ if(isset($_SESSION['Statut_id'])){
                 <textarea type="text" id="category" name="category"><?= nl2br($p_category); ?></textarea>
             </div>
             <div>
-                <button type="submit" name="updatepost">Re-Publier</button>
+                <button type="submit" name="publish">Re-Publier</button>
             </div>
             <div>
-                <button type="submit" name="posttodraft">Passer en Brouillon</button>
+                <button type="submit" name="updatedraft">Passer en Brouillon</button>
             </div>
             <div>
-                <button type="submit" name="deletepost">Supprimer Article</button>
+                <button type="submit" name="deletearticle">Supprimer Article</button>
             </div>
             <div>
                 <input type="text" id="id" name="id" hidden value="<?= nl2br($p_id); ?>" >

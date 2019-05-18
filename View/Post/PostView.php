@@ -1,18 +1,12 @@
 <?php
-foreach($posts as $post)
-{
-    $p_title = htmlspecialchars($post['p_title'], ENT_QUOTES);
-    $p_id = htmlspecialchars($post['p_id'], ENT_QUOTES);
-    $p_dateUpd = htmlspecialchars($post['datePostUpdate_fr'], ENT_QUOTES);
-    $p_content = htmlspecialchars($post['p_content'], ENT_QUOTES);
-    $p_author = htmlspecialchars($post['users_username'], ENT_QUOTES);
-    $coms_id = htmlspecialchars($post['com_id'], ENT_QUOTES);
-    if ($counter > 1)
-        break;
 
-    $counter++;
-}
-    $title = $p_title;
+
+    $title = $post->getTitle();
+    $p_id = $post->getId();
+    $p_dateUpd = $post->getDateUpdate() ;
+    $p_content = $post->getContent();
+    $p_author = $post->getUid();
+
 
 require_once('View/layout.php'); ?>
 
@@ -23,7 +17,7 @@ require_once('View/layout.php'); ?>
     <p><a href="<?= $directory ?>/index.php?access=blog">Retour à la liste des billets</a></p>
     <?php
         if(isset($_SESSION['Statut_id']) && $_SESSION['Statut_id'] == 2){ ?>
-            <p><a href="<?=$directory ?>/index.php?access=modifypost&id=<?= $p_id ?>">Modifier</a></p>
+            <p><a href="<?=$directory ?>/index.php?id=<?= $p_id ?>&access=blog!modifypost">Modifier</a></p>
         <?php }
     ?>
 
@@ -41,28 +35,29 @@ require_once('View/layout.php'); ?>
     <?php
     if(isset($_SESSION['Statut_id'])){
         if($_SESSION['Statut_id'] == 1 || $_SESSION['Statut_id'] == 2 ){ ?>
-            <form action="<?= $directory ?>/index.php" method="post">
+            <form action="<?= $directory ?>/index.php?access=comment!publish" method="post">
                 <label for="comment">Commentaire</label>
                 <textarea type="text" id="comment" name="comment"></textarea>
-                <button type="submit" name="publishcomment">Publier</button>
+                <button type="submit" name="publish">Publier</button>
                 <input type="text" id="id" name="id" hidden value="<?= nl2br($p_id); ?>">
             </form>
         <?php }
     }
     ?>
 
-    <?php if(empty($coms_id)){
+    <?php if(empty($comments)){
         echo 'Soyez le premier à poster un commentaire';
     }
     else{
-        foreach($posts as $com)
+        foreach($comments as $com)
         {
-            $com_username = htmlspecialchars($com['u_username'], ENT_QUOTES);
-            $com_edit_username = htmlspecialchars($com['us_username'], ENT_QUOTES);
-            $com_content = htmlspecialchars($com['com_content'], ENT_QUOTES);
-            $com_dateUpdate = $com['dateComUpdate_fr'];
-            $com_statut = htmlspecialchars($com['com_statut'], ENT_QUOTES);
-            $com_id = htmlspecialchars($com['com_id'], ENT_QUOTES);
+            $com_username = $com->getUUsername();
+            $com_edit_username = $com->getUsUsername();
+            $com_content = $com->getContent();
+            $com_dateUpdate = $com->getDateComUpdate();
+            $com_statut = $com->getStatutId();
+            $com_id = $com->getId();
+            $com_uid = $com->getUserId();
             ?>
             <div class="news">
                 <h3>
@@ -76,10 +71,10 @@ require_once('View/layout.php'); ?>
                 <p><?= nl2br($com_content); ?></p>
                 <?php
                 if(isset($_SESSION['Statut_id']) && $_SESSION['Statut_id'] == 2){ ?>
-                    <p><a href="<?=$directory ?>/index.php?access=modifycomment&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
+                    <p><a href="<?=$directory ?>/index.php?access=comment!modify&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
                 <?php }
-                elseif(isset($_SESSION['Statut_id']) && $_SESSION['id'] == $com['com_uid']){ ?>
-                    <p><a href="<?=$directory ?>/index.php?access=modifycomment&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
+                elseif(isset($_SESSION['Statut_id']) && $_SESSION['id'] == $com_uid){ ?>
+                    <p><a href="<?=$directory ?>/index.php?access=comment!modify&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
                 <?php }
                 ?>
             </div>

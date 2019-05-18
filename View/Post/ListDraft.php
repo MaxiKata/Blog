@@ -21,7 +21,7 @@ foreach($drafts as $data)
         <p>
             <?= nl2br(htmlspecialchars($data['content'])); ?>
             <br>
-            <em><a href="index.php?access=draft&id=<?=$data['id'] ?>">Modifier</a></em>
+            <em><a href="index.php?id=<?=$data['id'] ?>&access=blog!draft">Modifier</a></em>
         </p>
     </div>
     <?php

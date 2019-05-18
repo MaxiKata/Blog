@@ -10,10 +10,10 @@ class Article
     private $title;
     private $content;
     private $category;
-    private $statut_id;
-    private $user_id;
-    private $datePostCreate;
-    private $datePostUpdate;
+    private $statutId;
+    private $uid;
+    private $dateCreate;
+    private $dateUpdate;
 
     /**
      * Article constructor.
@@ -91,65 +91,63 @@ class Article
      */
     public function getStatutId()
     {
-        return $this->statut_id;
+        return $this->statutId;
     }
 
     /**
-     * @param mixed $statut_id
+     * @param mixed $statutId
      */
-    public function setStatutId($statut_id)
+    public function setStatutId($statutId)
     {
-        $this->statut_id = $statut_id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    /**
-     * @param mixed $user_id
-     */
-    public function setUserId($user_id)
-    {
-        $this->user_id = $user_id;
+        $this->statutId = $statutId;
     }
 
     /**
      * @return mixed
      */
-    public function getDatePostCreate()
+    public function getUid()
     {
-        return $this->datePostCreate;
+        return $this->uid;
     }
 
     /**
-     * @param mixed $datePostCreate
+     * @param mixed $uid
      */
-    public function setDatePostCreate($datePostCreate)
+    public function setUid($uid)
     {
-        $this->datePostCreate = $datePostCreate;
+        $this->uid = $uid;
     }
 
     /**
      * @return mixed
      */
-    public function getDatePostUpdate()
+    public function getDateCreate()
     {
-        return $this->datePostUpdate;
+        return $this->dateCreate;
     }
 
     /**
-     * @param mixed $datePostUpdate
+     * @param mixed $dateCreate
      */
-    public function setDatePostUpdate($datePostUpdate)
+    public function setDateCreate($dateCreate)
     {
-        $this->datePostUpdate = $datePostUpdate;
+        $this->dateCreate = $dateCreate;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDateUpdate()
+    {
+        return $this->dateUpdate;
+    }
 
+    /**
+     * @param mixed $dateUpdate
+     */
+    public function setDateUpdate($dateUpdate)
+    {
+        $this->dateUpdate = $dateUpdate;
+    }
 
 }
