@@ -5,7 +5,6 @@ namespace Model;
 use App\Manager;
 use Blog\App\Entity\Comment;
 
-require_once('App/DBConnect.php');
 
 class CommentManager extends Manager
 {
@@ -61,7 +60,7 @@ class CommentManager extends Manager
 
         $result = new Comment();
         $result->setId($commentTable['id']);
-        $result->setContent($commentTable['id']);
+        $result->setContent($commentTable['content']);
         $result->setDateComCreate($commentTable['dateComCreate_fr']);
         $result->setDateComUpdate($commentTable['dateComUpdate_fr']);
         $result->setStatutId($commentTable['Statut_id']);
@@ -72,11 +71,16 @@ class CommentManager extends Manager
 
         return $result;
     }
-    public function updateComment($content, $userID, $com_id)
+    public function updateComment(Comment $comment)
     {
+        $content = $comment->getContent();
+        $userID = $comment->getUserIdEdit();
+        $com_id = $comment->getId();
+
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE comment SET content = ?, dateComUpdate = NOW(), Statut_id = 6, UserId_edit = ? WHERE id = ?');
         $updateComment = $req->execute(array($content, $userID, $com_id));
+
         return $updateComment;
     }
     public function deleteComment($comId)

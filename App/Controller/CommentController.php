@@ -15,7 +15,7 @@ class CommentController
         $postManager = new PostManager();
         $posts = $postManager->getPosts();
 
-        require_once ('View/Post/ListPost.php');
+        require_once ('../View/Post/ListPost.php');
     }
 
     public function publishAction()
@@ -79,7 +79,59 @@ class CommentController
                 $getCom = new CommentManager();
                 $comments = $getCom->getComment($comment);
 
-                require_once('View/Comment/editComment.php');
+                require_once('../View/Comment/editComment.php');
+            }
+            else{
+                header("Location: index.php?error=notallowed&access=blog");
+            }
+        }
+        else{
+            header("Location: index.php?error=notallowed&access=blog");
+        }
+    }
+
+    public function updateAction()
+    {
+        session_start();
+        $comment = new Comment();
+        $comment->setPostId(htmlspecialchars($_POST['p_Id'], ENT_QUOTES));
+        $comment->setId(htmlspecialchars($_POST['comId'], ENT_QUOTES));
+        $comment->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES));
+        $comment->setUserIdEdit($_SESSION['id']);
+
+        if(is_numeric($comment->getPostId()) && is_numeric($comment->getId()) && !empty($comment->getContent())){
+            $commentManager = new CommentManager();
+            $verifyComment = $commentManager->getComment($comment);
+
+
+            if(!empty($verifyComment->getId()) && $verifyComment->getId() == $comment->getId() && $verifyComment->getPostId() == $comment->getPostId()){
+                if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $verifyComment->getUserId()){
+                    if(isset($_POST['updatecomment'])){
+                        $updateComment = $commentManager->updateComment($comment);
+                         if($updateComment == true){
+                             header("Location: index.php?success=updatecomment&id=" . $verifyComment->getPostId() . "&access=blog!read");
+                         }
+                         else{
+                             header("Location: index.php?error=updatecomment&access=blog");
+                         }
+                    }
+                    elseif(isset($_POST['deletecomment'])){
+                        $deleteComment = $commentManager->deleteComment($comment->getId());
+                        if($deleteComment == true){
+                            header("Location: index.php?success=deletecomment&id=" . $verifyComment->getPostId() . "&access=blog!read");
+                        }
+                        else{
+                            header("Location: index.php?error=deletecomment&access=blog");
+                        }
+
+                    }
+                    else{
+                        header("Location: index.php?error=notallowed&access=blog");
+                    }
+                }
+                else{
+                    header("Location: index.php?error=notallowed&access=blog");
+                }
             }
             else{
                 header("Location: index.php?error=notallowed&access=blog");
