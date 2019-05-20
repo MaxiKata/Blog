@@ -1,0 +1,7 @@
+#File .htaccess : /Blog/
+
+Options +FollowSymlinks
+RewriteEngine On
+RewriteOptions Inherit
+
+RewriteRule ^index.php$ Public/index.php
