@@ -1,10 +1,10 @@
 <?php
 
 $title = "Consulter le profil";
-require_once('View/layout.php'); ?>
+require_once('../View/layout.php'); ?>
 
 <body>
-    <?php require ('View/header.php'); ?>
+    <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?> de <?= htmlspecialchars($useredit->getUsername(), ENT_QUOTES) ?></h1>
     <div class="news">

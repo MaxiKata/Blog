@@ -1,14 +1,14 @@
 <?php
 
 $title = "Nouvel Article";
-require_once('View/layout.php'); ?>
+require_once('../View/layout.php'); ?>
 
 
 <?php
 if(isset($_SESSION['Statut_id'])){
     if($_SESSION['Statut_id'] == 2){ ?>
     <body>
-    <?php require ('View/header.php'); ?>
+    <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1>
 
@@ -39,6 +39,6 @@ if(isset($_SESSION['Statut_id'])){
 <?php }
     }
 else{
-    Home();
+    header("Location: index.php");
 }
 ?>

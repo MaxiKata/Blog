@@ -14,7 +14,7 @@ class BlogController
             $postManager = new PostManager();
             $posts = $postManager->getPosts();
 
-            require_once ('View/Post/ListPost.php');
+            require_once ('../View/Post/ListPost.php');
     }
 
     public function readAction()
@@ -30,7 +30,7 @@ class BlogController
                     $commentManager = new CommentManager();
                     $comments = $commentManager->getComments($post->getId());
 
-                    require_once ('View/Post/PostView.php');
+                    require_once ('../View/Post/PostView.php');
                 }
                 else{
                     header('Location: index.php?error=article&access=blog');
@@ -46,10 +46,10 @@ class BlogController
     {
         session_start();
         if($_SESSION['Statut_id'] == 2){
-            require_once('View/Post/NewPost.php');
+            require_once('../View/Post/NewPost.php');
         }
         else{
-            header("Location: index.php?error=notallowed");
+            header("Location: index.php?error=notallowed&access=blog");
         }
     }
 
@@ -122,7 +122,7 @@ class BlogController
             $postManager = new PostManager();
             $drafts = $postManager->getDrafts();
 
-            require_once ('View/Post/ListDraft.php');
+            require_once ('../View/Post/ListDraft.php');
         }
         else{
             header("Location: index.php?error=notallowed&access=blog");
@@ -139,12 +139,11 @@ class BlogController
                 $post = $postManager->getPost($postId);
 
                 if(!empty($post->getId()) && $post->getStatutId() == 3){
-                    require_once ('View/Post/EditPost.php');
+                    require_once ('../View/Post/EditPost.php');
                 }
                 else{
                     header("Location: index.php?error=nopost&access=blog");
                 }
-
             }
             else{
                 header("Location: index.php?error=notallowed&access=blog");
@@ -165,7 +164,7 @@ class BlogController
                 $draft = $postManager->getPost($draftId);
 
                 if(!empty($draft->getId()) && $draft->getStatutId() == 4){
-                    require_once ('View/Post/DraftView.php');
+                    require_once ('../View/Post/DraftView.php');
                 }
                 else{
                     header("Location: index.php?error=nodraft&access=blog");
@@ -264,11 +263,6 @@ class BlogController
         else{
             header("Location: index.php?error=notallowed&access=blog");
         }
-    }
-
-    protected function home()
-    {
-        header('Location: index.php');
     }
 
 }

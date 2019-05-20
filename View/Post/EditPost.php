@@ -6,12 +6,12 @@
     $p_content = $post->getContent();
     $p_category = $post->getCategory();
 
-require_once('View/layout.php');
+require_once('../View/layout.php');
 
 if(isset($_SESSION['Statut_id'])){
     if($_SESSION['Statut_id'] == 2){ ?>
         <body>
-        <?php require ('View/header.php'); ?>
+        <?php require ('../View/header.php'); ?>
 
         <h1><?= $title ?></h1> <em>le <?= $p_dateUpd ?></em>
         <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id ?>&access=blog!read">Retour à l'article</a></p>
