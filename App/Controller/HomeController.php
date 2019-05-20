@@ -7,6 +7,6 @@ class HomeController
 {
     public function indexAction()
     {
-        require_once('View/home.php');
+        require_once('../View/home.php');
     }
 }

@@ -2,9 +2,6 @@
 
 namespace Model;
 
-
-require_once ('App/DBConnect.php');
-
 use App\Manager;
 use Blog\App\Entity\User;
 

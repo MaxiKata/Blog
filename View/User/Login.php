@@ -1,11 +1,11 @@
 <?php
 
 $title = "Connexion";
-require_once('View/layout.php'); ?>
+require_once('../View/layout.php'); ?>
 
 
 <body>
-<?php require ('View/header.php'); ?>
+<?php require ('../View/header.php'); ?>
 
 
 <h1><?= $title ?></h1>

@@ -7,10 +7,10 @@ $u_firstname = htmlspecialchars($useredit->getFirstname(), ENT_QUOTES);
 $u_email = htmlspecialchars($useredit->getEmail(), ENT_QUOTES);
 
 
-require_once('View/layout.php'); ?>
+require_once('../View/layout.php'); ?>
 
 <body>
-    <?php require ('View/header.php'); ?>
+    <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?> de <?= $u_username ?></h1>
     <div class="news">

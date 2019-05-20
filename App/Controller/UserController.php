@@ -10,7 +10,7 @@ class UserController
 
     public function indexAction()
     {
-        require_once('View/User/Login.php');
+        require_once('../View/User/Login.php');
     }
 
     public function registerAction()
@@ -121,7 +121,7 @@ class UserController
             $user = new UserManager();
             $users = $user->getUsers();
 
-            require_once ('View/User/userlist.php');
+            require_once ('../View/User/userlist.php');
         }
         else{
             header('Location:index.php?error=accessdenied');
@@ -142,10 +142,10 @@ class UserController
                 header('Location:index.php?access=userlist&error=nouser');
             }
             elseif($_SESSION['id'] == $useredit->getId() || $_SESSION['Statut_id'] == 2){
-                require_once ('View/User/EditUser.php');
+                require_once ('../View/User/EditUser.php');
             }
             else{
-                require_once ('View/User/userprofil.php');
+                require_once ('../View/User/userprofil.php');
             }
 
         }
