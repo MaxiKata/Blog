@@ -5,13 +5,13 @@
     $p_id = $post->getId();
     $p_dateUpd = $post->getDateUpdate() ;
     $p_content = $post->getContent();
-    $p_author = $post->getUid();
+    $p_author = $post->getUserName();
 
 
-require_once('View/layout.php'); ?>
+require_once('../View/layout.php'); ?>
 
 <body>
-    <?php require ('View/header.php'); ?>
+    <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1>
     <p><a href="<?= $directory ?>/index.php?access=blog">Retour à la liste des billets</a></p>
