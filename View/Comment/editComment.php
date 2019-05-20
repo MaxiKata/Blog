@@ -8,16 +8,16 @@
     $p_id = $comments->getPostID();
 
 $title = 'Mettre à jour le commentaire';
-require_once('View/layout.php');
+require_once('../View/layout.php');
 
 if(isset($_SESSION['Statut_id'])){
     if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $com_uid){ ?>
         <body>
-        <?php require ('View/header.php'); ?>
+        <?php require ('../View/header.php'); ?>
 
         <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
 
-        <form action="<?= $directory ?>/index.php" method="post">
+        <form action="<?= $directory ?>/index.php?access=comment!update" method="post">
             <div>
                 <label for="content"><?= $title ?></label>
                 <textarea type="text" id="content" name="content"><?= $com_content; ?></textarea>
