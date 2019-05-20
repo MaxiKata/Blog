@@ -14,6 +14,7 @@ class Article
     private $uid;
     private $dateCreate;
     private $dateUpdate;
+    private $userName;
 
     /**
      * Article constructor.
@@ -148,6 +149,22 @@ class Article
     public function setDateUpdate($dateUpdate)
     {
         $this->dateUpdate = $dateUpdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * @param mixed $userName
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
     }
 
 }
