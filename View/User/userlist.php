@@ -14,11 +14,11 @@ require_once('../View/layout.php'); ?>
         ?>
         <div class="news">
             <h3>
-                <?= htmlspecialchars($user['nickname']); ?>
+                <?= htmlspecialchars($user->getUsername()); ?>
             </h3>
 
             <p>
-                <em><a href="index.php?userid=<?=$user['id'] ?>&access=user!profil">Consulter</a></em>
+                <em><a href="index.php?userid=<?=$user->getId() ?>&access=user!profil">Consulter</a></em>
             </p>
         </div>
         <?php

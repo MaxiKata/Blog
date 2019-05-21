@@ -37,7 +37,7 @@ require_once('../View/layout.php'); ?>
                 <input type="text" id="username" name="username" value="<?= $u_username ?>"/>
             </div>
             <div>
-                <label for="oldpassword">Ancien mot de passe</label>
+                <label for="oldpassword">Mot de passe Actuel</label>
                 <input type="password" id="oldpassword" name="oldpassword"/>
             </div>
             <div>
@@ -50,6 +50,9 @@ require_once('../View/layout.php'); ?>
             </div>
             <div>
                 <button type="submit" name="update">Mettre à jour</button>
+            </div>
+            <div>
+                <button type="submit" name="delete">Supprimer Utilisateur</button>
             </div>
             <div>
                 <input type="text" id="userId" name="userId" hidden value="<?= $useredit->getId(); ?>">
