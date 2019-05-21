@@ -14,14 +14,14 @@ require_once('../View/layout.php'); ?>
         ?>
         <div class="news">
             <h3>
-                <?= htmlspecialchars($data['title']); ?>
-                <em>le <?= $data['datePostUpdate_fr']; ?></em>
+                <?= htmlspecialchars($data->getTitle()); ?>
+                <em>le <?= $data->getDateUpdate(); ?></em>
             </h3>
 
             <p>
-                <?= nl2br(htmlspecialchars($data['content'])); ?>
+                <?= nl2br(htmlspecialchars($data->getContent())); ?>
                 <br>
-                <em><a href="index.php?id=<?=$data['id'] ?>&access=blog!read">Consulter</a></em>
+                <em><a href="index.php?id=<?=$data->getId() ?>&access=blog!read">Consulter</a></em>
             </p>
         </div>
         <?php

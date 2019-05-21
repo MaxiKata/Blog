@@ -6,9 +6,47 @@ use App\Manager;
 use Blog\App\Entity\Article;
 
 
+/**
+ * Class PostManager
+ * @package Model
+ */
 class PostManager extends Manager
 {
+    /**
+     *
+     */
+    const setProperties = array(
+        "Id" => "id",
+        "Title" => "title",
+        "Content" => "content",
+        "Category" => "category",
+        "StatutId" => "Statut_id",
+        "Uid" => "User_id",
+        "DateCreate" => "datePostCreate_fr",
+        "DateUpdate" => "datePostUpdate_fr"
+    );
+    /**
+     *
+     */
+    const setArticleProperties = array(
+        "Id" => "id",
+        "Title" => "title",
+        "Content" => "content",
+        "Category" => "category",
+        "StatutId" => "Statut_id",
+        "Uid" => "User_id",
+        "DateCreate" => "datePostCreate_fr",
+        "DateUpdate" => "datePostUpdate_fr",
+        "UserName" => "username"
+    );
+
+
     //////////////////////////////// START POST REQUEST \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /**
+     * @param Article $post
+     * @return bool
+     */
     public function postNewPost(Article $post)
     {
         $titlePost = $post->getTitle();
@@ -22,14 +60,26 @@ class PostManager extends Manager
 
         return $newPost;
     }
+
+    /**
+     * @return array
+     */
     public function getPosts()
     {
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT id, title, content, category, Statut_id, User_id, DATE_FORMAT(datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr FROM post WHERE Statut_id = 3 ORDER BY datePostUpdate DESC');
         $req->execute();
-        $posts = $req->fetchAll();
+        $getPosts = $req->fetchAll();
+
+        $posts = $this->setPosts($getPosts);
+
         return $posts;
     }
+
+    /**
+     * @param $postID
+     * @return Article
+     */
     public function getPost($postID)
     {
         $db = $this->dbConnect();
@@ -41,20 +91,16 @@ class PostManager extends Manager
         $req->execute(array($postID));
         $getPost = $req->fetch();
 
-        $post = new Article();
-        $post->setId($getPost['id']);
-        $post->setTitle($getPost['title']);
-        $post->setContent($getPost['content']);
-        $post->setCategory($getPost['category']);
-        $post->setStatutId($getPost['Statut_id']);
-        $post->setUid($getPost['User_id']);
-        $post->setDateCreate($getPost['datePostCreate_fr']);
-        $post->setDateUpdate($getPost['datePostUpdate_fr']);
-        $post->setUserName($getPost['username']);
+        $post = $this->setArticle($getPost);
+
 
         return $post;
     }
 
+    /**
+     * @param Article $update
+     * @return bool
+     */
     function updatePost(Article $update)
     {
         $titlePost = $update->getTitle();
@@ -70,6 +116,11 @@ class PostManager extends Manager
         return $updateDraft;
     }
     //////////////////////////////// START DRAFT REQUEST \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /**
+     * @param Article $draft
+     * @return bool
+     */
     public function postNewDraft(Article $draft)
     {
         $titlePost = $draft->getTitle();
@@ -83,15 +134,26 @@ class PostManager extends Manager
 
         return $newDraft;
     }
+
+    /**
+     * @return array
+     */
     public function getDrafts()
     {
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT id, title, content, category, Statut_id, User_id, DATE_FORMAT(datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr FROM post WHERE Statut_id = 4 ORDER BY datePostUpdate DESC');
         $req->execute();
-        $drafts = $req->fetchAll();
+        $getDrafts = $req->fetchAll();
+
+        $drafts = $this->setPosts($getDrafts);
 
         return $drafts;
     }
+
+    /**
+     * @param Article $update
+     * @return bool
+     */
     public function updateDraft(Article $update)
     {
         $titlePost = $update->getTitle();
@@ -107,6 +169,11 @@ class PostManager extends Manager
         return $updateDraft;
     }
     //////////////////////////////// START GENERAL REQUEST \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /**
+     * @param $postId
+     * @return bool
+     */
     public function deleteArticle($postId)
     {
         $db = $this->dbConnect();
@@ -114,6 +181,38 @@ class PostManager extends Manager
         $del = $delete->execute(array($postId));
 
         return $del;
+    }
+
+    /**
+     * @param $posts
+     * @return array
+     */
+    private function setPosts($posts){
+
+        $finalPosts = array();
+
+        foreach($posts as $post){
+            $postObj = new Article();
+            foreach (self::setProperties as $property => $bdd){
+                $postObj->{"set$property"}($post["$bdd"]) ;
+            }
+            $finalPosts[] = $postObj;
+        }
+        return $finalPosts;
+    }
+
+    /**
+     * @param $post
+     * @return Article
+     */
+    private function setArticle($post){
+
+        $postObj = new Article();
+        foreach (self::setArticleProperties as $property => $bdd){
+            $postObj->{"set$property"}($post["$bdd"]) ;
+        }
+
+        return $postObj;
     }
 }
 
