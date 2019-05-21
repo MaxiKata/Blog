@@ -6,8 +6,15 @@ use App\Manager;
 use Blog\App\Entity\Comment;
 
 
+/**
+ * Class CommentManager
+ * @package Model
+ */
 class CommentManager extends Manager
 {
+    /**
+     *
+     */
     const properties = array(
         "Id" => "com_id",
         "Content" => "com_content",
@@ -19,6 +26,11 @@ class CommentManager extends Manager
         "UserIdEdit" => "com_UserIdEdit",
         "UUsername" => "u_username",
         "UsUsername" => "us_username");
+
+    /**
+     * @param Comment $comment
+     * @return bool
+     */
     public function publishComment(Comment $comment)
     {
         $content = $comment->getContent();
@@ -32,6 +44,11 @@ class CommentManager extends Manager
 
         return $newcomm;
     }
+
+    /**
+     * @param $postId
+     * @return array
+     */
     public function getComments($postId)
     {
         $db = $this->dbConnect();
@@ -45,10 +62,15 @@ class CommentManager extends Manager
         $req->execute(array($postId));
         $getComment = $req->fetchAll();
 
-        $comments = $this->testProperties($getComment);
+        $comments = $this->setComments($getComment);
 
         return $comments;
     }
+
+    /**
+     * @param Comment $comment
+     * @return Comment
+     */
     public function getComment(Comment $comment)
     {
         $com_id = $comment->getId();
@@ -71,6 +93,11 @@ class CommentManager extends Manager
 
         return $result;
     }
+
+    /**
+     * @param Comment $comment
+     * @return bool
+     */
     public function updateComment(Comment $comment)
     {
         $content = $comment->getContent();
@@ -83,6 +110,11 @@ class CommentManager extends Manager
 
         return $updateComment;
     }
+
+    /**
+     * @param $comId
+     * @return bool
+     */
     public function deleteComment($comId)
     {
         $db = $this->dbConnect();
@@ -91,6 +123,11 @@ class CommentManager extends Manager
 
         return $del;
     }
+
+    /**
+     * @param $postId
+     * @return bool
+     */
     public function deleteComments($postId)
     {
         $db = $this->dbConnect();
@@ -98,7 +135,24 @@ class CommentManager extends Manager
         $del = $delete->execute(array($postId));
         return $del;
     }
-    private function testProperties($comments)
+
+    /**
+     * @param $userId
+     * @return bool
+     */
+    public function deleteUserComments($userId)
+    {
+        $db = $this->dbConnect();
+        $delete = $db->prepare('DELETE FROM comment WHERE User_id = ?');
+        $del = $delete->execute(array($userId));
+        return $del;
+    }
+
+    /**
+     * @param $comments
+     * @return array
+     */
+    private function setComments($comments)
     {
         $finalComments = array();
 

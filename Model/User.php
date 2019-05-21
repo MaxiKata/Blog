@@ -5,17 +5,44 @@ namespace Model;
 use App\Manager;
 use Blog\App\Entity\User;
 
+/**
+ * Class UserManager
+ * @package Model
+ */
 class UserManager extends Manager
 {
+    /**
+     *
+     */
+    const properties = array(
+        "Id" => "id",
+        "Lastname" => "lastname",
+        "Firstname" => "firstname",
+        "Email" => "email",
+        "Username" => "nickname",
+        "Password" => "password",
+        "Statut" => "Statut_id"
+    );
+
+    /**
+     * @return array
+     */
     public function getUsers()
     {
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT * FROM users');
         $req->execute();
-        $users = $req->fetchAll();
+        $getUsers = $req->fetchAll();
+
+        $users = $this->setUsers($getUsers);
 
         return $users;
     }
+
+    /**
+     * @param $userid
+     * @return User
+     */
     public function getUser($userid)
     {
         $db = $this->dbConnect();
@@ -23,17 +50,15 @@ class UserManager extends Manager
         $req->execute(array($userid));
         $getUser = $req->fetch();
 
-        $user = new User();
-        $user->setId($getUser['id']);
-        $user->setLastname($getUser['lastname']);
-        $user->setFirstname($getUser['firstname']);
-        $user->setEmail($getUser['email']);
-        $user->setUsername($getUser['nickname']);
-        $user->setPassword($getUser['password']);
-        $user->setStatut($getUser['Statut_id']);
+        $user = $this->setUser($getUser);
 
         return $user;
     }
+
+    /**
+     * @param $nickname
+     * @return mixed
+     */
     public function getUsername($nickname)
     {
         $db = $this->dbConnect();
@@ -43,6 +68,11 @@ class UserManager extends Manager
 
         return $usernameList;
     }
+
+    /**
+     * @param $email
+     * @return mixed
+     */
     public function getEmail($email)
     {
         $db = $this->dbConnect();
@@ -52,6 +82,12 @@ class UserManager extends Manager
 
         return $emailList;
     }
+
+    /**
+     * @param $email
+     * @param $username
+     * @return User
+     */
     public function getInformation($email, $username)
     {
         $db = $this->dbConnect();
@@ -59,17 +95,15 @@ class UserManager extends Manager
         $req->execute(array($email, $username));
         $result = $req->fetch();
 
-        $user = new User();
-        $user->setId($result['id']);
-        $user->setLastname($result['lastname']);
-        $user->setFirstname($result['firstname']);
-        $user->setEmail($result['email']);
-        $user->setUsername($result['nickname']);
-        $user->setPassword($result['password']);
-        $user->setStatut($result['Statut_id']);
+        $user = $this->setUser($result);
 
         return $user;
     }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function register (User $user)
     {
         $lastname = $user->getLastname();
@@ -84,6 +118,11 @@ class UserManager extends Manager
 
         return $newUser;
     }
+
+    /**
+     * @param User $user
+     * @return User
+     */
     public function easyUpdateUser(User $user)
     {
 
@@ -101,6 +140,11 @@ class UserManager extends Manager
 
         return $newUser;
     }
+
+    /**
+     * @param User $user
+     * @return User
+     */
     public function hardUpdateUser(User $user)
     {
         $userId = $user->getId();
@@ -117,5 +161,70 @@ class UserManager extends Manager
         $newUser = self::getUser($userId);
         return $newUser;
     }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    public function getUsersArticle($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT u.id, u.lastname, u.firstname, u.email, u.nickname, u.Statut_id, p.User_id AS p_UserId, c.User_id AS c_UserId
+        FROM users u 
+        LEFT JOIN post p 
+        ON u.id = p.User_id
+        LEFT JOIN comment c 
+        ON u.id = c.User_id
+        WHERE u.id = ?');
+        $req->execute(array($userId));
+        $getIntel = $req->fetchAll();
+
+        return $getIntel;
+    }
+
+    /**
+     * @param $userId
+     * @return bool
+     */
+    public function deleteUser($userId)
+    {
+        $db = $this->dbConnect();
+        $delete = $db->prepare('DELETE FROM users WHERE id = ?');
+        $del = $delete->execute(array($userId));
+
+        return $del;
+    }
+
+    /**
+     * @param $user
+     * @return User
+     */
+    private function setUser($user){
+
+        $userObj = new User();
+        foreach (self::properties as $property => $bdd){
+            $userObj->{"set$property"}($user["$bdd"]) ;
+        }
+
+        return $userObj;
+    }
+
+    /**
+     * @param $users
+     * @return array
+     */
+    private function setUsers($users){
+         $finalComments = array();
+
+         foreach($users as $user){
+             $userObj = new User();
+             foreach (self::properties as $property => $bdd){
+                 $userObj->{"set$property"}($user["$bdd"]) ;
+             }
+             $finalComments[] = $userObj;
+         }
+
+         return $finalComments;
+     }
 }
 
