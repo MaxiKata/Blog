@@ -12,10 +12,7 @@ class CommentController
 {
     public function indexAction()
     {
-        $postManager = new PostManager();
-        $posts = $postManager->getPosts();
-
-        require_once ('../View/Post/ListPost.php');
+        header("Location: index.php?access=blog");
     }
 
     public function publishAction()

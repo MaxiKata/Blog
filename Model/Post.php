@@ -23,19 +23,6 @@ class PostManager extends Manager
         "StatutId" => "Statut_id",
         "Uid" => "User_id",
         "DateCreate" => "datePostCreate_fr",
-        "DateUpdate" => "datePostUpdate_fr"
-    );
-    /**
-     *
-     */
-    const setArticleProperties = array(
-        "Id" => "id",
-        "Title" => "title",
-        "Content" => "content",
-        "Category" => "category",
-        "StatutId" => "Statut_id",
-        "Uid" => "User_id",
-        "DateCreate" => "datePostCreate_fr",
         "DateUpdate" => "datePostUpdate_fr",
         "UserName" => "username"
     );
@@ -59,21 +46,6 @@ class PostManager extends Manager
         $newPost = $post->execute(array($titlePost, $content, $category, $userId));
 
         return $newPost;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPosts()
-    {
-        $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, title, content, category, Statut_id, User_id, DATE_FORMAT(datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr FROM post WHERE Statut_id = 3 ORDER BY datePostUpdate DESC');
-        $req->execute();
-        $getPosts = $req->fetchAll();
-
-        $posts = $this->setPosts($getPosts);
-
-        return $posts;
     }
 
     /**
@@ -101,7 +73,7 @@ class PostManager extends Manager
      * @param Article $update
      * @return bool
      */
-    function updatePost(Article $update)
+    public function updatePost(Article $update)
     {
         $titlePost = $update->getTitle();
         $content = $update->getContent();
@@ -114,6 +86,34 @@ class PostManager extends Manager
         $updateDraft = $send->execute(array($titlePost, $content, $category, $userId, $postId));
 
         return $updateDraft;
+    }
+
+    public function countPosts($statut)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT COUNT(id) AS nbArt FROM post WHERE Statut_id = ?');
+        $req->execute(array($statut));
+        $nbArt = $req->fetch();
+
+        return $nbArt;
+    }
+
+    public function countPostLimit($page, $article, $statut)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, u.nickname AS username
+        FROM post p
+        LEFT JOIN users u
+        ON p.User_id = u.id
+        WHERE p.Statut_id = $statut 
+        ORDER BY datePostUpdate DESC 
+        LIMIT ". (($page-1)*$article) .",$article");
+        $req->execute();
+        $getPosts = $req->fetchAll();
+
+        $posts = $this->setPosts($getPosts);
+
+        return $posts;
     }
     //////////////////////////////// START DRAFT REQUEST \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -133,21 +133,6 @@ class PostManager extends Manager
         $newDraft = $pushdraft->execute(array($titlePost, $content, $category, $userId));
 
         return $newDraft;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDrafts()
-    {
-        $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, title, content, category, Statut_id, User_id, DATE_FORMAT(datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr FROM post WHERE Statut_id = 4 ORDER BY datePostUpdate DESC');
-        $req->execute();
-        $getDrafts = $req->fetchAll();
-
-        $drafts = $this->setPosts($getDrafts);
-
-        return $drafts;
     }
 
     /**
@@ -222,7 +207,7 @@ class PostManager extends Manager
     private function setArticle($post){
 
         $postObj = new Article();
-        foreach (self::setArticleProperties as $property => $bdd){
+        foreach (self::setProperties as $property => $bdd){
             $postObj->{"set$property"}($post["$bdd"]) ;
         }
 
