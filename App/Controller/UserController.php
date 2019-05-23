@@ -182,10 +182,10 @@ class UserController
         session_start();
 
         if(isset($_SESSION['Statut_id']) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
-            $userid = htmlspecialchars($_GET['userid'], ENT_QUOTES);
+            $this->id = htmlspecialchars($_GET['userid'], ENT_QUOTES);
 
             $user = new UserManager();
-            $useredit = $user->getUser($userid);
+            $useredit = $user->getUser($this->id);
 
             if($useredit->getId() == NULL){
                 header('Location:index.php?access=userlist&error=nouser');
@@ -209,11 +209,11 @@ class UserController
     public function updateAction()
     {
         session_start();
-        $userId = htmlspecialchars($_POST['userId'], ENT_QUOTES);
+        $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
-        if(isset($_SESSION['id']) && is_numeric($userId)){
+        if(isset($_SESSION['id']) && is_numeric($this->id)){
             $userManager = new UserManager();
-            $getUser = $userManager->getUser($userId);
+            $getUser = $userManager->getUser($this->id);
             if(!empty($getUser->getId())){
                 if($_SESSION['id'] == $getUser->getId() || $_SESSION['Statut_id'] == 2){
                     $this->lastname = empty(htmlspecialchars($_POST['lastname'], ENT_QUOTES)) ? $getUser->getLastname() : htmlspecialchars($_POST['lastname'], ENT_QUOTES) ;
@@ -250,35 +250,19 @@ class UserController
                             }
                         }
                         elseif(isset($_POST['delete'])){
-                            $getInformations = $userManager->getUsersArticle($userId);
-
-                            if(!empty($getInformations['c_UserId']) || !empty($getInformations['p_UserId'])){
-                                $comManager = new CommentManager();
-                                $postManager = new PostManager();
-
-                                $comManager->deleteUserComments($userId);
-                                $postManager->updateAuthor($userId, $_SESSION['id']);
-
-                                $deleteUser = $userManager->deleteUser($userId);
-
-
-                                if($deleteUser == true){
-                                    header("Location: index.php?access=user!list&success=userdeleted");
+                            if($_SESSION['id'] == $this->id){
+                                $countAdmin = $userManager->countAdmin();
+                                if($countAdmin[0]["COUNT(id)"] > 1){
+                                    $this->autoDelete();
                                 }
                                 else{
-                                    header("Location: index.php?access=user!list&error=userdeleted");
+                                    header("Location: index.php?access=user!profil&error=chooseadmin&userid=" . $this->id . "");
                                 }
                             }
                             else{
-                                $deleteUser = $userManager->deleteUser($userId);
-
-                                if($deleteUser == true){
-                                    header("Location: index.php?access=user!list&success=userdeleted");
-                                }
-                                else{
-                                    header("Location: index.php?access=user!list&error=userdeleted");
-                                }
+                                $this->deleteUser();
                             }
+
                         }
                         else{
                             header("Location:index.php?userid=". $getUser->getId() ."&error=actiondenied&access=user!profil");
@@ -324,38 +308,7 @@ class UserController
                                 }
                             }
                             elseif(isset($_POST['delete'])){
-                                $getInformations = $userManager->getUsersArticle($userId);
-
-                                if(!empty($getInformations[0]['c_UserId']) || !empty($getInformations[0]['p_UserId'])){
-                                    $comManager = new CommentManager();
-                                    $postManager = new PostManager();
-
-                                    $comManager->deleteUserComments($userId);
-
-                                    $postManager->updateAuthor($userId, $_SESSION['id']);
-
-                                    $deleteUser = $userManager->deleteUser($userId);
-
-
-                                    if($deleteUser == true){
-                                        $this->logoutAction();
-                                        header("Location: index.php?success=userdeleted");
-                                    }
-                                    else{
-                                        header("Location: index.php?access=user!list&error=userdeleted");
-                                    }
-                                }
-                                else{
-                                    $deleteUser = $userManager->deleteUser($userId);
-
-                                    if($deleteUser == true){
-                                        $this->logoutAction();
-                                        header("Location: index.php?access=user!list&success=userdeleted");
-                                    }
-                                    else{
-                                        header("Location: index.php?access=user!list&error=userdeleted");
-                                    }
-                                }
+                                $this->autoDelete();
                             }
                             else{
                                 header("Location:index.php?userid=". $getUser->getId() ."&error=actiondenied&access=user!profil");
@@ -425,5 +378,84 @@ class UserController
         $user = new UserManager();
         $checkEmail = $user->getEmail($email);
         return $checkEmail;
+    }
+
+    /**
+     *
+     */
+    private function autoDelete()
+    {
+        $userManager = new UserManager();
+
+        $getAdmins = $userManager->getAdmins($this->id);
+        $getInformations = $userManager->getUsersArticle($this->id);
+
+
+        if(!empty($getInformations[0]['c_UserId']) || !empty($getInformations[0]['p_UserId']) || !empty($getInformations[0]['com_UserIdEdit'])){
+            $comManager = new CommentManager();
+            $postManager = new PostManager();
+
+            $comManager->updateEditorComments($getAdmins[0]->getId(), $this->id);
+            $comManager->deleteUserComments($this->id);
+            $postManager->updateAuthor($getAdmins[0]->getId(), $this->id);
+
+            $deleteUser = $userManager->deleteUser($this->id);
+
+            if($deleteUser == true){
+                $this->logoutAction();
+                header("Location: index.php?success=userdeleted");
+            }
+            else{
+                header("Location: index.php?access=user!list&error=userdeleted");
+            }
+        }
+        else{
+            $deleteUser = $userManager->deleteUser($this->id);
+
+            if($deleteUser == true){
+                $this->logoutAction();
+                header("Location: index.php?success=userdeleted");
+            }
+            else{
+                header("Location: index.php?access=user!list&error=userdeleted");
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private function deleteUser()
+    {
+        $userManager = new UserManager();
+        $getInformations = $userManager->getUsersArticle($this->id);
+
+        if(!empty($getInformations[0]['c_UserId']) || !empty($getInformations[0]['p_UserId']) || !empty($getInformations[0]['com_UserIdEdit'])){
+            $comManager = new CommentManager();
+            $postManager = new PostManager();
+
+            $comManager->updateEditorComments($_SESSION['id'], $this->id);
+            $comManager->deleteUserComments($this->id);
+            $postManager->updateAuthor($_SESSION['id'], $this->id);
+
+            $deleteUser = $userManager->deleteUser($this->id);
+
+            if($deleteUser == true){
+                header("Location: index.php?access=user!list&success=userdeleted");
+            }
+            else{
+                header("Location: index.php?access=user!list&error=userdeleted");
+            }
+        }
+        else{
+            $deleteUser = $userManager->deleteUser($this->id);
+
+            if($deleteUser == true){
+                header("Location: index.php?access=user!list&success=userdeleted");
+            }
+            else{
+                header("Location: index.php?access=user!list&error=userdeleted");
+            }
+        }
     }
 }

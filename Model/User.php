@@ -24,13 +24,14 @@ class UserManager extends Manager
         "Statut" => "Statut_id"
     );
 
+
     /**
      * @return array
      */
     public function getUsers()
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT * FROM users');
+        $req = $db->prepare('SELECT * FROM users ORDER BY nickname');
         $req->execute();
         $getUsers = $req->fetchAll();
 
@@ -169,12 +170,14 @@ class UserManager extends Manager
     public function getUsersArticle($userId)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT u.id, u.lastname, u.firstname, u.email, u.nickname, u.Statut_id, p.User_id AS p_UserId, c.User_id AS c_UserId
+        $req = $db->prepare('SELECT u.id, u.lastname, u.firstname, u.email, u.nickname, u.Statut_id, p.User_id AS p_UserId, c.User_id AS c_UserId, com.Userid_edit AS com_UserIdEdit
         FROM users u 
         LEFT JOIN post p 
         ON u.id = p.User_id
         LEFT JOIN comment c 
         ON u.id = c.User_id
+        LEFT JOIN comment com
+        ON u.id = com.Userid_edit
         WHERE u.id = ?');
         $req->execute(array($userId));
         $getIntel = $req->fetchAll();
@@ -193,6 +196,34 @@ class UserManager extends Manager
         $del = $delete->execute(array($userId));
 
         return $del;
+    }
+
+    /**
+     * @return array
+     */
+    public function countAdmin()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT COUNT(id) FROM users WHERE Statut_id = 2');
+        $req->execute();
+        $countAdmin = $req->fetchAll();
+        return $countAdmin;
+    }
+
+    /**
+     * @param $adminId
+     * @return array
+     */
+    public function getAdmins($adminId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT * FROM users WHERE Statut_id = 2 AND id != ?');
+        $req->execute(array($adminId));
+        $getAdmins = $req->fetchAll();
+
+        $admins = $this->setUsers($getAdmins);
+
+        return $admins;
     }
 
     /**

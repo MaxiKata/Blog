@@ -188,11 +188,11 @@ class PostManager extends Manager
      * @param $newAuthorId
      * @return bool
      */
-    public function updateAuthor($oldAuthorId, $newAuthorId)
+    public function updateAuthor($newAuthorId, $oldAuthorId)
     {
         $db = $this->dbConnect();
         $send = $db->prepare('UPDATE post SET User_id = ? WHERE User_id = ?');
-        $updateDraft = $send->execute(array($oldAuthorId, $newAuthorId));
+        $updateDraft = $send->execute(array($newAuthorId, $oldAuthorId));
 
         return $updateDraft;
     }
