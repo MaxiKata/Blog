@@ -15,11 +15,15 @@ require_once('../View/layout.php'); ?>
     <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?> de <?= $u_username ?></h1>
+
     <div class="news">
         <p><a href="index.php?access=user!list">Retour à la liste des utilisateurs</a></p>
         <h3>
             Nom d'utilisateur <?= $u_username ?>
         </h3>
+        <p>
+            Cet utilisateur a posté <?= $comment[0]["COUNT(id)"]; ?> commentaire(s).
+        </p>
         <form action="<?= $directory ?>/index.php?access=user!update" method="post">
             <div>
 

@@ -189,6 +189,9 @@ class UserController
             $user = new UserManager();
             $useredit = $user->getUser($this->id);
 
+            $commentManager = new CommentManager();
+            $comment = $commentManager->countComments($useredit->getId());
+
             if($useredit->getId() == NULL){
                 header('Location:index.php?access=userlist&error=nouser');
             }

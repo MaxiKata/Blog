@@ -162,6 +162,16 @@ class CommentManager extends Manager
         return $update;
     }
 
+    public function countComments($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT COUNT(id) FROM comment WHERE User_id = ?');
+        $req->execute(array($userId));
+        $count = $req->fetchAll();
+
+        return $count;
+    }
+
     /**
      * @param $comments
      * @return array
@@ -180,4 +190,6 @@ class CommentManager extends Manager
 
         return $finalComments;
     }
+
+
 }
