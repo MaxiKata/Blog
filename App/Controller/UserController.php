@@ -38,6 +38,8 @@ class UserController
      */
     private $pass_hash;
 
+    private $statut;
+
     /**
      * @var
      */
@@ -223,26 +225,49 @@ class UserController
                     $oldpassword = htmlspecialchars($_POST['oldpassword'], ENT_QUOTES);
                     $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
                     $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
+                    $this->statut = empty(htmlspecialchars($_POST['statut'], ENT_QUOTES)) ? $getUser->getStatut() : htmlspecialchars($_POST['statut'], ENT_QUOTES);
 
                     if($_SESSION['Statut_id'] == 2){
                         if(isset($_POST['update'])){
-                            if(empty($password) || empty($confirmation)){
+                            if($_SESSION['id'] == $this->id){
+                                $countAdmin = $userManager->countAdmin();
+                                if($countAdmin[0]["COUNT(id)"] > 1){
+                                    if(empty($password) || empty($confirmation)){
+                                        $this->id = $getUser->getId();
+                                        $user = $this->setUser();
+                                        $userupdate = $userManager->easyUpdateUser($user);
 
+                                        header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                    }
+                                    elseif($password == $confirmation){
+                                        $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
+                                        $this->id = $getUser->getId();
+                                        $user = $this->setUser();
+                                        $userupdate = $userManager->hardUpdateUser($user);
+
+                                        header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                    }
+                                    else{
+                                        header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                                    }
+                                }
+                                else{
+                                    header("Location: index.php?access=user!profil&error=chooseadmin&userid=" . $this->id . "");
+                                }
+                            }
+                            elseif(empty($password) || empty($confirmation)){
                                 $this->id = $getUser->getId();
-
                                 $user = $this->setUser();
-
                                 $userupdate = $userManager->easyUpdateUser($user);
 
-                                header("Location:index.php?userid={$userupdate->getId()}&success=update&access=user!profil");
+                                header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
                             }
                             elseif($password == $confirmation){
                                 $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                 $this->id = $getUser->getId();
-
                                 $user = $this->setUser();
-
                                 $userupdate = $userManager->hardUpdateUser($user);
+
                                 header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
                             }
                             else{
@@ -274,7 +299,7 @@ class UserController
                             if(isset($_POST['update'])){
                                 if(empty($password) || empty($confirmation)){
                                     $this->id = $getUser->getId();
-
+                                    $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
 
                                     $userupdate = $userManager->easyUpdateUser($user);
@@ -289,7 +314,7 @@ class UserController
                                 elseif($password == $confirmation){
                                     $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                     $this->id = $getUser->getId();
-
+                                    $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
 
                                     $userupdate = $userManager->hardUpdateUser($user);
@@ -345,7 +370,8 @@ class UserController
             "Firstname" => $this->firstname,
             'Email' => $this->email,
             "Username" => $this->username,
-            "Password" => $this->pass_hash
+            "Password" => $this->pass_hash,
+            "Statut" => $this->statut
         );
 
         $user = new User();

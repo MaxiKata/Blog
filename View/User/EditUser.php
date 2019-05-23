@@ -1,6 +1,8 @@
 <?php
 
 $title = "Mettez à jour votre profil";
+$uid = htmlspecialchars($useredit->getId(), ENT_QUOTES);
+$u_statut = htmlspecialchars($useredit->getStatut(), ENT_QUOTES);
 $u_username = htmlspecialchars($useredit->getUsername(), ENT_QUOTES);
 $u_lastname = htmlspecialchars($useredit->getLastname(), ENT_QUOTES);
 $u_firstname = htmlspecialchars($useredit->getFirstname(), ENT_QUOTES);
@@ -48,6 +50,23 @@ require_once('../View/layout.php'); ?>
                 <label for="confirm_password">Confirmer nouveau votre mot de passe</label>
                 <input type="password" id="confirm_password" name="confirm_password"/>
             </div>
+            <?php
+            if(isset($_SESSION['Statut_id'])){
+                if($_SESSION['Statut_id'] == 2){ ?>
+                    <div>
+                        <select name="statut">
+                            <option value="1" <?php if($u_statut == 1): ?> selected="selected" <?php endif; ?>>User</option>
+                            <option value="2" <?php if($u_statut == 2): ?> selected="selected" <?php endif; ?>>Admin</option>
+                        </select>
+                    </div>
+                <?php }
+                else{ ?>
+                    <div>
+                        <input type="text" id="statut" name="statut" hidden value="<?= $u_statut ?>">
+                    </div>
+                <?php }
+            }
+             ?>
             <div>
                 <button type="submit" name="update">Mettre à jour</button>
             </div>
@@ -55,7 +74,7 @@ require_once('../View/layout.php'); ?>
                 <button type="submit" name="delete">Supprimer Utilisateur</button>
             </div>
             <div>
-                <input type="text" id="userId" name="userId" hidden value="<?= $useredit->getId(); ?>">
+                <input type="text" id="userId" name="userId" hidden value="<?= $uid ?>">
             </div>
         </form>
     </div>
