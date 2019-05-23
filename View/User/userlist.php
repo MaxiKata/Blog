@@ -28,5 +28,13 @@ require_once('../View/layout.php'); ?>
         </div>
         <?php
     }
+    for($i=1; $i<=$nbPage; $i++){
+        if($i==$page){
+            echo " $i ";
+        }
+        else{
+            echo " <a href=\"index.php?access=user!list&p=$i\">$i</a> ";
+        }
+    }
     ?>
 </body>

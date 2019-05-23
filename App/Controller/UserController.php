@@ -38,6 +38,9 @@ class UserController
      */
     private $pass_hash;
 
+    /**
+     * @var
+     */
     private $statut;
 
     /**
@@ -157,6 +160,7 @@ class UserController
         header("Location:index.php?success=logout&access=user");
     }
 
+
     /**
      *
      */
@@ -166,10 +170,21 @@ class UserController
 
         if(isset($_SESSION['Statut_id'])){
 
-            $user = new UserManager();
-            $users = $user->getUsers();
+            $userManager = new UserManager();
+            $countUsers = $userManager->countUsers();
 
-            require_once ('../View/User/userlist.php');
+            $nbUsers = $countUsers['nbUsers'];
+            $perPage = 10;
+            $nbPage = ceil($nbUsers/$perPage);
+
+            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
+                $page = $_GET['p'];
+                $this->getUsersPage($page, $perPage, $nbPage);
+            }
+            else{
+                $page = 1;
+                $this->getUsersPage($page, $perPage, $nbPage);
+            }
         }
         else{
             header('Location:index.php?error=accessdenied');
@@ -234,7 +249,7 @@ class UserController
                         if(isset($_POST['update'])){
                             if($_SESSION['id'] == $this->id){
                                 $countAdmin = $userManager->countAdmin();
-                                if($countAdmin[0]["COUNT(id)"] > 1){
+                                if($countAdmin["nbAdmins"] > 1){
                                     if(empty($password) || empty($confirmation)){
                                         $this->id = $getUser->getId();
                                         $user = $this->setUser();
@@ -280,7 +295,7 @@ class UserController
                         elseif(isset($_POST['delete'])){
                             if($_SESSION['id'] == $this->id){
                                 $countAdmin = $userManager->countAdmin();
-                                if($countAdmin[0]["COUNT(id)"] > 1){
+                                if($countAdmin["nbAdmins"] > 1){
                                     $this->autoDelete();
                                 }
                                 else{
@@ -486,5 +501,18 @@ class UserController
                 header("Location: index.php?access=user!list&error=userdeleted");
             }
         }
+    }
+
+    /**
+     * @param $page
+     * @param $perPage
+     * @param $nbPage
+     */
+    private function getUsersPage($page, $perPage, $nbPage)
+    {
+        $userManager = new UserManager();
+        $users = $userManager->getUsers($page, $perPage);
+
+        require_once ('../View/User/userlist.php');
     }
 }

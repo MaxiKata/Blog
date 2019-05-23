@@ -28,10 +28,10 @@ class UserManager extends Manager
     /**
      * @return array
      */
-    public function getUsers()
+    public function getUsers($page, $perPage)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT * FROM users ORDER BY nickname');
+        $req = $db->prepare("SELECT * FROM users ORDER BY nickname LIMIT ". (($page-1)*$perPage) .",$perPage");
         $req->execute();
         $getUsers = $req->fetchAll();
 
@@ -206,10 +206,22 @@ class UserManager extends Manager
     public function countAdmin()
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT COUNT(id) FROM users WHERE Statut_id = 2');
+        $req = $db->prepare('SELECT COUNT(id) AS nbAdmins FROM users WHERE Statut_id = 2');
         $req->execute();
-        $countAdmin = $req->fetchAll();
+        $countAdmin = $req->fetch();
         return $countAdmin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countUsers()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT COUNT(id) AS nbUsers FROM users');
+        $req->execute();
+        $countUsers = $req->fetch();
+        return $countUsers;
     }
 
     /**
