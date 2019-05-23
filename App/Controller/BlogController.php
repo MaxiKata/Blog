@@ -11,10 +11,22 @@ class BlogController
 
     public function indexAction()
     {
-            $postManager = new PostManager();
-            $posts = $postManager->getPosts();
+        $postManager = new PostManager();
+        $postStatut = 3;
+        $countPosts = $postManager->countPosts($postStatut);
 
-            require_once ('../View/Post/ListPost.php');
+        $nbArt = $countPosts['nbArt'];
+        $article = 5;
+        $nbPage = ceil($nbArt/$article);
+
+        if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
+            $page = $_GET['p'];
+            $this->getPostsPage($page, $article, $nbPage, $postStatut);
+        }
+        else{
+            $page = 1;
+            $this->getPostsPage($page, $article, $nbPage, $postStatut);
+        }
     }
 
     public function readAction()
@@ -120,9 +132,22 @@ class BlogController
         session_start();
         if($_SESSION['Statut_id'] == 2){
             $postManager = new PostManager();
-            $drafts = $postManager->getDrafts();
+            $draftStatut = 4;
 
-            require_once ('../View/Post/ListDraft.php');
+            $countPosts = $postManager->countPosts($draftStatut);
+
+            $nbArt = $countPosts['nbArt'];
+            $article = 5;
+            $nbPage = ceil($nbArt/$article);
+
+            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
+                $page = $_GET['p'];
+                $this->getPostsPage($page, $article, $nbPage, $draftStatut);
+            }
+            else{
+                $page = 1;
+                $this->getPostsPage($page, $article, $nbPage, $draftStatut);
+            }
         }
         else{
             header("Location: index.php?error=notallowed&access=blog");
@@ -189,7 +214,6 @@ class BlogController
         $update->setCategory(htmlspecialchars($_POST['category'], ENT_QUOTES));
         $update->setId(htmlspecialchars($_POST['id'], ENT_QUOTES));
         $update->setUid($_SESSION['id']);
-
 
         if($_SESSION['Statut_id'] == 2)
         {
@@ -262,6 +286,18 @@ class BlogController
         }
         else{
             header("Location: index.php?error=notallowed&access=blog");
+        }
+    }
+
+    private function getPostsPage($page, $article, $nbPage, $statut)
+    {
+        $postManager = new PostManager();
+        $posts = $postManager->countPostLimit($page, $article, $statut);
+        if($statut == 3){
+            require_once ('../View/Post/ListPost.php');
+        }
+        else{
+            require_once ('../View/Post/ListDraft.php');
         }
     }
 

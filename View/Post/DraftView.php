@@ -14,9 +14,9 @@ if(isset($_SESSION['Statut_id'])){
     <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1> <em>le <?= $d_dateUpd ?></em>
-    <p><a href="<?=  $directory ?>/Public/index.php?access=blog!draftlist">Retour à la liste des billets</a></p>
+    <p><a href="<?=  $directory ?>/index.php?access=blog!draftlist">Retour à la liste des billets</a></p>
 
-    <form action="<?= $directory ?>/Public/index.php?access=blog!updatearticle" method="post">
+    <form action="<?= $directory ?>/index.php?access=blog!updatearticle" method="post">
         <div>
             <label for="title">Titre de votre article</label>
             <textarea type="text" id="title" name="title"><?= $title ?></textarea>
