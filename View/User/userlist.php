@@ -14,7 +14,12 @@ require_once('../View/layout.php'); ?>
         ?>
         <div class="news">
             <h3>
-                <?= htmlspecialchars($user->getUsername()); ?>
+                <?php echo htmlspecialchars($user->getUsername(), ENT_QUOTES);
+                if($user->getStatut() == 1){ ?>
+                    - User <?php }
+                else{
+                    echo ' - Admin';
+                } ?>
             </h3>
 
             <p>
