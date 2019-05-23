@@ -16,7 +16,4 @@ RewriteBase /Blog/
 RewriteCond %{THE_REQUEST} /Public/([^\s?]*) [NC]
 RewriteRule ^ %1 [L,NE,R=302]
 
-RewriteRule ^((?!Public/).*)$ Public/$2 [L,NC]
-
-
-
+RewriteRule ^((?!Public/).*)$ Public/$1 [L,NC]
