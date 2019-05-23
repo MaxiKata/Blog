@@ -132,10 +132,11 @@ class UserManager extends Manager
         $firstname = $user->getFirstname();
         $email = $user->getEmail();
         $nickname = $user->getUsername();
+        $statut = $user->getStatut();
 
         $db = $this->dbConnect();
-        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ? WHERE id = ?');
-        $update->execute(array($lastname, $firstname, $email, $nickname, $userId));
+        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, Statut_id = ? WHERE id = ?');
+        $update->execute(array($lastname, $firstname, $email, $nickname, $statut, $userId));
 
         $newUser = self::getUser($userId);
 
@@ -154,10 +155,11 @@ class UserManager extends Manager
         $email = $user->getEmail();
         $nickname = $user->getUsername();
         $password = $user->getPassword();
+        $statut = $user->getStatut();
 
         $db = $this->dbConnect();
-        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, password = ? WHERE id = ?');
-        $update->execute(array($lastname, $firstname, $email, $nickname, $password, $userId));
+        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, password = ?, Statut_id = ? WHERE id = ?');
+        $update->execute(array($lastname, $firstname, $email, $nickname, $password, $statut, $userId));
 
         $newUser = self::getUser($userId);
         return $newUser;
