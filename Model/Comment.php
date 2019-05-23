@@ -149,6 +149,20 @@ class CommentManager extends Manager
     }
 
     /**
+     * @param $newEditorId
+     * @param $oldEditorId
+     * @return bool
+     */
+    public function updateEditorComments($newEditorId, $oldEditorId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('UPDATE comment SET UserId_edit = ? WHERE UserId_edit = ?');
+        $update = $req->execute(array($newEditorId, $oldEditorId));
+
+        return $update;
+    }
+
+    /**
      * @param $comments
      * @return array
      */
