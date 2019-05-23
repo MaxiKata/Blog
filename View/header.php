@@ -34,7 +34,7 @@
                 <?php
                  if(isset($_SESSION['Statut_id'])){ ?>
                      <li class="nav-item">
-                        <a class="nav-link" href="<?= $directory ?>/index.php?access=user!list">Liste Utilisateur</a>
+                        <a class="nav-link" href="<?= $directory ?>/index.php?access=user!list">Liste Utilisateurs</a>
                      </li>
                  <?php }
                 ?>
