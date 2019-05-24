@@ -88,6 +88,10 @@ class PostManager extends Manager
         return $updateDraft;
     }
 
+    /**
+     * @param $statut
+     * @return mixed
+     */
     public function countPosts($statut)
     {
         $db = $this->dbConnect();
@@ -98,6 +102,12 @@ class PostManager extends Manager
         return $nbArt;
     }
 
+    /**
+     * @param $page
+     * @param $article
+     * @param $statut
+     * @return array
+     */
     public function countPostLimit($page, $article, $statut)
     {
         $db = $this->dbConnect();

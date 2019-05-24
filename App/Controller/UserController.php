@@ -50,9 +50,6 @@ class UserController
      */
     private $properties;
 
-    /**
-     *
-     */
     public function indexAction()
     {
         $alert = $this->getAlert();
@@ -60,9 +57,6 @@ class UserController
         require_once('../View/User/Login.php');
     }
 
-    /**
-     *
-     */
     public function registerAction()
     {
         $alert = $this->getAlert();
@@ -115,9 +109,6 @@ class UserController
         }
     }
 
-    /**
-     *
-     */
     public function loginAction()
     {
         $alert = $this->getAlert();
@@ -158,9 +149,6 @@ class UserController
         }
     }
 
-    /**
-     *
-     */
     public function logoutAction()
     {
         $alert = $this->getAlert();
@@ -171,10 +159,6 @@ class UserController
         header("Location:index.php?success=logout&access=user");
     }
 
-
-    /**
-     *
-     */
     public function listAction()
     {
         $alert = $this->getAlert();
@@ -204,9 +188,6 @@ class UserController
         }
     }
 
-    /**
-     *
-     */
     public function profilAction()
     {
 
@@ -239,9 +220,6 @@ class UserController
         }
     }
 
-    /**
-     *
-     */
     public function updateAction()
     {
         $alert = $this->getAlert();
@@ -442,9 +420,6 @@ class UserController
         return $checkEmail;
     }
 
-    /**
-     *
-     */
     private function autoDelete()
     {
         $userManager = new UserManager();
@@ -484,9 +459,6 @@ class UserController
         }
     }
 
-    /**
-     *
-     */
     private function deleteUser()
     {
         $userManager = new UserManager();
@@ -534,6 +506,9 @@ class UserController
         require_once ('../View/User/userlist.php');
     }
 
+    /**
+     * @return mixed
+     */
     private function getAlert()
     {
         if(isset($_GET['success']) || isset($_GET['error'])){
