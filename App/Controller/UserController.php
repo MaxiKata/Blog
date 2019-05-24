@@ -54,7 +54,7 @@ class UserController
     {
         $alert = $this->getAlert();
 
-        require_once('../View/User/Login.php');
+        header("Location: index.php");
     }
 
     public function registerAction()
@@ -205,7 +205,7 @@ class UserController
             $comment = $commentManager->countComments($useredit->getId());
 
             if($useredit->getId() == NULL){
-                header('Location:index.php?access=userlist&error=noUser');
+                header('Location:index.php?access=user!list&error=noUser');
             }
             elseif($_SESSION['id'] == $useredit->getId() || $_SESSION['Statut_id'] == 2){
                 require_once ('../View/User/EditUser.php');
@@ -403,6 +403,8 @@ class UserController
      */
     private function checkUser($nickname)
     {
+        $alert = $this->getAlert();
+
         $user = new UserManager();
         $check = $user->getUsername($nickname);
 
@@ -415,6 +417,8 @@ class UserController
      */
     private function checkEmail($email)
     {
+        $alert = $this->getAlert();
+
         $user = new UserManager();
         $checkEmail = $user->getEmail($email);
         return $checkEmail;
@@ -422,6 +426,8 @@ class UserController
 
     private function autoDelete()
     {
+        $alert = $this->getAlert();
+
         $userManager = new UserManager();
 
         $getAdmins = $userManager->getAdmins($this->id);
@@ -461,6 +467,8 @@ class UserController
 
     private function deleteUser()
     {
+        $alert = $this->getAlert();
+
         $userManager = new UserManager();
         $getInformations = $userManager->getUsersArticle($this->id);
 
@@ -500,6 +508,8 @@ class UserController
      */
     private function getUsersPage($page, $perPage, $nbPage)
     {
+        $alert = $this->getAlert();
+
         $userManager = new UserManager();
         $users = $userManager->getUsers($page, $perPage);
 
