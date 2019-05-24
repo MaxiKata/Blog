@@ -309,6 +309,12 @@ class BlogController
         }
     }
 
+    /**
+     * @param $page
+     * @param $article
+     * @param $nbPage
+     * @param $statut
+     */
     private function getPostsPage($page, $article, $nbPage, $statut)
     {
         $postManager = new PostManager();
@@ -321,6 +327,9 @@ class BlogController
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function getAlert()
     {
         if(isset($_GET['success']) || isset($_GET['error'])){

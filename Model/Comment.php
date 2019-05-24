@@ -162,6 +162,10 @@ class CommentManager extends Manager
         return $update;
     }
 
+    /**
+     * @param $userId
+     * @return array
+     */
     public function countComments($userId)
     {
         $db = $this->dbConnect();

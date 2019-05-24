@@ -49,11 +49,7 @@ class HomeController
 
                     return $errorAlert;
                 }
-
             }
-
-
-
         }
     }
 }

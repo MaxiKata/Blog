@@ -12,6 +12,9 @@ use Model\PostManager;
 
 class CommentController
 {
+    /**
+     *
+     */
     public function indexAction()
     {
         $alert = $this->getAlert();
@@ -19,6 +22,9 @@ class CommentController
         header("Location: index.php?access=blog");
     }
 
+    /**
+     *
+     */
     public function publishAction()
     {
         $alert = $this->getAlert();
@@ -64,6 +70,9 @@ class CommentController
 
     }
 
+    /**
+     *
+     */
     public function modifyAction()
     {
         $alert = $this->getAlert();
@@ -95,6 +104,9 @@ class CommentController
         }
     }
 
+    /**
+     *
+     */
     public function updateAction()
     {
         $alert = $this->getAlert();
@@ -149,6 +161,9 @@ class CommentController
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function getAlert()
     {
         if(isset($_GET['success']) || isset($_GET['error'])){
