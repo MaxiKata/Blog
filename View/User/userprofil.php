@@ -14,6 +14,8 @@ require_once('../View/layout.php'); ?>
         </h3>
         <p>
             Cet utilisateur a posté <?= $comment[0]["COUNT(id)"]; ?> commentaire(s).
+
+            <?= $alert; ?>
         </p>
     </div>
 

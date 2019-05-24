@@ -16,7 +16,7 @@ if(isset($_SESSION['Statut_id'])){
         <?php require ('../View/header.php'); ?>
 
         <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
-
+        <?= $alert; ?>
         <form action="<?= $directory ?>/index.php?access=comment!update" method="post">
             <div>
                 <label for="content"><?= $title ?></label>

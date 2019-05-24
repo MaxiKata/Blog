@@ -15,7 +15,7 @@ if(isset($_SESSION['Statut_id'])){
 
     <h1><?= $title ?></h1> <em>le <?= $d_dateUpd ?></em>
     <p><a href="<?=  $directory ?>/index.php?access=blog!draftlist">Retour à la liste des billets</a></p>
-
+    <?= $alert; ?>
     <form action="<?= $directory ?>/index.php?access=blog!updatearticle" method="post">
         <div>
             <label for="title">Titre de votre article</label>

@@ -11,7 +11,7 @@ if(isset($_SESSION['Statut_id'])){
     <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1>
-
+    <?= $alert; ?>
     <form action="<?= $directory ?>/index.php?access=blog!newarticle" method="post">
         <div>
             <label for="title">Titre de votre article</label>
