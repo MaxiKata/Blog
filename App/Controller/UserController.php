@@ -2,6 +2,8 @@
 
 namespace Blog\App\Controller;
 
+use Blog\App\Alerts\Error;
+use Blog\App\Alerts\Success;
 use Blog\App\Entity\User;
 use Model\CommentManager;
 use Model\PostManager;
@@ -53,6 +55,8 @@ class UserController
      */
     public function indexAction()
     {
+        $alert = $this->getAlert();
+
         require_once('../View/User/Login.php');
     }
 
@@ -61,6 +65,8 @@ class UserController
      */
     public function registerAction()
     {
+        $alert = $this->getAlert();
+
         $this->lastname = htmlspecialchars($_POST['lastname'], ENT_QUOTES);
         $this->firstname = htmlspecialchars($_POST['firstname'], ENT_QUOTES);
         $this->email = htmlspecialchars($_POST['email'], ENT_QUOTES);
@@ -69,32 +75,33 @@ class UserController
         $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
-            header("Location:index.php?error=emptyfields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");
+
+            header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");
             exit();
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
-            header("Location:index.php?error=invalidemailusername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user");
+            header("Location:index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user");
             exit();
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
-            header("Location:index.php?error=invalidemail&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
+            header("Location:index.php?error=invalidEmail&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
             exit();
         }
         elseif(!preg_match("/^[a-zA-Z0-9]*$/", $this->username)){
-            header("Location:index.php?error=invalidusername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
+            header("Location:index.php?error=invalidUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
             exit();
         }
         elseif($password !== $confirmation){
-            header("Location:index.php?error=passwordcheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user");
+            header("Location:index.php?error=passwordCheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user");
             exit();
         }
 
         elseif(!empty(self::checkUser($this->username))){
-            header("Location:index.php?error=usernametaken&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
+            header("Location:index.php?error=usernameTaken&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
             exit();
         }
         elseif(!empty(self::checkEmail($this->email))){
-            header("Location:index.php?error=emailused&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
+            header("Location:index.php?error=emailUsed&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
             exit();
         }
         else{
@@ -113,11 +120,13 @@ class UserController
      */
     public function loginAction()
     {
+        $alert = $this->getAlert();
+
         $usernamemail = htmlspecialchars($_POST['usernamemail'], ENT_QUOTES);
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
         if(empty($usernamemail) || empty($password)){
-            header("Location:index.php?error=emptyfields&username=" . $usernamemail . "&access=user");
+            header("Location:index.php?error=emptyFields&username=" . $usernamemail . "&access=user");
             exit();
         }
         else{
@@ -125,7 +134,7 @@ class UserController
             $user = $userManager->getInformation($usernamemail, $usernamemail);
 
             if(empty($user->getUsername()) || empty($user->getEmail())){
-                header("Location:index.php?error=nouser&access=user");
+                header("Location:index.php?error=noUser&access=user");
             }
             else{
                 $pass_check = password_verify($password, $user->getPassword());
@@ -142,7 +151,7 @@ class UserController
                     exit();
                 }
                 else{
-                    header("Location:index.php?error=wrongpassword&username=" . $usernamemail . "&access=user");
+                    header("Location:index.php?error=wrongPassword&username=" . $usernamemail . "&access=user");
                     exit();
                 }
             }
@@ -154,6 +163,8 @@ class UserController
      */
     public function logoutAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         session_unset();
         session_destroy();
@@ -166,6 +177,8 @@ class UserController
      */
     public function listAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
 
         if(isset($_SESSION['Statut_id'])){
@@ -187,7 +200,7 @@ class UserController
             }
         }
         else{
-            header('Location:index.php?error=accessdenied');
+            header('Location:index.php?error=notAllowed');
         }
     }
 
@@ -196,6 +209,9 @@ class UserController
      */
     public function profilAction()
     {
+
+        $alert = $this->getAlert();
+
         session_start();
 
         if(isset($_SESSION['Statut_id']) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
@@ -208,7 +224,7 @@ class UserController
             $comment = $commentManager->countComments($useredit->getId());
 
             if($useredit->getId() == NULL){
-                header('Location:index.php?access=userlist&error=nouser');
+                header('Location:index.php?access=userlist&error=noUser');
             }
             elseif($_SESSION['id'] == $useredit->getId() || $_SESSION['Statut_id'] == 2){
                 require_once ('../View/User/EditUser.php');
@@ -219,7 +235,7 @@ class UserController
 
         }
         else{
-            header('Location:index.php?error=accessdenied');
+            header('Location:index.php?error=notAllowed');
         }
     }
 
@@ -228,6 +244,8 @@ class UserController
      */
     public function updateAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
@@ -266,11 +284,11 @@ class UserController
                                         header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
                                     }
                                     else{
-                                        header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                                        header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
                                     }
                                 }
                                 else{
-                                    header("Location: index.php?access=user!profil&error=chooseadmin&userid=" . $this->id . "");
+                                    header("Location: index.php?access=user!profil&error=chooseAdmin&userid=" . $this->id . "");
                                 }
                             }
                             elseif(empty($password) || empty($confirmation)){
@@ -289,7 +307,7 @@ class UserController
                                 header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
                             }
                             else{
-                                header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                                header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
                             }
                         }
                         elseif(isset($_POST['delete'])){
@@ -299,7 +317,7 @@ class UserController
                                     $this->autoDelete();
                                 }
                                 else{
-                                    header("Location: index.php?access=user!profil&error=chooseadmin&userid=" . $this->id . "");
+                                    header("Location: index.php?access=user!profil&error=chooseAdmin&userid=" . $this->id . "");
                                 }
                             }
                             else{
@@ -308,7 +326,7 @@ class UserController
 
                         }
                         else{
-                            header("Location:index.php?userid=". $getUser->getId() ."&error=actiondenied&access=user!profil");
+                            header("Location:index.php?userid=". $getUser->getId() ."&error=notAllowed&access=user!profil");
                         }
                     }
                     elseif(!empty($oldpassword)){
@@ -347,34 +365,34 @@ class UserController
                                     header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
                                 }
                                 else{
-                                    header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpasswords&access=user!profil");
+                                    header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
                                 }
                             }
                             elseif(isset($_POST['delete'])){
                                 $this->autoDelete();
                             }
                             else{
-                                header("Location:index.php?userid=". $getUser->getId() ."&error=actiondenied&access=user!profil");
+                                header("Location:index.php?userid=". $getUser->getId() ."&error=notAllowed&access=user!profil");
                             }
                         }
                         else{
-                            header("Location:index.php?userid=". $getUser->getId() ."&error=wrongpassword&access=user!profil");
+                            header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPassword&access=user!profil");
                         }
                     }
                     else{
-                        header("Location:index.php?userid=". $getUser->getId() ."&error=passwordempty&access=user!profil");
+                        header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPassword&access=user!profil");
                     }
                 }
                 else{
-                    header("Location:index.php?userid=". $getUser->getId() . "&error=wrongstatut&access=user!list");
+                    header("Location:index.php?userid=". $getUser->getId() . "&error=notAllowed&access=user!list");
                 }
             }
             else{
-                header("Location:index.php?error=nouser&access=user!list");
+                header("Location:index.php?error=noUser&access=user!list");
             }
         }
         else{
-            header("Location:index.php?error=denied&access=user!list");
+            header("Location:index.php?error=notAllowed&access=user!list");
         }
     }
 
@@ -447,10 +465,10 @@ class UserController
 
             if($deleteUser == true){
                 $this->logoutAction();
-                header("Location: index.php?success=userdeleted");
+                header("Location: index.php?success=userDeleted");
             }
             else{
-                header("Location: index.php?access=user!list&error=userdeleted");
+                header("Location: index.php?access=user!list&error=userDeleted");
             }
         }
         else{
@@ -458,10 +476,10 @@ class UserController
 
             if($deleteUser == true){
                 $this->logoutAction();
-                header("Location: index.php?success=userdeleted");
+                header("Location: index.php?success=userDeleted");
             }
             else{
-                header("Location: index.php?access=user!list&error=userdeleted");
+                header("Location: index.php?access=user!list&error=userDeleted");
             }
         }
     }
@@ -485,20 +503,20 @@ class UserController
             $deleteUser = $userManager->deleteUser($this->id);
 
             if($deleteUser == true){
-                header("Location: index.php?access=user!list&success=userdeleted");
+                header("Location: index.php?access=user!list&success=userDeleted");
             }
             else{
-                header("Location: index.php?access=user!list&error=userdeleted");
+                header("Location: index.php?access=user!list&error=userDeleted");
             }
         }
         else{
             $deleteUser = $userManager->deleteUser($this->id);
 
             if($deleteUser == true){
-                header("Location: index.php?access=user!list&success=userdeleted");
+                header("Location: index.php?access=user!list&success=userDeleted");
             }
             else{
-                header("Location: index.php?access=user!list&error=userdeleted");
+                header("Location: index.php?access=user!list&error=userDeleted");
             }
         }
     }
@@ -514,5 +532,48 @@ class UserController
         $users = $userManager->getUsers($page, $perPage);
 
         require_once ('../View/User/userlist.php');
+    }
+
+    private function getAlert()
+    {
+        if(isset($_GET['success']) || isset($_GET['error'])){
+            if(isset($_GET['success'])){
+                $success = new Success();
+                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
+
+                if(method_exists($success, $function) == true){
+                    $successAlert = $success->$function();
+
+                    return $successAlert;
+                }
+                else{
+                    $error = new Error();
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+            else{
+                $error = new Error();
+                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
+
+                if(method_exists($error, $function) == true){
+                    $errorAlert = $error->$function();
+                    return $errorAlert;
+                }
+                else{
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+
+
+
+        }
     }
 }

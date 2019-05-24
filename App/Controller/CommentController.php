@@ -4,6 +4,8 @@
 namespace Blog\App\Controller;
 
 
+use Blog\App\Alerts\Error;
+use Blog\App\Alerts\Success;
 use Blog\App\Entity\Comment;
 use Model\CommentManager;
 use Model\PostManager;
@@ -12,11 +14,15 @@ class CommentController
 {
     public function indexAction()
     {
+        $alert = $this->getAlert();
+
         header("Location: index.php?access=blog");
     }
 
     public function publishAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         if(isset($_SESSION['id']) && isset($_POST['publish'])){
             $comment = new Comment();
@@ -34,32 +40,34 @@ class CommentController
                         $result = $publishCom->publishComment($comment);
 
                         if($result == true){
-                            header("Location: index.php?success=commentpublish&id=" . $post->getId() . "&access=blog!read");
+                            header("Location: index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read");
                         }
                         else{
-                            header("Location: index.php?error=commentpublish&id=" . $post->getId() . "&access=blog!read");
+                            header("Location: index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read");
                         }
                     }
                     else{
-                        header("Location: index.php?error=empty&id=" . $post->getId() . "&access=blog!read");
+                        header("Location: index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read");
                     }
                 }
                 else{
-                    header("Location: index.php?error=notallowed&access=blog");
+                    header("Location: index.php?error=notAllowed&access=blog");
                 }
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=commentnotallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
 
     }
 
     public function modifyAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         $id = htmlspecialchars($_GET['id'], ENT_QUOTES);
         $commentId = htmlspecialchars($_GET['commentid'], ENT_QUOTES);
@@ -79,16 +87,18 @@ class CommentController
                 require_once('../View/Comment/editComment.php');
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
     public function updateAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         $comment = new Comment();
         $comment->setPostId(htmlspecialchars($_POST['p_Id'], ENT_QUOTES));
@@ -106,36 +116,79 @@ class CommentController
                     if(isset($_POST['updatecomment'])){
                         $updateComment = $commentManager->updateComment($comment);
                          if($updateComment == true){
-                             header("Location: index.php?success=updatecomment&id=" . $verifyComment->getPostId() . "&access=blog!read");
+                             header("Location: index.php?success=commentUpdate&id=" . $verifyComment->getPostId() . "&access=blog!read");
                          }
                          else{
-                             header("Location: index.php?error=updatecomment&access=blog");
+                             header("Location: index.php?error=commentUpdate&access=blog");
                          }
                     }
                     elseif(isset($_POST['deletecomment'])){
                         $deleteComment = $commentManager->deleteComment($comment->getId());
                         if($deleteComment == true){
-                            header("Location: index.php?success=deletecomment&id=" . $verifyComment->getPostId() . "&access=blog!read");
+                            header("Location: index.php?success=commentDelete&id=" . $verifyComment->getPostId() . "&access=blog!read");
                         }
                         else{
-                            header("Location: index.php?error=deletecomment&access=blog");
+                            header("Location: index.php?error=commentDelete&access=blog");
                         }
 
                     }
                     else{
-                        header("Location: index.php?error=notallowed&access=blog");
+                        header("Location: index.php?error=notAllowed&access=blog");
                     }
                 }
                 else{
-                    header("Location: index.php?error=notallowed&access=blog");
+                    header("Location: index.php?error=notAllowed&access=blog");
                 }
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
+        }
+    }
+
+    private function getAlert()
+    {
+        if(isset($_GET['success']) || isset($_GET['error'])){
+            if(isset($_GET['success'])){
+                $success = new Success();
+                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
+
+                if(method_exists($success, $function) == true){
+                    $successAlert = $success->$function();
+
+                    return $successAlert;
+                }
+                else{
+                    $error = new Error();
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+            else{
+                $error = new Error();
+                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
+
+                if(method_exists($error, $function) == true){
+                    $errorAlert = $error->$function();
+                    return $errorAlert;
+                }
+                else{
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+
+
+
         }
     }
 }
