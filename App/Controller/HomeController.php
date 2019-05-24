@@ -7,6 +7,8 @@ class HomeController
 {
     public function indexAction()
     {
+        $alert = $this->getAlert();
+
         require_once('../View/home.php');
     }
 }

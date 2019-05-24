@@ -2,6 +2,8 @@
 
 namespace Blog\App\Controller;
 
+use Blog\App\Alerts\Error;
+use Blog\App\Alerts\Success;
 use Blog\App\Entity\Article;
 use Model\CommentManager;
 use Model\PostManager;
@@ -11,6 +13,8 @@ class BlogController
 
     public function indexAction()
     {
+        $alert = $this->getAlert();
+
         $postManager = new PostManager();
         $postStatut = 3;
         $countPosts = $postManager->countPosts($postStatut);
@@ -31,6 +35,7 @@ class BlogController
 
     public function readAction()
     {
+        $alert = $this->getAlert();
 
         if($_GET['access'] == 'blog!read'){
             if(isset($_GET['id']) && $_GET['id']>0 && is_numeric($_GET['id'])){
@@ -56,17 +61,21 @@ class BlogController
 
     public function newpostAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         if($_SESSION['Statut_id'] == 2){
             require_once('../View/Post/NewPost.php');
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
     public function newarticleAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         $titlePost = htmlspecialchars($_POST['title'], ENT_QUOTES);
         $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
@@ -86,10 +95,10 @@ class BlogController
                     $newpost = $postManager->postNewPost($post);
 
                     if($newpost == true){
-                        header("Location: index.php?success=newpost&access=blog");
+                        header("Location: index.php?success=newPost&access=blog");
                     }
                     else{
-                        header("Location: index.php?error=newpost&access=blog!newpost");
+                        header("Location: index.php?error=newPost&access=blog!newpost");
                     }
                 }
                 else{
@@ -108,10 +117,10 @@ class BlogController
                     $newdraft = $postManager->postNewDraft($draft);
 
                     if($newdraft == true){
-                        header("Location: index.php?success=newdraft&access=blog!draftlist");
+                        header("Location: index.php?success=newDraft&access=blog!draftlist");
                     }
                     else{
-                        header("Location: index.php?error=newdraft&access=blog!newpost");
+                        header("Location: index.php?error=newDraft&access=blog!newpost");
                     }
                 }
                 else{
@@ -119,16 +128,18 @@ class BlogController
                 }
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog!newpost");
+                header("Location: index.php?error=notAllowed&access=blog!newpost");
             }
         }
         else{
-            header("Location: index.php?error=notallowed");
+            header("Location: index.php?error=notAllowed");
         }
     }
 
     public function draftlistAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         if($_SESSION['Statut_id'] == 2){
             $postManager = new PostManager();
@@ -150,12 +161,14 @@ class BlogController
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
     public function modifypostAction()
     {
+        $alert = $this->getAlert();
+
         if(isset($_GET['id'])){
             $postId = htmlspecialchars($_GET['id'],ENT_QUOTES);
             session_start();
@@ -167,20 +180,22 @@ class BlogController
                     require_once ('../View/Post/EditPost.php');
                 }
                 else{
-                    header("Location: index.php?error=nopost&access=blog");
+                    header("Location: index.php?error=noPost&access=blog");
                 }
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
     public function draftAction()
     {
+        $alert = $this->getAlert();
+
         if(isset($_GET['id'])){
             $draftId = htmlspecialchars($_GET['id'],ENT_QUOTES);
             session_start();
@@ -192,21 +207,23 @@ class BlogController
                     require_once ('../View/Post/DraftView.php');
                 }
                 else{
-                    header("Location: index.php?error=nodraft&access=blog");
+                    header("Location: index.php?error=noDraft&access=blog");
                 }
 
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
     public function updatearticleAction()
     {
+        $alert = $this->getAlert();
+
         session_start();
         $update = new Article();
         $update->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES));
@@ -226,7 +243,10 @@ class BlogController
                         if($updateArticle == true){
 
                             $newArticle = $getArticle->getPost($update->getId());
-                            header("Location: index.php?success=updatedraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
+                            header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
+                        }
+                        else{
+                            header("Location: index.php?error=notAllowed&access=blog");
                         }
                     }
                     elseif(isset($_POST['publish'])){
@@ -235,10 +255,10 @@ class BlogController
                         if($updateArticle == true){
 
                             $newArticle = $getArticle->getPost($update->getId());
-                            header("Location: index.php?success=updatepost&id=" . $newArticle->getId() . "&access=blog!read");
+                            header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
                         }
                         else{
-                            header("Location: index.php?error=notallowed&access=blog");
+                            header("Location: index.php?error=notAllowed&access=blog");
                         }
                     }
                     elseif(isset($_POST['deletearticle'])){
@@ -252,40 +272,40 @@ class BlogController
                             if($result == true){
                                 $deleteArticle = $getArticle->deleteArticle($update->getId());
                                 if($deleteArticle == true){
-                                    header("Location: index.php?success=deletearticle&access=blog");
+                                    header("Location: index.php?success=articleDelete&access=blog");
                                 }
                                 else{
-                                    header("Location: index.php?error=deletearticle&access=blog");
+                                    header("Location: index.php?error=articleDelete&access=blog");
                                 }
                             }
                             else{
-                                header("Location: index.php?error=deletecomment&access=blog");
+                                header("Location: index.php?error=commentDelete&access=blog");
                             }
                         }
                         else{
                             $deleteArticle = $getArticle->deleteArticle($update->getId());
                             if($deleteArticle == true){
-                                header("Location: index.php?success=deletearticle&access=blog");
+                                header("Location: index.php?success=articleDelete&access=blog");
                             }
                             else{
-                                header("Location: index.php?error=deletearticle&access=blog");
+                                header("Location: index.php?error=articleDelete&access=blog");
                             }
                         }
                     }
                     else{
-                        header("Location: index.php?error=notallowed&access=blog!draftlist");
+                        header("Location: index.php?error=notAllowed&access=blog!draftlist");
                     }
                 }
                 else{
-                    header("Location: index.php?error=nodraft&access=blog!draftlist");
+                    header("Location: index.php?error=noDraft&access=blog!draftlist");
                 }
             }
             else{
-                header("Location: index.php?error=notallowed&access=blog");
+                header("Location: index.php?error=notAllowed&access=blog");
             }
         }
         else{
-            header("Location: index.php?error=notallowed&access=blog");
+            header("Location: index.php?error=notAllowed&access=blog");
         }
     }
 
@@ -298,6 +318,49 @@ class BlogController
         }
         else{
             require_once ('../View/Post/ListDraft.php');
+        }
+    }
+
+    private function getAlert()
+    {
+        if(isset($_GET['success']) || isset($_GET['error'])){
+            if(isset($_GET['success'])){
+                $success = new Success();
+                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
+
+                if(method_exists($success, $function) == true){
+                    $successAlert = $success->$function();
+
+                    return $successAlert;
+                }
+                else{
+                    $error = new Error();
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+            else{
+                $error = new Error();
+                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
+
+                if(method_exists($error, $function) == true){
+                    $errorAlert = $error->$function();
+                    return $errorAlert;
+                }
+                else{
+                    $function = "notAllowed";
+                    $errorAlert = $error->$function();
+
+                    return $errorAlert;
+                }
+
+            }
+
+
+
         }
     }
 
