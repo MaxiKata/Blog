@@ -14,6 +14,7 @@ require_once('../View/layout.php'); ?>
     <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1>
+    <?= $alert; ?>
     <p><a href="<?= $directory ?>/index.php?access=blog">Retour à la liste des billets</a></p>
     <?php
         if(isset($_SESSION['Statut_id']) && $_SESSION['Statut_id'] == 2){ ?>

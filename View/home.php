@@ -10,7 +10,7 @@ require_once('../View/layout.php'); ?>
     <div class="cover">
         <img src="../Blog/Public/img/slide2.jpg" alt="Cover picture"  />
     </div>
-
+    <?= $alert; ?>
     <?php
     echo '<i>Vous êtes ici : </i><a href ="index.php">Index du forum</a>';
     ?>

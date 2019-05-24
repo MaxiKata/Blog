@@ -12,11 +12,14 @@ require_once('../View/layout.php'); ?>
 
 <?php
 if(isset($_SESSION['id'])){
+    echo $alert;
     echo 'Bienvenue ' . $_SESSION['nickname'];
     echo '<form action="' . $directory . '/index.php?access=user!logout" method="post"><button type="submit" name="logout">Se déconnecter</button></form>';
 
 }
-else{ ?>
+else{
+    echo $alert; ?>
+
     <h2>Inscription</h2>
     <form action="<?= $directory ?>/index.php?access=user!register" method="post">
         <div>

@@ -24,6 +24,7 @@ require_once('../View/layout.php'); ?>
         <p>
             Cet utilisateur a posté <?= $comment[0]["COUNT(id)"]; ?> commentaire(s).
         </p>
+        <?= $alert; ?>
         <form action="<?= $directory ?>/index.php?access=user!update" method="post">
             <div>
 

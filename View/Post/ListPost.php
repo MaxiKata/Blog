@@ -7,7 +7,7 @@ require_once('../View/layout.php'); ?>
     <?php require ('../View/header.php'); ?>
 
     <h1><?= $title ?></h1>
-
+    <?= $alert; ?>
     <?php
     foreach($posts as $data)
     {

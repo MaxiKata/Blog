@@ -8,6 +8,8 @@ require_once('../View/layout.php'); ?>
 
     <h1><?= $title ?></h1>
 
+    <?= $alert; ?>
+
     <?php
     foreach($users as $user)
     {
