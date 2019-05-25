@@ -5,12 +5,16 @@ namespace Blog\App\Controller;
 
 use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
+use Model\PostManager;
 
 class HomeController
 {
     public function indexAction()
     {
         $alert = $this->getAlert();
+
+        $postManager = new PostManager();
+        $categories = $postManager->getCategories();
 
         require_once('../View/home.php');
     }

@@ -28,9 +28,6 @@
                         <?php }
                     } ?>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?access=user">Se Connecter / S'inscrire</a>
-                </li>
                 <?php
                  if(isset($_SESSION['Statut_id'])){ ?>
                      <li class="nav-item">
@@ -39,10 +36,25 @@
                  <?php }
                 ?>
             </ul>
+            <div class="col-3 d-flex">
+                <?php
+                if(isset($_SESSION['id'])){ ?>
+                    <div class="ml-auto">Bienvenue <?= $_SESSION['nickname'] ?></div>
+                    <form class="ml-2" action="<?= $directory ?>/index.php?access=user!logout" method="post"><button type="submit" name="logout">Se déconnecter</button></form>
+                <?php }
+                else{ ?>
+                    <a class="ml-auto" href="<?=  $directory ?>/index.php?access=user"><button>Se Connecter / S'inscrire</button></a>
+                <?php }
+                    ?>
+
+            </div>
+
+            <!--
             <form class="form-inline my-2 mr-0 px-0 my-lg-0 col-6 col-lg-3 row">
                 <input class="form-control col-6 mr-1" type="search" placeholder="Rechercher" aria-label="Rechercher" />
                 <button class="btn btn-outline-success my-2 my-sm-0 col-5 px-1 h-100" type="submit">Rechercher</button>
             </form>
+            -->
         </div>
 
     </nav>

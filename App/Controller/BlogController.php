@@ -13,8 +13,6 @@ class BlogController
 
     public function indexAction()
     {
-        $alert = $this->getAlert();
-
         $postManager = new PostManager();
         $postStatut = 3;
         $countPosts = $postManager->countPosts($postStatut);
@@ -309,6 +307,45 @@ class BlogController
         }
     }
 
+    public function categoryAction(){
+        $alert = $this->getAlert();
+
+        $category = htmlspecialchars($_GET['category']);
+
+        $postManager = new PostManager();
+        $getArticleCategory = $postManager->getArticleCategory($category);
+
+        if(!empty($getArticleCategory['nbArt']))
+        {
+            $categories = $postManager->getCategories();
+
+            $postStatut = 3;
+            $nbArt = $getArticleCategory['nbArt'];
+            $article = 5;
+            $nbPage = ceil($nbArt/$article);
+
+            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
+                $page = $_GET['p'];
+                $posts = $postManager->getCategory($page, $article, $category);
+
+                require_once ('../View/Post/ListPost.php');
+            }
+            else{
+
+                $page = 1;
+                $posts = $postManager->getCategory($page, $article, $category);
+
+                require_once ('../View/Post/ListPost.php');
+            }
+        }
+        else{
+
+            header("Location: index.php?access=blog&error=notAllowed");
+        }
+
+
+    }
+
     /**
      * @param $page
      * @param $article
@@ -317,7 +354,11 @@ class BlogController
      */
     private function getPostsPage($page, $article, $nbPage, $statut)
     {
+        $alert = $this->getAlert();
+
         $postManager = new PostManager();
+        $categories = $postManager->getCategories();
+
         $posts = $postManager->countPostLimit($page, $article, $statut);
         if($statut == 3){
             require_once ('../View/Post/ListPost.php');
@@ -325,6 +366,7 @@ class BlogController
         else{
             require_once ('../View/Post/ListDraft.php');
         }
+
     }
 
     /**
