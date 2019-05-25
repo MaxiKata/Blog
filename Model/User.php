@@ -241,6 +241,21 @@ class UserManager extends Manager
     }
 
     /**
+     * @param User $user
+     * @return array
+     */
+    public function checkUser(User $user)
+    {
+
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT nickname, email FROM users WHERE NOT id = ?");
+        $req->execute(array($user->getId()));
+        $checkUser = $req->fetchAll();
+
+        return $checkUser;
+    }
+
+    /**
      * @param $user
      * @return User
      */

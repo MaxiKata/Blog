@@ -249,17 +249,28 @@ class UserController
                                     if(empty($password) || empty($confirmation)){
                                         $this->id = $getUser->getId();
                                         $user = $this->setUser();
-                                        $userupdate = $userManager->easyUpdateUser($user);
-
-                                        header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                        $controlUser = $this->controlUser($user);
+                                        if($controlUser == true){
+                                            $userupdate = $userManager->easyUpdateUser($user);
+                                            header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                        }
+                                        else{
+                                            header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                                        }
                                     }
                                     elseif($password == $confirmation){
                                         $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                         $this->id = $getUser->getId();
                                         $user = $this->setUser();
-                                        $userupdate = $userManager->hardUpdateUser($user);
+                                        $controlUser = $this->controlUser($user);
 
-                                        header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                        if($controlUser == true){
+                                            $userupdate = $userManager->hardUpdateUser($user);
+                                            header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                        }
+                                        else{
+                                            header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                                        }
                                     }
                                     else{
                                         header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
@@ -272,17 +283,30 @@ class UserController
                             elseif(empty($password) || empty($confirmation)){
                                 $this->id = $getUser->getId();
                                 $user = $this->setUser();
-                                $userupdate = $userManager->easyUpdateUser($user);
+                                $controlUser = $this->controlUser($user);
 
-                                header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                if($controlUser == true){
+                                    $userupdate = $userManager->easyUpdateUser($user);
+                                    header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                }
+                                else{
+                                    header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                                }
+
                             }
                             elseif($password == $confirmation){
                                 $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                 $this->id = $getUser->getId();
                                 $user = $this->setUser();
-                                $userupdate = $userManager->hardUpdateUser($user);
+                               $controlUser = $this->controlUser($user);
 
-                                header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                               if($controlUser == true){
+                                   $userupdate = $userManager->hardUpdateUser($user);
+                                   header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                               }
+                               else{
+                                   header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                               }
                             }
                             else{
                                 header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
@@ -315,32 +339,46 @@ class UserController
                                     $this->id = $getUser->getId();
                                     $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
+                                    $controlUser = $this->controlUser($user);
 
-                                    $userupdate = $userManager->easyUpdateUser($user);
-                                    session_start();
-                                    $_SESSION['nickname'] = $userupdate->getUsername();
-                                    $_SESSION['firstname'] = $userupdate->getFirstname();
-                                    $_SESSION['lastname'] = $userupdate->getLastname();
-                                    $_SESSION['email'] = $userupdate->getEmail();
+                                    if($controlUser == true){
 
-                                    header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                        $userupdate = $userManager->easyUpdateUser($user);
+                                        session_start();
+                                        $_SESSION['nickname'] = $userupdate->getUsername();
+                                        $_SESSION['firstname'] = $userupdate->getFirstname();
+                                        $_SESSION['lastname'] = $userupdate->getLastname();
+                                        $_SESSION['email'] = $userupdate->getEmail();
+
+                                        header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                    }
+                                    else{
+                                        header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                                    }
                                 }
                                 elseif($password == $confirmation){
                                     $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                     $this->id = $getUser->getId();
                                     $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
+                                    $controlUser = $this->controlUser($user);
 
-                                    $userupdate = $userManager->hardUpdateUser($user);
-                                    session_start();
-                                    $_SESSION['id'] = $userupdate->getId();
-                                    $_SESSION['nickname'] = $userupdate->getUsername();
-                                    $_SESSION['firstname'] = $userupdate->getFirstname();
-                                    $_SESSION['lastname'] = $userupdate->getLastname();
-                                    $_SESSION['email'] = $userupdate->getEmail();
-                                    $_SESSION['Statut_id'] = $userupdate->getStatut();
+                                    if($controlUser == true){
 
-                                    header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                        $userupdate = $userManager->hardUpdateUser($user);
+                                        session_start();
+                                        $_SESSION['id'] = $userupdate->getId();
+                                        $_SESSION['nickname'] = $userupdate->getUsername();
+                                        $_SESSION['firstname'] = $userupdate->getFirstname();
+                                        $_SESSION['lastname'] = $userupdate->getLastname();
+                                        $_SESSION['email'] = $userupdate->getEmail();
+                                        $_SESSION['Statut_id'] = $userupdate->getStatut();
+
+                                        header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                    }
+                                    else{
+                                        header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
+                                    }
                                 }
                                 else{
                                     header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
@@ -397,6 +435,32 @@ class UserController
         return $user;
     }
 
+    /**
+     * @param $user
+     * @return bool
+     */
+    private function controlUser($user)
+    {
+        $userManager = new UserManager();
+        $checkUsers = $userManager->checkUser($user);
+
+        foreach($checkUsers as $checkUser){
+            if(in_array($user->getUsername(), $checkUser)){
+                $result = false;
+                break;
+            }
+            elseif(in_array($user->getEmail(), $checkUser)){
+                $result = false;
+                break;
+            }
+            else{
+                $result =  true;
+            }
+        }
+
+        return $result;
+
+    }
     /**
      * @param $nickname
      * @return mixed
