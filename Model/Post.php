@@ -193,6 +193,57 @@ class PostManager extends Manager
     }
 
     /**
+     * @return array
+     */
+    public function getCategories()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT category, COUNT(id) AS nbPost FROM post WHERE Statut_id = 3 GROUP BY category ORDER BY category');
+        $req->execute();
+        $categories = $req->fetchAll();
+
+        return $categories;
+    }
+
+    /**
+     * @param $category
+     * @return mixed
+     */
+    public function getArticleCategory($category)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT COUNT(id) AS nbArt FROM post WHERE category = ? AND Statut_id = 3');
+        $req->execute(array($category));
+        $nbArt = $req->fetch();
+
+        return $nbArt;
+    }
+
+    /**
+     * @param $page
+     * @param $article
+     * @param $category
+     * @return array
+     */
+    public function getCategory($page, $article, $category)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, u.nickname AS username
+        FROM post p
+        LEFT JOIN users u
+        ON p.User_id = u.id
+        WHERE p.category = ? 
+        ORDER BY datePostUpdate DESC 
+        LIMIT ". (($page-1)*$article) .",$article");
+        $req->execute(array($category));
+        $getPosts = $req->fetchAll();
+
+        $posts = $this->setPosts($getPosts);
+
+        return $posts;
+    }
+
+    /**
      * @param $posts
      * @return array
      */

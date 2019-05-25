@@ -11,12 +11,14 @@ require_once('../View/layout.php'); ?>
         <img src="../Blog/Public/img/slide2.jpg" alt="Cover picture"  />
     </div>
     <?= $alert; ?>
-    <?php
-    echo '<i>Vous êtes ici : </i><a href ="index.php">Index du forum</a>';
-    ?>
 
     <h1><?= $title ?></h1>
 
+    <ul>
+        <?php foreach($categories as $category){ ?>
+            <li><a href="index.php?access=blog!category&category=<?= $category['category'] ?>"><?= $category['category']  ?> <?= $category['nbPost']  ?> article(s)</a></li>
+        <?php } ?>
+    </ul>
 
 
 </body>
