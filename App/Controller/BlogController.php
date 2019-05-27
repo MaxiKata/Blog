@@ -80,8 +80,10 @@ class BlogController
         $category = htmlspecialchars($_POST['category'], ENT_QUOTES);
         $userId = $_SESSION['id'];
 
+
         if($_SESSION['Statut_id'] == 2){
             if(isset($_POST['publish'])){
+
                 if(!empty($titlePost) || !empty($content) || !empty($category)){
                     $post = new Article();
                     $post->setTitle($titlePost);
@@ -90,13 +92,30 @@ class BlogController
                     $post->setUid($userId);
 
                     $postManager = new PostManager();
-                    $newpost = $postManager->postNewPost($post);
+                    $getCategoryColor = $postManager->getCategoryColor($post->getCategory());
 
-                    if($newpost == true){
-                        header("Location: index.php?success=newPost&access=blog");
+
+                    if(empty($getCategoryColor[0]) || $getCategoryColor == false){
+                        $post->setColor($this->randomColor());
+                        $newpost = $postManager->postNewPost($post);
+
+                        if($newpost == true){
+                            header("Location: index.php?success=newPost&access=blog");
+                        }
+                        else{
+                            header("Location: index.php?error=newPost&access=blog!newpost");
+                        }
                     }
                     else{
-                        header("Location: index.php?error=newPost&access=blog!newpost");
+                        $post->setColor($getCategoryColor[0]);
+                        $newpost = $postManager->postNewPost($post);
+
+                        if($newpost == true){
+                            header("Location: index.php?success=newPost&access=blog");
+                        }
+                        else{
+                            header("Location: index.php?error=newPost&access=blog!newpost");
+                        }
                     }
                 }
                 else{
@@ -112,13 +131,30 @@ class BlogController
                     $draft->setUid($userId);
 
                     $postManager = new PostManager();
-                    $newdraft = $postManager->postNewDraft($draft);
+                    $getCategoryColor = $postManager->getCategoryColor($draft->getCategory());
 
-                    if($newdraft == true){
-                        header("Location: index.php?success=newDraft&access=blog!draftlist");
+
+                    if(empty($getCategoryColor[0]) || $getCategoryColor == false){
+                        $draft->setColor($this->randomColor());
+                        $newdraft = $postManager->postNewDraft($draft);
+
+                        if($newdraft == true){
+                            header("Location: index.php?success=newDraft&access=blog!draftlist");
+                        }
+                        else{
+                            header("Location: index.php?error=newDraft&access=blog!newpost");
+                        }
                     }
                     else{
-                        header("Location: index.php?error=newDraft&access=blog!newpost");
+                        $draft->setColor($getCategoryColor[0]);
+                        $newdraft = $postManager->postNewDraft($draft);
+
+                        if($newdraft == true){
+                            header("Location: index.php?success=newDraft&access=blog!draftlist");
+                        }
+                        else{
+                            header("Location: index.php?error=newDraft&access=blog!newpost");
+                        }
                     }
                 }
                 else{
@@ -237,26 +273,65 @@ class BlogController
                 $article = $getArticle->getPost($update->getId());
                 if(!empty($article->getId())){
                     if(isset($_POST['updatedraft'])){
-                        $updateArticle = $getArticle->updateDraft($update);
-                        if($updateArticle == true){
 
-                            $newArticle = $getArticle->getPost($update->getId());
-                            header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
+                        $getCategoryColor = $getArticle->getCategoryColor($update->getCategory());
+
+
+                        if(empty($getCategoryColor[0]) || $getCategoryColor == false){
+                            $update->setColor($this->randomColor());
+                            $updateArticle = $getArticle->updateDraft($update);
+
+                            if($updateArticle == true){
+
+                                $newArticle = $getArticle->getPost($update->getId());
+                                header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
+                            }
+                            else{
+                                header("Location: index.php?error=notAllowed&access=blog");
+                            }
                         }
                         else{
-                            header("Location: index.php?error=notAllowed&access=blog");
+                            $update->setColor($getCategoryColor[0]);
+                            $updateArticle = $getArticle->updateDraft($update);
+
+                            if($updateArticle == true){
+
+                                $newArticle = $getArticle->getPost($update->getId());
+                                header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
+                            }
+                            else{
+                                header("Location: index.php?error=notAllowed&access=blog");
+                            }
                         }
                     }
                     elseif(isset($_POST['publish'])){
 
-                        $updateArticle = $getArticle->updatePost($update);
-                        if($updateArticle == true){
+                        $getCategoryColor = $getArticle->getCategoryColor($update->getCategory());
 
-                            $newArticle = $getArticle->getPost($update->getId());
-                            header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
+                        if(empty($getCategoryColor[0]) || $getCategoryColor == false){
+                            $update->setColor($this->randomColor());
+
+                            $updateArticle = $getArticle->updatePost($update);
+                            if($updateArticle == true){
+
+                                $newArticle = $getArticle->getPost($update->getId());
+                                header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
+                            }
+                            else{
+                                header("Location: index.php?error=notAllowed&access=blog");
+                            }
                         }
                         else{
-                            header("Location: index.php?error=notAllowed&access=blog");
+                            $update->setColor($getCategoryColor[0]);
+                            $updateArticle = $getArticle->updatePost($update);
+                            if($updateArticle == true){
+
+                                $newArticle = $getArticle->getPost($update->getId());
+                                header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
+                            }
+                            else{
+                                header("Location: index.php?error=notAllowed&access=blog");
+                            }
                         }
                     }
                     elseif(isset($_POST['deletearticle'])){
@@ -409,10 +484,43 @@ class BlogController
                 }
 
             }
-
-
-
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function randomColor()
+    {
+        $r=rand(0,255);
+        $g=rand(0,255);
+        $b=rand(0,255);
+
+
+        for(; ; ){
+            if($this->lightness($r, $g, $b) >= .8){
+                $color = "#".dechex($r).dechex($g).dechex($b);
+                break;
+            }
+            else{
+                $r=rand(0,255);
+                $g=rand(0,255);
+                $b=rand(0,255);
+            }
+        }
+
+        return $color;
+    }
+
+    /**
+     * @param int $R
+     * @param int $G
+     * @param int $B
+     * @return float
+     */
+    private function lightness($R = 255, $G = 255, $B = 255)
+    {
+        return (max($R, $G, $B) + min($R, $G, $B)) / 510.0; // HSL algorithm
     }
 
 }

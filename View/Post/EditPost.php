@@ -23,11 +23,11 @@ if(isset($_SESSION['Statut_id'])){
             </div>
             <div>
                 <label for="content">Article</label>
-                <textarea type="text" id="content" name="content"><?= nl2br($p_content); ?></textarea>
+                <textarea type="text" id="content" name="content"><?= $p_content; ?></textarea>
             </div>
             <div>
                 <label for="category">Catégorie</label>
-                <textarea type="text" id="category" name="category"><?= nl2br($p_category); ?></textarea>
+                <textarea type="text" id="category" name="category"><?= $p_category; ?></textarea>
             </div>
             <div>
                 <button type="submit" name="publish">Re-Publier</button>
@@ -39,7 +39,7 @@ if(isset($_SESSION['Statut_id'])){
                 <button type="submit" name="deletearticle">Supprimer Article</button>
             </div>
             <div>
-                <input type="text" id="id" name="id" hidden value="<?= nl2br($p_id); ?>" >
+                <input type="text" id="id" name="id" hidden value="<?= $p_id; ?>" >
             </div>
 
         </form>

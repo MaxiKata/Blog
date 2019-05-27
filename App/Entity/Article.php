@@ -14,6 +14,7 @@ class Article
     private $uid;
     private $dateCreate;
     private $dateUpdate;
+    private $color;
     private $userName;
 
     /**
@@ -149,6 +150,22 @@ class Article
     public function setDateUpdate($dateUpdate)
     {
         $this->dateUpdate = $dateUpdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param mixed $color
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
     }
 
     /**
