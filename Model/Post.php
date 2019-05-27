@@ -24,7 +24,8 @@ class PostManager extends Manager
         "Uid" => "User_id",
         "DateCreate" => "datePostCreate_fr",
         "DateUpdate" => "datePostUpdate_fr",
-        "UserName" => "username"
+        "UserName" => "username",
+        "Color" => "categoryColor"
     );
 
 
@@ -40,10 +41,11 @@ class PostManager extends Manager
         $content = $post->getContent();
         $category = $post->getCategory();
         $userId = $post->getUid();
+        $color = $post->getColor();
 
         $db = $this->dbConnect();
-        $post = $db->prepare('INSERT INTO post(title,	content, category, Statut_id, User_id, datePostCreate, datePostUpdate) VALUES (?, ?, ?,  3, ?, NOW(), NOW())');
-        $newPost = $post->execute(array($titlePost, $content, $category, $userId));
+        $post = $db->prepare('INSERT INTO post(title,	content, category, Statut_id, User_id, datePostCreate, datePostUpdate, categoryColor) VALUES (?, ?, ?,  3, ?, NOW(), NOW(), ?)');
+        $newPost = $post->execute(array($titlePost, $content, $category, $userId, $color));
 
         return $newPost;
     }
@@ -80,10 +82,11 @@ class PostManager extends Manager
         $category = $update->getCategory();
         $userId = $update->getUid();
         $postId = $update->getId();
+        $color = $update->getColor();
 
         $db = $this->dbConnect();
-        $send = $db->prepare('UPDATE post SET title = ?, content = ?, category = ?, Statut_id = 3, User_id = ?, datePostUpdate = NOW() WHERE id = ?');
-        $updateDraft = $send->execute(array($titlePost, $content, $category, $userId, $postId));
+        $send = $db->prepare('UPDATE post SET title = ?, content = ?, category = ?, Statut_id = 3, User_id = ?, datePostUpdate = NOW(), categoryColor = ? WHERE id = ?');
+        $updateDraft = $send->execute(array($titlePost, $content, $category, $userId, $color, $postId));
 
         return $updateDraft;
     }
@@ -137,10 +140,11 @@ class PostManager extends Manager
         $content = $draft->getContent();
         $category = $draft->getCategory();
         $userId = $draft->getUid();
+        $color = $post->getColor();
 
         $db = $this->dbConnect();
-        $pushdraft = $db->prepare('INSERT INTO post(title, content, category, Statut_id, User_id, datePostCreate, datePostUpdate) VALUES (?, ?, ?,  4, ?, NOW(), NOW())');
-        $newDraft = $pushdraft->execute(array($titlePost, $content, $category, $userId));
+        $pushdraft = $db->prepare('INSERT INTO post(title, content, category, Statut_id, User_id, datePostCreate, datePostUpdate) VALUES (?, ?, ?,  4, ?, NOW(), NOW(), ?)');
+        $newDraft = $pushdraft->execute(array($titlePost, $content, $category, $userId, $color));
 
         return $newDraft;
     }
@@ -156,10 +160,11 @@ class PostManager extends Manager
         $category = $update->getCategory();
         $userId = $update->getUid();
         $draftId = $update->getId();
+        $color = $update->getColor();
 
         $db = $this->dbConnect();
-        $send = $db->prepare('UPDATE post SET title = ?, content = ?, category = ?, Statut_id = 4, User_id = ?, datePostUpdate = NOW() WHERE id = ?');
-        $updateDraft = $send->execute(array($titlePost, $content, $category, $userId, $draftId));
+        $send = $db->prepare('UPDATE post SET title = ?, content = ?, category = ?, Statut_id = 4, User_id = ?, datePostUpdate = NOW(), categoryColor = ? WHERE id = ?');
+        $updateDraft = $send->execute(array($titlePost, $content, $category, $userId, $color, $draftId));
 
         return $updateDraft;
     }
@@ -198,11 +203,11 @@ class PostManager extends Manager
     public function getCategories()
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT category, COUNT(id) AS nbPost FROM post WHERE Statut_id = 3 GROUP BY category ORDER BY category');
+        $req = $db->prepare('SELECT category, COUNT(id) AS nbPost, categoryColor AS color FROM post WHERE Statut_id = 3 GROUP BY category, categoryColor ORDER BY category');
         $req->execute();
-        $categories = $req->fetchAll();
+        $nbArticlesPerCategory = $req->fetchAll();
 
-        return $categories;
+        return $nbArticlesPerCategory;
     }
 
     /**
@@ -243,6 +248,27 @@ class PostManager extends Manager
         return $posts;
     }
 
+    public function getCategoryColor($category)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT categoryColor FROM post WHERE category = ?");
+        $req->execute(array($category));
+
+        $getCategoryColor = $req->fetch();
+
+        return $getCategoryColor;
+    }
+
+    public function getCategoryColors()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT categoryColor FROM post");
+        $req->execute();
+
+        $getCategoryColor = $req->fetchAll();
+
+        return $getCategoryColor;
+    }
     /**
      * @param $posts
      * @return array
