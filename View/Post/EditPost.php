@@ -17,19 +17,19 @@ if(isset($_SESSION['Statut_id'])){
         <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id ?>&access=blog!read">Retour à l'article</a></p>
         <?= $alert; ?>
         <form action="<?= $directory ?>/index.php?access=blog!updatearticle" method="post">
-            <div>
+            <div class="d-grid">
                 <label for="title">Titre de votre article</label>
                 <textarea type="text" id="title" name="title"><?= $title; ?></textarea>
             </div>
-            <div>
+            <div class="d-grid">
                 <label for="content">Article</label>
                 <textarea type="text" id="content" name="content"><?= $p_content; ?></textarea>
             </div>
-            <div>
+            <div class="d-grid">
                 <label for="category">Catégorie</label>
                 <textarea type="text" id="category" name="category"><?= $p_category; ?></textarea>
             </div>
-            <div>
+            <div class="d-inline-grid">
                 <button type="submit" name="publish">Re-Publier</button>
             </div>
             <div>

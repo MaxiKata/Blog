@@ -16,7 +16,11 @@ require_once('../View/layout.php'); ?>
 
     <ul class="homeList">
         <?php foreach($categories as $category){ ?>
-            <li style="background-color: <?= $category['color'] ?>"><a href="index.php?access=blog!category&category=<?= $category['category'] ?>"><?= $category['category']  ?> <?= $category['nbPost']  ?> article(s)</a></li>
+            <li style="background-color: <?= $category['color'] ?>">
+                <span class="trapezoid"><a href="index.php?access=blog!category&category=<?= $category['category'] ?>"><?= $category['category']  ?> <?= $category['nbPost']  ?> article(s)</a></span>
+
+            </li>
+
         <?php } ?>
     </ul>
 
