@@ -57,7 +57,7 @@ class PostManager extends Manager
     public function getPost($postID)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr, u.nickname AS username
+        $req = $db->prepare('SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr, p. categoryColor, u.nickname AS username
         FROM post p
         LEFT JOIN users u
         ON p.User_id = u.id
@@ -114,7 +114,7 @@ class PostManager extends Manager
     public function countPostLimit($page, $article, $statut)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, u.nickname AS username
+        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, p.categoryColor, u.nickname AS username
         FROM post p
         LEFT JOIN users u
         ON p.User_id = u.id
@@ -233,7 +233,7 @@ class PostManager extends Manager
     public function getCategory($page, $article, $category)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, u.nickname AS username
+        $req = $db->prepare("SELECT p.id, p.title, p.content, p.category, p.Statut_id, p.User_id, DATE_FORMAT(p.datePostCreate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostCreate_fr, DATE_FORMAT(p.datePostUpdate, ' %d/%m/%Y à %Hh%imin%ss') AS datePostUpdate_fr, p.categoryColor, u.nickname AS username
         FROM post p
         LEFT JOIN users u
         ON p.User_id = u.id
