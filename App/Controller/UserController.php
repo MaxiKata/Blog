@@ -54,7 +54,7 @@ class UserController
     {
         $alert = $this->getAlert();
 
-        header("Location: index.php");
+        require_once('../View/User/Login.php');
     }
 
     public function registerAction()
