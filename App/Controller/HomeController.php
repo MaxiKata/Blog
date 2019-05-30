@@ -15,6 +15,7 @@ class HomeController
 
         $postManager = new PostManager();
         $categories = $postManager->getCategories();
+        $articles = $postManager->getLastArticles();
 
         require_once('../View/home.php');
     }
