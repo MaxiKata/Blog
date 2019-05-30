@@ -13,19 +13,23 @@ require_once('../View/layout.php'); ?>
             <?php
             foreach($posts as $data)
             {
+                $color = $data->getColor();
                 ?>
-                <div class="article" style="border-color: <?= $data->getColor()?>">
-                    <h3>
-                        <?= $data->getTitle() ?>
-                        <em>le <?= $data->getDateUpdate(); ?></em>
-                    </h3>
+            <a href="index.php?id=<?=$data->getId() ?>&access=blog!draft">
+                <div class="article" style="border-color: <?= $color ?>" onmouseover="this.style.backgroundColor='<?= $color?>'; this.style.borderColor='<?= $color?>';" onmouseout="this.style.backgroundColor=''; this.style.borderColor='<?= $color?>';">
+                    <h2 class="text-center mt-3">
+                        <?= $data->getTitle(); ?>
+                    </h2>
+                    <span class="d-flex"><em>Publié le <?= $data->getDateUpdate(); ?></em></span>
+
 
                     <p>
                         <?= nl2br($data->getContent()); ?>
                         <br>
                     </p>
-                    <span class="article-button"><a href="index.php?id=<?=$data->getId() ?>&access=blog!draft"><button>Modifier</button></a></span>
+                    <button class="article-button btn" style="border: 1px solid <?= $color ?>;">Modifier</button>
                 </div>
+            </a>
             <?php } ?>
                 <div class="text-center h4">
                     <?php for($i=1; $i<=$nbPage; $i++){

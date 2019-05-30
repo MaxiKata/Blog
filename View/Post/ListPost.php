@@ -6,27 +6,34 @@ require_once('../View/layout.php'); ?>
 <body>
     <?php require ('../View/header.php'); ?>
 
-    <h1 class="mt-3"><?= $title ?><?php if(isset($_GET['category'])){ ?> / <?= $categories[0]['category'];} ?></h1>
+    <h1><?php if(isset($_GET['category'])){ ?>
+        <a href="<?= $directory ?>/index.php?access=blog"><?= $title ?></a>
+    <?php } else{
+        echo $title;
+    } ?>
+     <?php if(isset($_GET['category'])){ ?> / <?= $_GET['category'];} ?></h1>
     <?= $alert; ?>
     <div class="d-flex article-page">
-        <div class="article-list">
+        <div class="article-list mr-0">
             <?php
             foreach($posts as $data)
             {
                 $color = $data->getColor();
                 ?>
+            <a href="index.php?id=<?=$data->getId() ?>&access=blog!read">
                 <div class="article" style="border-color: <?= $data->getColor()?>" onmouseover="this.style.backgroundColor='<?= $color?>'; this.style.borderColor='<?= $color?>';" onmouseout="this.style.backgroundColor=''; this.style.borderColor='<?= $color?>';">
-                    <h3>
+                    <h2 class="text-center mt-3">
                         <?= $data->getTitle(); ?>
-                        <em>le <?= $data->getDateUpdate(); ?></em>
-                    </h3>
+                    </h2>
+                    <span class="d-flex"><em>Publié le <?= $data->getDateUpdate(); ?></em></span>
 
                     <p>
                         <?= nl2br($data->getContent()); ?>
                         <br>
                     </p>
-                    <span class="article-button"><a href="index.php?id=<?=$data->getId() ?>&access=blog!read"><button>Consulter</button></a></span>
+                    <button class="article-button btn" style="border: 1px solid <?= $color ?>;">Consulter</button>
                 </div>
+            </a>
                 <?php
             } ?>
             <div class="text-center h4">
