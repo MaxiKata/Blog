@@ -203,13 +203,21 @@ class PostManager extends Manager
     public function getCategories()
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT category, COUNT(id) AS nbPost, categoryColor AS color FROM post WHERE Statut_id = 3 GROUP BY category, categoryColor ORDER BY category');
+        $req = $db->prepare('SELECT COUNT(id) AS nbPost, category, categoryColor AS color FROM post WHERE Statut_id = 3 GROUP BY category, categoryColor ORDER BY category');
         $req->execute();
         $nbArticlesPerCategory = $req->fetchAll();
 
         return $nbArticlesPerCategory;
     }
+    public function getLastArticles()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT id, title, content, category, Statut_id, User_id, DATE_FORMAT(datePostCreate, \'%d/%m/%Y à %Hh%imin%ss\') AS datePostCreate_fr, DATE_FORMAT(datePostUpdate, \'%d/%m/%Y à %Hh%imin%ss\') AS datePostUpdate_fr, categoryColor FROM post WHERE Statut_id = 3 ORDER BY category, datePostUpdate DESC');
+        $req->execute();
+        $articles = $req->fetchAll();
 
+        return $articles;
+    }
     /**
      * @param $category
      * @return mixed

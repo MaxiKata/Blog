@@ -436,6 +436,7 @@ class BlogController
 
         $posts = $postManager->countPostLimit($page, $article, $statut);
         if($statut == 3){
+
             require_once ('../View/Post/ListPost.php');
         }
         else{
