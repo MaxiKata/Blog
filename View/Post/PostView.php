@@ -42,7 +42,7 @@ require_once('../View/layout.php'); ?>
                 <form class="post-comment" action="<?= $directory ?>/index.php?access=comment!publish" method="post">
                     <label for="comment" hidden >Commentaire</label>
                     <textarea type="text" id="comment" name="comment" placeholder="N'hésitez pas à laisser un petit message"></textarea>
-                    <button type="submit" name="publish">Publier</button>
+                    <button class="btn btn-success" type="submit" name="publish">Publier</button>
                     <input type="text" id="id" name="id" hidden value="<?= nl2br($p_id); ?>">
                 </form>
             <?php }
