@@ -30,11 +30,11 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        if(isset($_SESSION['id']) && isset($_POST['publish'])){
-            $commentContent = sanitize_text_field(htmlspecialchars($_POST['comment'], ENT_QUOTES));
+        if(isset($_SESSION['id']) && isset(filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING))){
+
             $comment = new Comment();
-            $comment->setContent($commentContent);
-            $comment->setPostId(htmlspecialchars($_POST['id'], ENT_QUOTES));
+            $comment->setContent(filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING));
+            $comment->setPostId(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING));
             $comment->setUserID($_SESSION['id']);
 
             if(is_numeric($comment->getPostId())){
