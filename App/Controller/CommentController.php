@@ -29,14 +29,14 @@ class CommentController
     {
         $alert = $this->getAlert();
         session_start();
-        $publish = filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING);
-        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
-        if(isset($sessionId) && isset($publish)){
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        if($sessionId !== false){
 
             $comment = new Comment();
+
             $comment->setContent(filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING));
             $comment->setPostId(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING));
-            $comment->setUserID($_SESSION['id']);
+            $comment->setUserID($sessionId);
 
             if(is_numeric($comment->getPostId())){
                 $getPost = new PostManager();
@@ -80,14 +80,14 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
-        $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING);
-        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
+        $pId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
 
-        if(isset($sessionId) && isset($id) && isset($commentId) && is_numeric($id) && is_numeric($commentId)){
+        if($sessionId !== false || $pId !== false || $commentId !== false && is_numeric($pId) && is_numeric($commentId)){
             $comment = new Comment();
             $comment->setId($commentId);
-            $comment->setPostId($id);
+            $comment->setPostId($pId);
             $comment->setUserIdEdit($sessionId);
 
             $getPost = new PostManager();
@@ -115,8 +115,8 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
-        $sessionStatut = filter_input(INPUT_SESSION, 'Statut_id', FILTER_SANITIZE_STRING);
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionStatut = filter_var($_SESSION['Statut_id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         $pId = filter_input(INPUT_POST, 'p_Id', FILTER_SANITIZE_STRING);
         $commentId = filter_input(INPUT_POST, 'comId', FILTER_SANITIZE_STRING);
         $commentContent = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
@@ -176,13 +176,15 @@ class CommentController
      */
     private function getAlert()
     {
-        if(isset($_GET['success']) || isset($_GET['error'])){
-            if(isset($_GET['success'])){
-                $success = new Success();
-                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
+        $success = filter_input(INPUT_GET, 'success');
+        $error = filter_input(INPUT_GET, 'error');
+        if(isset($success) || isset($error)){
+            if(isset($success)){
+                $successObj = new Success();
+                $function = htmlspecialchars($success, ENT_QUOTES);
 
-                if(method_exists($success, $function) == true){
-                    $successAlert = $success->$function();
+                if(method_exists($successObj, $function) == true){
+                    $successAlert = $successObj->$function();
 
                     return $successAlert;
                 }
@@ -196,16 +198,16 @@ class CommentController
 
             }
             else{
-                $error = new Error();
-                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
+                $errorObj = new Error();
+                $function = htmlspecialchars($error, ENT_QUOTES);
 
-                if(method_exists($error, $function) == true){
-                    $errorAlert = $error->$function();
+                if(method_exists($errorObj, $function) == true){
+                    $errorAlert = $errorObj->$function();
                     return $errorAlert;
                 }
                 else{
                     $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $errorAlert = $errorObj->$function();
 
                     return $errorAlert;
                 }
