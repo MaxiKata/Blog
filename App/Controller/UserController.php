@@ -44,6 +44,8 @@ class UserController
      * @var
      */
     private $statut;
+    
+    private $alertMessage;
 
     /**
      * @var
@@ -52,15 +54,13 @@ class UserController
 
     public function indexAction()
     {
-        $alert = $this->getAlert();
 
+        $alert = $this->getAlert();
         require_once('../View/User/Login.php');
     }
 
     public function registerAction()
     {
-        $alert = $this->getAlert();
-
         $this->lastname = htmlspecialchars($_POST['lastname'], ENT_QUOTES);
         $this->firstname = htmlspecialchars($_POST['firstname'], ENT_QUOTES);
         $this->email = htmlspecialchars($_POST['email'], ENT_QUOTES);
@@ -103,9 +103,14 @@ class UserController
             $user = $this->setUser();
 
             $register = new UserManager();
-            $register->register($user);
+            $result = $register->register($user);
 
-            header('Location:index.php?success=register&access=user');
+            if($result == 'error'){
+                header("Location: index.php?error=connectionPdo&access=user");
+            }
+            else{
+                header('Location:index.php?success=register&access=user');
+            }
         }
     }
 
@@ -252,7 +257,12 @@ class UserController
                                         $controlUser = $this->controlUser($user);
                                         if($controlUser == true){
                                             $userupdate = $userManager->easyUpdateUser($user);
-                                            header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                            if($userupdate =='error'){
+                                                header("Location: index.php?error=connectionPdo&access=user");
+                                            }
+                                            else {
+                                                header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                            }
                                         }
                                         else{
                                             header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -266,7 +276,12 @@ class UserController
 
                                         if($controlUser == true){
                                             $userupdate = $userManager->hardUpdateUser($user);
-                                            header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                            if($userupdate =='error'){
+                                                header("Location: index.php?error=connectionPdo&access=user");
+                                            }
+                                            else {
+                                                header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                            }
                                         }
                                         else{
                                             header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -287,7 +302,12 @@ class UserController
 
                                 if($controlUser == true){
                                     $userupdate = $userManager->easyUpdateUser($user);
-                                    header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                    if($userupdate == 'error'){
+                                        header("Location: index.php?error=connectionPdo&access=user");
+                                    }
+                                    else{
+                                        header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                    }
                                 }
                                 else{
                                     header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -302,7 +322,12 @@ class UserController
 
                                if($controlUser == true){
                                    $userupdate = $userManager->hardUpdateUser($user);
-                                   header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                   if($userupdate =='error'){
+                                       header("Location: index.php?error=connectionPdo&access=user");
+                                   }
+                                   else {
+                                       header("Location:index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil");
+                                   }
                                }
                                else{
                                    header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -344,13 +369,18 @@ class UserController
                                     if($controlUser == true){
 
                                         $userupdate = $userManager->easyUpdateUser($user);
-                                        session_start();
-                                        $_SESSION['nickname'] = $userupdate->getUsername();
-                                        $_SESSION['firstname'] = $userupdate->getFirstname();
-                                        $_SESSION['lastname'] = $userupdate->getLastname();
-                                        $_SESSION['email'] = $userupdate->getEmail();
+                                        if($userupdate =='error'){
+                                            header("Location: index.php?error=connectionPdo&access=user");
+                                        }
+                                        else {
+                                            session_start();
+                                            $_SESSION['nickname'] = $userupdate->getUsername();
+                                            $_SESSION['firstname'] = $userupdate->getFirstname();
+                                            $_SESSION['lastname'] = $userupdate->getLastname();
+                                            $_SESSION['email'] = $userupdate->getEmail();
 
-                                        header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                            header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                        }
                                     }
                                     else{
                                         header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -366,15 +396,20 @@ class UserController
                                     if($controlUser == true){
 
                                         $userupdate = $userManager->hardUpdateUser($user);
-                                        session_start();
-                                        $_SESSION['id'] = $userupdate->getId();
-                                        $_SESSION['nickname'] = $userupdate->getUsername();
-                                        $_SESSION['firstname'] = $userupdate->getFirstname();
-                                        $_SESSION['lastname'] = $userupdate->getLastname();
-                                        $_SESSION['email'] = $userupdate->getEmail();
-                                        $_SESSION['Statut_id'] = $userupdate->getStatut();
+                                        if($userupdate =='error'){
+                                            header("Location: index.php?error=connectionPdo&access=user");
+                                        }
+                                        else {
+                                            session_start();
+                                            $_SESSION['id'] = $userupdate->getId();
+                                            $_SESSION['nickname'] = $userupdate->getUsername();
+                                            $_SESSION['firstname'] = $userupdate->getFirstname();
+                                            $_SESSION['lastname'] = $userupdate->getLastname();
+                                            $_SESSION['email'] = $userupdate->getEmail();
+                                            $_SESSION['Statut_id'] = $userupdate->getStatut();
 
-                                        header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                            header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
+                                        }
                                     }
                                     else{
                                         header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
@@ -599,10 +634,8 @@ class UserController
                     $error = new Error();
                     $function = "notAllowed";
                     $errorAlert = $error->$function();
-
                     return $errorAlert;
                 }
-
             }
             else{
                 $error = new Error();
@@ -617,12 +650,9 @@ class UserController
                     $errorAlert = $error->$function();
 
                     return $errorAlert;
+
                 }
-
             }
-
-
-
         }
     }
 }

@@ -113,10 +113,13 @@ class UserManager extends Manager
         $nickname = $user->getUsername();
         $password = $user->getPassword();
 
-        $db = $this->dbConnect();
-        $register = $db->prepare('INSERT INTO users(lastname, firstname, email, nickname, password, Statut_id) VALUES (?, ?, ?, ?, ?, 1)');
-        $newUser = $register ->execute(array($lastname, $firstname, $email, $nickname, $password));
-
+        try{
+            $db = $this->dbConnect();
+            $register = $db->prepare('INSERT INTO users(lastname, firstname, email, nickname, password, Statut_id) VALUES (?, ?, ?, ?, ?, 1)');
+            $newUser = $register->execute(array($lastname, $firstname, $email, $nickname, $password));
+        } catch(\Exception $e){
+            $newUser = 'error';
+        }
         return $newUser;
     }
 
@@ -134,11 +137,14 @@ class UserManager extends Manager
         $nickname = $user->getUsername();
         $statut = $user->getStatut();
 
-        $db = $this->dbConnect();
-        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, Statut_id = ? WHERE id = ?');
-        $update->execute(array($lastname, $firstname, $email, $nickname, $statut, $userId));
-
-        $newUser = self::getUser($userId);
+        try {
+            $db = $this->dbConnect();
+            $update = $db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, Statut_id = ? WHERE id = ?');
+            $update->execute(array($lastname, $firstname, $email, $nickname, $statut, $userId));
+            $newUser = self::getUser($userId);
+        } catch (\Exception $e){
+            $newUser = 'error';
+        }
 
         return $newUser;
     }
@@ -157,11 +163,15 @@ class UserManager extends Manager
         $password = $user->getPassword();
         $statut = $user->getStatut();
 
-        $db = $this->dbConnect();
-        $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, password = ?, Statut_id = ? WHERE id = ?');
-        $update->execute(array($lastname, $firstname, $email, $nickname, $password, $statut, $userId));
+        try{
+            $db = $this->dbConnect();
+            $update =$db->prepare('UPDATE users SET lastname = ?, firstname = ?, email = ?, nickname = ?, password = ?, Statut_id = ? WHERE id = ?');
+            $update->execute(array($lastname, $firstname, $email, $nickname, $password, $statut, $userId));
 
-        $newUser = self::getUser($userId);
+            $newUser = self::getUser($userId);
+        } catch (\Exception $e){
+            $newUser = 'error';
+        }
         return $newUser;
     }
 
