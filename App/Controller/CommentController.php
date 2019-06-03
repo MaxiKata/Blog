@@ -29,13 +29,16 @@ class CommentController
     {
         $alert = $this->getAlert();
 
+        $publish = sanitize_text_field($_POST['publish']);
         session_start();
-        if(isset($_SESSION['id']) && isset($_POST['publish'])){
+        if(isset($_SESSION['id']) && isset($publish)){
             $commentContent = sanitize_text_field(htmlspecialchars($_POST['comment'], ENT_QUOTES));
+            $commentId = sanitize_text_field(htmlspecialchars($_POST['id'], ENT_QUOTES));
+            $userId = sanitize_text_field($_SESSION['id']);
             $comment = new Comment();
             $comment->setContent($commentContent);
-            $comment->setPostId(htmlspecialchars($_POST['id'], ENT_QUOTES));
-            $comment->setUserID($_SESSION['id']);
+            $comment->setPostId($commentId);
+            $comment->setUserID($userId);
 
             if(is_numeric($comment->getPostId())){
                 $getPost = new PostManager();
