@@ -28,14 +28,15 @@ class CommentController
     public function publishAction()
     {
         $alert = $this->getAlert();
-
         session_start();
-        if(isset($_SESSION['id']) && isset(filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING))){
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        if($sessionId !== false){
 
             $comment = new Comment();
+
             $comment->setContent(filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING));
             $comment->setPostId(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING));
-            $comment->setUserID($_SESSION['id']);
+            $comment->setUserID($sessionId);
 
             if(is_numeric($comment->getPostId())){
                 $getPost = new PostManager();
@@ -79,14 +80,15 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        $id = htmlspecialchars($_GET['id'], ENT_QUOTES);
-        $commentId = htmlspecialchars($_GET['commentid'], ENT_QUOTES);
+        $pId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
 
-        if(isset($_SESSION['id']) && isset($id) && isset($commentId) && is_numeric($id) && is_numeric($commentId)){
+        if($sessionId !== false || $pId !== false || $commentId !== false && is_numeric($pId) && is_numeric($commentId)){
             $comment = new Comment();
             $comment->setId($commentId);
-            $comment->setPostId($id);
-            $comment->setUserIdEdit($_SESSION['id']);
+            $comment->setPostId($pId);
+            $comment->setUserIdEdit($sessionId);
 
             $getPost = new PostManager();
             $post = $getPost->getPost($comment->getPostId());
@@ -113,11 +115,17 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
+        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionStatut = filter_var($_SESSION['Statut_id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $pId = filter_input(INPUT_POST, 'p_Id', FILTER_SANITIZE_STRING);
+        $commentId = filter_input(INPUT_POST, 'comId', FILTER_SANITIZE_STRING);
+        $commentContent = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+
         $comment = new Comment();
-        $comment->setPostId(htmlspecialchars($_POST['p_Id'], ENT_QUOTES));
-        $comment->setId(htmlspecialchars($_POST['comId'], ENT_QUOTES));
-        $comment->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES));
-        $comment->setUserIdEdit($_SESSION['id']);
+        $comment->setPostId($pId);
+        $comment->setId($commentId);
+        $comment->setContent($commentContent);
+        $comment->setUserIdEdit($sessionId);
 
         if(is_numeric($comment->getPostId()) && is_numeric($comment->getId()) && !empty($comment->getContent())){
             $commentManager = new CommentManager();
@@ -125,7 +133,8 @@ class CommentController
 
 
             if(!empty($verifyComment->getId()) && $verifyComment->getId() == $comment->getId() && $verifyComment->getPostId() == $comment->getPostId()){
-                if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $verifyComment->getUserId()){
+
+                if($sessionStatut == 2 || $sessionId == $verifyComment->getUserId()){
                     if(isset($_POST['updatecomment'])){
                         $updateComment = $commentManager->updateComment($comment);
                          if($updateComment == true){
@@ -167,13 +176,15 @@ class CommentController
      */
     private function getAlert()
     {
-        if(isset($_GET['success']) || isset($_GET['error'])){
-            if(isset($_GET['success'])){
-                $success = new Success();
-                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
+        $success = filter_input(INPUT_GET, 'success');
+        $error = filter_input(INPUT_GET, 'error');
+        if(isset($success) || isset($error)){
+            if(isset($success)){
+                $successObj = new Success();
+                $function = htmlspecialchars($success, ENT_QUOTES);
 
-                if(method_exists($success, $function) == true){
-                    $successAlert = $success->$function();
+                if(method_exists($successObj, $function) == true){
+                    $successAlert = $successObj->$function();
 
                     return $successAlert;
                 }
@@ -187,16 +198,16 @@ class CommentController
 
             }
             else{
-                $error = new Error();
-                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
+                $errorObj = new Error();
+                $function = htmlspecialchars($error, ENT_QUOTES);
 
-                if(method_exists($error, $function) == true){
-                    $errorAlert = $error->$function();
+                if(method_exists($errorObj, $function) == true){
+                    $errorAlert = $errorObj->$function();
                     return $errorAlert;
                 }
                 else{
                     $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $errorAlert = $errorObj->$function();
 
                     return $errorAlert;
                 }
