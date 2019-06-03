@@ -28,9 +28,10 @@ class CommentController
     public function publishAction()
     {
         $alert = $this->getAlert();
-
         session_start();
-        if(isset($_SESSION['id']) && isset(filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING))){
+        $publish = filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING);
+        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
+        if(isset($sessionId) && isset($publish)){
 
             $comment = new Comment();
             $comment->setContent(filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING));
@@ -79,14 +80,15 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        $id = htmlspecialchars($_GET['id'], ENT_QUOTES);
-        $commentId = htmlspecialchars($_GET['commentid'], ENT_QUOTES);
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
+        $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING);
+        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
 
-        if(isset($_SESSION['id']) && isset($id) && isset($commentId) && is_numeric($id) && is_numeric($commentId)){
+        if(isset($sessionId) && isset($id) && isset($commentId) && is_numeric($id) && is_numeric($commentId)){
             $comment = new Comment();
             $comment->setId($commentId);
             $comment->setPostId($id);
-            $comment->setUserIdEdit($_SESSION['id']);
+            $comment->setUserIdEdit($sessionId);
 
             $getPost = new PostManager();
             $post = $getPost->getPost($comment->getPostId());
@@ -113,11 +115,17 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
+        $sessionId = filter_input(INPUT_SESSION, 'id', FILTER_SANITIZE_STRING);
+        $sessionStatut = filter_input(INPUT_SESSION, 'Statut_id', FILTER_SANITIZE_STRING);
+        $pId = filter_input(INPUT_POST, 'p_Id', FILTER_SANITIZE_STRING);
+        $commentId = filter_input(INPUT_POST, 'comId', FILTER_SANITIZE_STRING);
+        $commentContent = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+
         $comment = new Comment();
-        $comment->setPostId(htmlspecialchars($_POST['p_Id'], ENT_QUOTES));
-        $comment->setId(htmlspecialchars($_POST['comId'], ENT_QUOTES));
-        $comment->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES));
-        $comment->setUserIdEdit($_SESSION['id']);
+        $comment->setPostId($pId);
+        $comment->setId($commentId);
+        $comment->setContent($commentContent);
+        $comment->setUserIdEdit($sessionId);
 
         if(is_numeric($comment->getPostId()) && is_numeric($comment->getId()) && !empty($comment->getContent())){
             $commentManager = new CommentManager();
@@ -125,7 +133,8 @@ class CommentController
 
 
             if(!empty($verifyComment->getId()) && $verifyComment->getId() == $comment->getId() && $verifyComment->getPostId() == $comment->getPostId()){
-                if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $verifyComment->getUserId()){
+
+                if($sessionStatut == 2 || $sessionId == $verifyComment->getUserId()){
                     if(isset($_POST['updatecomment'])){
                         $updateComment = $commentManager->updateComment($comment);
                          if($updateComment == true){
