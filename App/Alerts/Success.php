@@ -11,7 +11,7 @@ class Success
      */
     public function articleDelete()
     {
-        return "<p class=\"success\">Article bien supprimé</p>";
+        return "<p class=\"success\"><span>Article bien supprimé</span></p>";
     }
 
     /**
@@ -19,7 +19,7 @@ class Success
      */
     public function commentDelete()
     {
-        return "<p class=\"success\">Commentaire bien supprimé</p>";
+        return "<p class=\"success\"><span>Commentaire bien supprimé</span></p>";
     }
 
     /**
@@ -27,7 +27,7 @@ class Success
      */
     public function commentPublish()
     {
-        return "<p class=\"success\">Commentaire bien publié</p>";
+        return "<p class=\"success\"><span>Commentaire bien publié</span></p>";
     }
 
     /**
@@ -35,7 +35,7 @@ class Success
      */
     public function commentUpdate()
     {
-        return "<p class=\"success\">Commentaire bien mis à jour</p>";
+        return "<p class=\"success\"><span>Commentaire bien mis à jour</span></p>";
     }
 
     /**
@@ -43,7 +43,7 @@ class Success
      */
     public function login()
     {
-        return "<p class=\"success\">Vous êtes connecté</p>";
+        return "<p class=\"success\"><span>Vous êtes connecté</span></p>";
     }
 
     /**
@@ -51,7 +51,7 @@ class Success
      */
     public function logout()
     {
-        return "<p class=\"success\">Déconnexion bien effectué</p>";
+        return "<p class=\"success\"><span>Déconnexion bien effectué</span></p>";
     }
 
     /**
@@ -59,7 +59,7 @@ class Success
      */
     public function newDraft()
     {
-        return "<p class=\"success\">Nouveau brouillon bien enregistré</p>";
+        return "<p class=\"success\"><span>Nouveau brouillon bien enregistré</span></p>";
     }
 
     /**
@@ -67,7 +67,7 @@ class Success
      */
     public function newPost()
     {
-        return "<p class=\"success\">Nouvel article bien publié</p>";
+        return "<p class=\"success\"><span>Nouvel article bien publié</span></p>";
     }
 
     /**
@@ -75,7 +75,7 @@ class Success
      */
     public function register()
     {
-        return "<p class=\"success\">Vous êtes bien enregistré, vous pouvez maintenant vous connecté</p>";
+        return "<p class=\"success\"><span>Vous êtes bien enregistré, vous pouvez maintenant vous connecté</span></p>";
     }
 
     /**
@@ -83,7 +83,7 @@ class Success
      */
     public function update()
     {
-        return "<p class=\"success\">Mise à jour réussite</p>";
+        return "<p class=\"success\"><span>Mise à jour réussite</span></p>";
     }
 
     /**
@@ -91,7 +91,7 @@ class Success
      */
     public function updateDraft()
     {
-        return "<p class=\"success\">Mise à jour du brouillon réussite</p>";
+        return "<p class=\"success\"><span>Mise à jour du brouillon réussite</span></p>";
     }
 
     /**
@@ -99,7 +99,7 @@ class Success
      */
     public function updatePost()
     {
-        return "<p class=\"success\">Mise à jour de l'article réussite</p>";
+        return "<p class=\"success\"><span>Mise à jour de l'article réussite</span></p>";
     }
 
     /**
@@ -107,6 +107,6 @@ class Success
      */
     public function userDeleted()
     {
-        return "<p class=\"success\">Suppression de compte réussite</p>";
+        return "<p class=\"success\"><span>Suppression de compte réussite</span></p>";
     }
 }

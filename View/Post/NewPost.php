@@ -8,33 +8,30 @@ require_once('../View/layout.php'); ?>
 if(isset($_SESSION['Statut_id'])){
     if($_SESSION['Statut_id'] == 2){ ?>
     <body>
-    <?php require ('../View/header.php'); ?>
+        <?php require ('../View/header.php'); ?>
 
-    <h1><?= $title ?></h1>
-    <?= $alert; ?>
-    <form action="<?= $directory ?>/index.php?access=blog!newarticle" method="post">
-        <div>
-            <label for="title">Titre de votre article</label>
-            <textarea type="text" id="title" name="title"></textarea>
-        </div>
-        <div>
-            <label for="content">Article</label>
-            <textarea type="text" id="content" name="content"></textarea>
-        </div>
-        <div>
-            <label for="category">Catégorie</label>
-            <textarea type="text" id="category" name="category"></textarea>
-        </div>
-        <div>
-            <button type="submit" name="publish">Publier</button>
-        </div>
-        <div>
-            <button type="submit" name="draft">Sauver</button>
-        </div>
-
-
-    </form>
-
+        <h1><?= $title ?></h1>
+        <?= $alert; ?>
+        <article>
+            <form action="<?= $directory ?>/index.php?access=blog!newarticle" method="post">
+                <div class="d-grid">
+                    <label for="title">Titre de votre article</label>
+                    <textarea type="text" id="title" name="title"></textarea>
+                </div>
+                <div class="d-grid">
+                    <label for="content">Article</label>
+                    <textarea type="text" id="content" name="content"></textarea>
+                </div>
+                <div class="d-grid">
+                    <label for="category">Catégorie</label>
+                    <textarea type="text" id="category" name="category"></textarea>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success" type="submit" name="publish">Publier</button>
+                    <button class="btn btn-primary" type="submit" name="draft">Sauver</button>
+                </div>
+            </form>
+        </article>
     </body>
 <?php }
     }

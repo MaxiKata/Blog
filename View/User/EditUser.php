@@ -16,49 +16,48 @@ require_once('../View/layout.php'); ?>
 
     <h1><?= $title ?> de <?= $u_username ?></h1>
 
-    <div class="news">
+    <div class="userprofil">
         <p><a href="index.php?access=user!list">Retour à la liste des utilisateurs</a></p>
-        <h3>
+        <h3 class="text-center">
             Nom d'utilisateur <?= $u_username ?>
         </h3>
-        <p>
+        <p class="text-center">
             Cet utilisateur a posté <?= $comment[0]["COUNT(id)"]; ?> commentaire(s).
         </p>
         <?= $alert; ?>
         <form action="<?= $directory ?>/index.php?access=user!update" method="post">
-            <div>
-
+            <div class="d-flex">
                 <label for="lastname">Nom de famille</label>
                 <input type="text" id="lastname" name="lastname" value="<?= $u_lastname ?>"/>
             </div>
-            <div>
+            <div class="d-flex">
                 <label for="firstname">Prénom</label>
                 <input type="text" id="firstname" name="firstname" value="<?= $u_firstname ?>"/>
             </div>
-            <div>
+            <div class="d-flex">
                 <label for="email">Votre Email</label>
                 <input type="email" id="email" name="email" value="<?= $u_email ?>"/>
             </div>
-            <div>
-                <label for="username">Pseudonyme</label>
+            <div class="d-flex">
+                <label for="username">Nom d'utilisateur</label>
                 <input type="text" id="username" name="username" value="<?= $u_username ?>"/>
             </div>
-            <div>
+            <div class="d-flex">
                 <label for="oldpassword">Mot de passe Actuel</label>
                 <input type="password" id="oldpassword" name="oldpassword"/>
             </div>
-            <div>
+            <div class="d-flex">
                 <label for="password">Nouveau mot de passe</label>
                 <input type="password" id="password" name="password"/>
             </div>
-            <div>
+            <div class="d-flex">
                 <label for="confirm_password">Confirmer nouveau votre mot de passe</label>
                 <input type="password" id="confirm_password" name="confirm_password"/>
             </div>
             <?php
             if(isset($_SESSION['Statut_id'])){
                 if($_SESSION['Statut_id'] == 2){ ?>
-                    <div>
+                    <div class="text-center">
                         <select name="statut">
                             <option value="1" <?php if($u_statut == 1): ?> selected="selected" <?php endif; ?>>User</option>
                             <option value="2" <?php if($u_statut == 2): ?> selected="selected" <?php endif; ?>>Admin</option>
@@ -72,11 +71,9 @@ require_once('../View/layout.php'); ?>
                 <?php }
             }
              ?>
-            <div>
-                <button type="submit" name="update">Mettre à jour</button>
-            </div>
-            <div>
-                <button type="submit" name="delete">Supprimer Utilisateur</button>
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit" name="update">Mettre à jour</button>
+                <button class="btn btn-danger" type="submit" name="delete">Supprimer Utilisateur</button>
             </div>
             <div>
                 <input type="text" id="userId" name="userId" hidden value="<?= $uid ?>">

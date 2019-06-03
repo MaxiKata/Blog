@@ -11,7 +11,7 @@ class Error
      */
     public function article()
     {
-        return "<p class=\"error\">Cet article n'existe pas</p>";
+        return "<p class=\"error\"><span>Cet article n'existe pas</span></p>";
     }
 
     /**
@@ -19,7 +19,7 @@ class Error
      */
     public function articleDelete()
     {
-        return "<p class=\"error\">Cet article n'a pas pu être supprimé</p>";
+        return "<p class=\"error\"><span>Cet article n'a pas pu être supprimé</span></p>";
     }
 
     /**
@@ -27,7 +27,7 @@ class Error
      */
     public function chooseAdmin()
     {
-        return "<p class=\"error\">Nommez un second admin pour pouvoir supprimer ce compte</p>";
+        return "<p class=\"error\"><span>Nommez un second admin pour pouvoir supprimer ce compte</span></p>";
     }
 
     /**
@@ -35,7 +35,7 @@ class Error
      */
     public function commentDelete()
     {
-        return "<p class=\"error\">Ce commentaire n'a pas pu être supprimé</p>";
+        return "<p class=\"error\"><span>Ce commentaire n'a pas pu être supprimé</span></p>";
     }
 
     /**
@@ -43,7 +43,7 @@ class Error
      */
     public function commentPublish()
     {
-        return "<p class=\"error\">Ce commentaire n'a pas pu être publié</p>";
+        return "<p class=\"error\"><span>Ce commentaire n'a pas pu être publié</span></p>";
     }
 
     /**
@@ -51,7 +51,7 @@ class Error
      */
     public function commentUpdate()
     {
-        return "<p class=\"error\">Ce commentaire n'a pas pu être mis à jour</p>";
+        return "<p class=\"error\"><span>Ce commentaire n'a pas pu être mis à jour</span></p>";
     }
 
     /**
@@ -59,7 +59,7 @@ class Error
      */
     public function emailUsed()
     {
-        return "<p class=\"error\">Cet email est déjà utilisé</p>";
+        return "<p class=\"error\"><span>Cet email est déjà utilisé</span></p>";
     }
 
     /**
@@ -67,7 +67,7 @@ class Error
      */
     public function emptyFields()
     {
-        return "<p class=\"error\">Un ou plusieurs champs sont vides</p>";
+        return "<p class=\"error\"><span>Un ou plusieurs champs sont vides</span></p>";
     }
 
     /**
@@ -75,7 +75,7 @@ class Error
      */
     public function invalidEmail()
     {
-        return "<p class=\"error\">Votre email est incorrect</p>";
+        return "<p class=\"error\"><span>Votre email est incorrect</span></p>";
     }
 
     /**
@@ -83,7 +83,7 @@ class Error
      */
     public function invalidEmailUsername()
     {
-        return "<p class=\"error\">L'email ou le nom d'utilisateur entré est incorrect</p>";
+        return "<p class=\"error\"><span>L'email ou le nom d'utilisateur entré est incorrect</span></p>";
     }
 
     /**
@@ -91,7 +91,7 @@ class Error
      */
     public function invalidUsername()
     {
-        return "<p class=\"error\">Votre nom d'utilisateur est incorrect</p>";
+        return "<p class=\"error\"><span>Votre nom d'utilisateur est incorrect</span></p>";
     }
 
     /**
@@ -99,7 +99,7 @@ class Error
      */
     public function newDraft()
     {
-        return "<p class=\"error\">Ce brouillon n'a pas pu être enregistré</p>";
+        return "<p class=\"error\"><span>Ce brouillon n'a pas pu être enregistré</span></p>";
     }
 
     /**
@@ -107,7 +107,7 @@ class Error
      */
     public function newPost()
     {
-        return "<p class=\"error\">Cet article n'a pas pu être publié</p>";
+        return "<p class=\"error\"><span>Cet article n'a pas pu être publié</span></p>";
     }
 
     /**
@@ -115,7 +115,7 @@ class Error
      */
     public function noDraft()
     {
-        return "<p class=\"error\">Ce brouillon n'a pas été trouvé</p>";
+        return "<p class=\"error\"><span>Ce brouillon n'a pas été trouvé</span></p>";
     }
 
     /**
@@ -123,7 +123,7 @@ class Error
      */
     public function noPost()
     {
-        return "<p class=\"error\">Cet article n'existe pas</p>";
+        return "<p class=\"error\"><span>Cet article n'existe pas</span></p>";
     }
 
     /**
@@ -131,7 +131,7 @@ class Error
      */
     public function noUser()
     {
-        return "<p class=\"error\">Cet utilisateur n'existe pas</p>";
+        return "<p class=\"error\"><span>Cet utilisateur n'existe pas</span></p>";
     }
 
     /**
@@ -139,7 +139,11 @@ class Error
      */
     public function notAllowed()
     {
-        return "<p class=\"error\">Vous n'êtes pas autorisé à faire cette action :-)</p>";
+        return "<p class=\"error\"><span>Vous n'êtes pas autorisé à faire cette action :-)</span></p>";
+    }
+    public function connectionPdo()
+    {
+        return "<p class=\"error\"><span>Un problème serveur est survenu.</span></p>";
     }
 
     /**
@@ -147,7 +151,7 @@ class Error
      */
     public function passwordCheck()
     {
-        return "<p class=\"error\">Les mots de passe renseignés doivent être les mêmes</p>";
+        return "<p class=\"error\"><span>Les mots de passe renseignés doivent être les mêmes</span></p>";
     }
 
     /**
@@ -155,7 +159,7 @@ class Error
      */
     public function userDeleted()
     {
-        return "<p class=\"error\">Cet utilisateur n'a pas pu être supprimé</p>";
+        return "<p class=\"error\"><span>Cet utilisateur n'a pas pu être supprimé</span></p>";
     }
 
     /**
@@ -163,7 +167,7 @@ class Error
      */
     public function usernameTaken()
     {
-        return "<p class=\"error\">Ce nom d'utilisateur est déjà utilisé</p>";
+        return "<p class=\"error\"><span>Ce nom d'utilisateur est déjà utilisé</span></p>";
     }
 
     /**
@@ -171,7 +175,7 @@ class Error
      */
     public function wrongPassword()
     {
-        return "<p class=\"error\">Mot de passe incorrect</p>";
+        return "<p class=\"error\"><span>Mot de passe incorrect</span></p>";
     }
 
     /**
@@ -179,6 +183,6 @@ class Error
      */
     public function wrongPasswords()
     {
-        return "<p class=\"error\">Les mots de passe renseignés doivent être les mêmes</p>";
+        return "<p class=\"error\"><span>Les mots de passe renseignés doivent être les mêmes</span></p>";
     }
 }

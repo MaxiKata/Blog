@@ -24,7 +24,7 @@ require_once('../View/layout.php'); ?>
         ?>
     </div>
 
-    <article class="news">
+    <article >
         <h3>
             Par <?= $p_author;?>
             <em>le <?= $p_dateUpd ?></em>
@@ -66,7 +66,7 @@ require_once('../View/layout.php'); ?>
                 $com_id = $com->getId();
                 $com_uid = $com->getUserId();
                 ?>
-                <div class="news">
+                <div >
                     <h3>
                         Par <?= $com_username; ?>
                         <em>le <?= $com_dateUpdate; ?></em>

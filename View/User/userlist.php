@@ -10,26 +10,31 @@ require_once('../View/layout.php'); ?>
 
     <?= $alert; ?>
 
+    <ul class="userlist">
     <?php
     foreach($users as $user)
     {
         ?>
-        <div class="news">
-            <h3>
-                <?php echo htmlspecialchars($user->getUsername(), ENT_QUOTES);
-                if($user->getStatut() == 1){ ?>
-                    - User <?php }
-                else{
-                    echo ' - Admin';
-                } ?>
-            </h3>
-
-            <p>
-                <em><a href="index.php?userid=<?=$user->getId() ?>&access=user!profil">Consulter</a></em>
-            </p>
-        </div>
+        <li>
+            <a href="index.php?userid=<?=$user->getId() ?>&access=user!profil">
+                <div>
+                    <h3>
+                        <?php echo htmlspecialchars($user->getUsername(), ENT_QUOTES);
+                        if($user->getStatut() == 1){
+                           echo ' - User';
+                        }
+                        else{
+                            echo ' - Admin';
+                        } ?>
+                    </h3>
+                    <em>Consulter</em>
+                </div>
+            </a>
+        </li>
         <?php
-    }
+    } ?>
+    </ul>
+    <?php
     for($i=1; $i<=$nbPage; $i++){
         if($i==$page){
             echo " $i ";
