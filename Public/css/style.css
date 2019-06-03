@@ -6,10 +6,6 @@ nav{
     background-color: #24292e;
     color : white;
 }
-nav a{
-    color : inherit;
-    font-size: 1.4rem;
-}
 nav ul{
     list-style-type:none;
     text-align:center;
@@ -46,7 +42,7 @@ h1 a{
 h1 a:hover{
     text-decoration: none;
 }
-article, .article-list{
+article, .article-list, .userprofil, .login{
     margin-left: auto;
     margin-right: auto;
     width: 60%;
@@ -54,7 +50,7 @@ article, .article-list{
 article p{
     text-align: justify;
 }
-article form div{
+article form div, .userprofil form div, .login form div{
     margin-top: 1rem;
 }
 article #content{
@@ -135,7 +131,7 @@ article #content{
     height: inherit;
     width: 6em;
     border: none;
-    background-color: rgba(225, 225, 225, 0.4);
+    background-color: rgba(225, 225, 225, .4);
 }
 .comment{
     margin-left: 20%;
@@ -151,11 +147,25 @@ article #content{
 .d-grid{
     display: grid;
 }
+.error, .success{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-weight: bold;
+    width: 60%;
+    height: 3em;
+    border-radius: .3em;
+}
 .error{
     background-color: lightcoral;
 }
+
 .success{
     background-color: lightgreen;
+}
+.success span, .error span{
+    margin: auto;
 }
 .homeList{
     list-style: none;
@@ -177,7 +187,7 @@ article #content{
 li .text {
     width: 100%;
     color: #24292e;
-    transition: all 0.6s ease-in-out;
+    transition: all .6s ease-in-out;
 }
 li:hover .text{
     font-size: 1rem;
@@ -192,28 +202,32 @@ li:hover .text{
 .linksMenu{
     margin-left: 20%;
 }
+.nav-link{
+    color : inherit;
+    font-size: 1.4rem;
+}
 .post-comment{
     display: inline-grid;
     margin: 3% 10%;
     width: 80%;
 }
-.post-comment textarea{
+.comment textarea{
     margin-bottom: 3%;
     height: 10em;
 }
 .trapezoid{
     position:relative;
     display: inline-flex;
-    border-top: 10rem solid rgba(255,255,255, 0.4);
+    border-top: 10rem solid rgba(255,255,255, .4);
     border-right: 6rem solid transparent;
     height: inherit;
     width: 80%;
-    -webkit-transition: all 0.6s ease-in-out;
-    transition: all 0.6s ease-in-out;
+    -webkit-transition: all .6s ease-in-out;
+    transition: all .6s ease-in-out;
 
 }
 li:hover .trapezoid{
-    border-top: 10rem solid rgba(255,255,255, 0.8);
+    border-top: 10rem solid rgba(255,255,255, .8);
     border-right: 6rem solid transparent;
     width: 30%;
 }
@@ -221,7 +235,7 @@ li:hover .trapezoid{
 .triangle-left{
     width: 2rem;
     height:inherit;
-    border-left: 2rem solid rgba(225, 225, 225, 0.4);
+    border-left: 2rem solid rgba(225, 225, 225, .4);
     border-top: 5rem solid transparent;
     border-bottom: 5rem solid transparent;
     transition: visibility 0s;
@@ -232,7 +246,7 @@ li:hover .trapezoid{
     right: 10%;
     top: 0;
     width: 3%;
-    border-right: 2rem solid rgba(225, 225, 225, 0.4);
+    border-right: 2rem solid rgba(225, 225, 225, .4);
     border-top: 5rem solid transparent;
     border-bottom: 5rem solid transparent;
 }
@@ -240,9 +254,9 @@ li:hover .trapezoid{
     position: static;
     width: 20%;
     -webkit-transition-timing-function: ease-in-out;
-    -webkit-transition: visibility 2s, width 0.6s;
+    -webkit-transition: visibility 2s, width .6s;
     transition-timing-function: ease-in-out;
-    transition: visibility 2s, width 0.6s;
+    transition: visibility 2s, width .6s;
 }
 .last-article .category-button{
     position: absolute;
@@ -256,7 +270,7 @@ li:hover .trapezoid{
 }
 .opacity-delay{
     opacity: 0;
-    transition : opacity 1s ease-in-out 0.6s;
+    transition : opacity 1s ease-in-out .6s;
 }
 .last-article, .last-article h3, .last-article p{
     color: #24292e;
@@ -279,10 +293,10 @@ li:hover .trapezoid .category-button, li:hover .trapezoid .triangle-left{
     visibility: hidden;
 }
 li:hover .last-article .category-button{
-    background-color: rgba(225, 225, 225, 0.8);
+    background-color: rgba(225, 225, 225, .8);
 }
 li:hover .last-article .triangle-right{
-    border-right: 2rem solid rgba(225, 225, 225, 0.8);
+    border-right: 2rem solid rgba(225, 225, 225, .8);
 }
 .last-article h3{
     font-size: 1.5rem;
@@ -294,4 +308,42 @@ li:hover .last-article .triangle-right{
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     text-decoration: none;
+}
+.userlist{
+    display: table;
+    list-style: none;
+    padding-left: 0;
+    width: 60%;
+    margin: 1em auto;
+}
+.userlist li{
+    float: left;
+    width: 46%;
+    margin: 1em 2%;
+    text-align: center;
+    border: 1px solid #24292e;
+    border-radius: .3em;
+}
+.userlist li a{
+    color: #24292e;
+}
+.userlist li div {
+    padding:1em;
+}
+.userlist li:hover{
+    background-color: #24292e;
+}
+.userlist li:hover a{
+    color: white;
+}
+.userprofil label, .login label{
+    width: 30%;
+}
+.userprofil input, .login input{
+    width: 70%;
+}
+.login form{
+    padding: 1em;
+    border: 1px solid #24292e;
+    border-radius: .3em;
 }

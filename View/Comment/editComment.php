@@ -15,18 +15,16 @@ if(isset($_SESSION['Statut_id'])){
         <body>
         <?php require ('../View/header.php'); ?>
 
-        <p><a href="<?=  $directory ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
+        <p class="mt-3 comment"><a href="<?=  $directory ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
         <?= $alert; ?>
-        <form action="<?= $directory ?>/index.php?access=comment!update" method="post">
-            <div>
+        <form class="comment" action="<?= $directory ?>/index.php?access=comment!update" method="post">
+            <div class="d-grid">
                 <label for="content"><?= $title ?></label>
                 <textarea type="text" id="content" name="content"><?= $com_content; ?></textarea>
             </div>
-            <div>
-                <button type="submit" name="updatecomment">Mettre à jour</button>
-            </div>
-            <div>
-                <button type="submit" name="deletecomment">Supprimer commentaire</button>
+            <div class="text-center">
+                <button class="btn btn-success" type="submit" name="updatecomment">Mettre à jour</button>
+                <button class="btn btn-danger" type="submit" name="deletecomment">Supprimer commentaire</button>
             </div>
             <div>
                 <input type="text" id="p_Id" name="p_Id" hidden value="<?= $p_id; ?>">
@@ -40,6 +38,6 @@ if(isset($_SESSION['Statut_id'])){
     }
 }
 else{
-    Home();
+    header("Location: index.php");
 }
 ?>

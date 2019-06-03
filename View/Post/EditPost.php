@@ -10,7 +10,7 @@ require_once('../View/layout.php');
 
 if(isset($_SESSION['Statut_id'])){
     if($_SESSION['Statut_id'] == 2){ ?>
-        <body>
+    <body>
         <?php require ('../View/header.php'); ?>
 
         <h1><?= $title ?></h1>
@@ -45,7 +45,7 @@ if(isset($_SESSION['Statut_id'])){
         </article>
 
 
-        </body><?php }
+    </body><?php }
 }
 else{
     Home();
