@@ -31,7 +31,7 @@ class CommentController
 
         session_start();
         if(isset($_SESSION['id']) && isset($_POST['publish'])){
-            $commentContent = htmlspecialchars($_POST['comment'], ENT_QUOTES);
+            $commentContent = sanitize_text_field(htmlspecialchars($_POST['comment'], ENT_QUOTES));
             $comment = new Comment();
             $comment->setContent($commentContent);
             $comment->setPostId(htmlspecialchars($_POST['id'], ENT_QUOTES));
