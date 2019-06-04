@@ -4,6 +4,7 @@ namespace Blog\App\Controller;
 
 use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
+use Blog\App\Entity\Session;
 use Blog\App\Entity\User;
 use Model\CommentManager;
 use Model\PostManager;
@@ -54,7 +55,6 @@ class UserController
 
     public function indexAction()
     {
-
         $alert = $this->getAlert();
         require_once('../View/User/Login.php');
     }
@@ -129,6 +129,7 @@ class UserController
             $userManager = new UserManager();
             $user = $userManager->getInformation($usernamemail, $usernamemail);
 
+
             if(empty($user->getUsername()) || empty($user->getEmail())){
                 header("Location:index.php?error=noUser&access=user");
             }
@@ -136,12 +137,13 @@ class UserController
                 $pass_check = password_verify($password, $user->getPassword());
                 if($pass_check == true){
                     session_start();
-                    $_SESSION['id'] = $user->getId();
-                    $_SESSION['nickname'] = $user->getUsername();
-                    $_SESSION['firstname'] = $user->getFirstname();
-                    $_SESSION['lastname'] = $user->getLastname();
-                    $_SESSION['email'] = $user->getEmail();
-                    $_SESSION['Statut_id'] = $user->getStatut();
+                    $session = new Session();
+                    $session->set('id', $user->getId());
+                    $session->set('username', $user->getUsername());
+                    $session->set('firstname', $user->getFirstname());
+                    $session->set('lastname', $user->getLastname());
+                    $session->set('email', $user->getEmail());
+                    $session->set('statut', $user->getStatut());
 
                     header("Location:index.php?success=login&username=" . $usernamemail . "&access=user");
                     exit();
@@ -167,10 +169,10 @@ class UserController
     public function listAction()
     {
         $alert = $this->getAlert();
-
         session_start();
 
-        if(isset($_SESSION['Statut_id'])){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        if(isset($sessionStatut)){
 
             $userManager = new UserManager();
             $countUsers = $userManager->countUsers();
@@ -200,7 +202,9 @@ class UserController
 
         session_start();
 
-        if(isset($_SESSION['Statut_id']) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+        if(isset($sessionStatut) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
             $this->id = htmlspecialchars($_GET['userid'], ENT_QUOTES);
 
             $user = new UserManager();
@@ -212,7 +216,7 @@ class UserController
             if($useredit->getId() == NULL){
                 header('Location:index.php?access=user!list&error=noUser');
             }
-            elseif($_SESSION['id'] == $useredit->getId() || $_SESSION['Statut_id'] == 2){
+            elseif($sessionId == $useredit->getId() || $sessionStatut == 2){
                 require_once ('../View/User/EditUser.php');
             }
             else{
@@ -232,11 +236,13 @@ class UserController
         session_start();
         $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
-        if(isset($_SESSION['id']) && is_numeric($this->id)){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+        if(isset($sessionId) && is_numeric($this->id)){
             $userManager = new UserManager();
             $getUser = $userManager->getUser($this->id);
             if(!empty($getUser->getId())){
-                if($_SESSION['id'] == $getUser->getId() || $_SESSION['Statut_id'] == 2){
+                if($sessionId == $getUser->getId() || $sessionStatut == 2){
                     $this->lastname = empty(htmlspecialchars($_POST['lastname'], ENT_QUOTES)) ? $getUser->getLastname() : htmlspecialchars($_POST['lastname'], ENT_QUOTES) ;
                     $this->firstname = empty(htmlspecialchars($_POST['firstname'], ENT_QUOTES)) ? $getUser->getFirstname() : htmlspecialchars($_POST['firstname'], ENT_QUOTES);
                     $this->email = empty(htmlspecialchars($_POST['email'], ENT_QUOTES)) ? $getUser->getEmail() : htmlspecialchars($_POST['email'], ENT_QUOTES);
@@ -246,9 +252,9 @@ class UserController
                     $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
                     $this->statut = empty(htmlspecialchars($_POST['statut'], ENT_QUOTES)) ? $getUser->getStatut() : htmlspecialchars($_POST['statut'], ENT_QUOTES);
 
-                    if($_SESSION['Statut_id'] == 2){
+                    if($sessionStatut == 2){
                         if(isset($_POST['update'])){
-                            if($_SESSION['id'] == $this->id){
+                            if($sessionId == $this->id){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
                                     if(empty($password) || empty($confirmation)){
@@ -318,7 +324,7 @@ class UserController
                                 $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
                                 $this->id = $getUser->getId();
                                 $user = $this->setUser();
-                               $controlUser = $this->controlUser($user);
+                                $controlUser = $this->controlUser($user);
 
                                if($controlUser == true){
                                    $userupdate = $userManager->hardUpdateUser($user);
@@ -338,7 +344,7 @@ class UserController
                             }
                         }
                         elseif(isset($_POST['delete'])){
-                            if($_SESSION['id'] == $this->id){
+                            if($sessionId == $this->id){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
                                     $this->autoDelete();
@@ -374,10 +380,16 @@ class UserController
                                         }
                                         else {
                                             session_start();
-                                            $_SESSION['nickname'] = $userupdate->getUsername();
+                                            $session = new Session();
+                                            $session->set('username', $userupdate->getUsername());
+                                            $session->set('firstname', $userupdate->getFirstname());
+                                            $session->set('lastname', $userupdate->getLastname());
+                                            $session->set('email', $userupdate->getEmail());
+
+                                            /*$_SESSION['nickname'] = $userupdate->getUsername();
                                             $_SESSION['firstname'] = $userupdate->getFirstname();
                                             $_SESSION['lastname'] = $userupdate->getLastname();
-                                            $_SESSION['email'] = $userupdate->getEmail();
+                                            $_SESSION['email'] = $userupdate->getEmail();*/
 
                                             header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
                                         }
@@ -401,12 +413,20 @@ class UserController
                                         }
                                         else {
                                             session_start();
-                                            $_SESSION['id'] = $userupdate->getId();
+                                            $session = new Session();
+                                            $session->set('id', $userupdate->getId());
+                                            $session->set('username', $userupdate->getUsername());
+                                            $session->set('firstname', $userupdate->getFirstname());
+                                            $session->set('lastname', $userupdate->getLastname());
+                                            $session->set('email', $userupdate->getEmail());
+                                            $session->set('statut', $userupdate->getStatut());
+
+                                            /*$_SESSION['id'] = $userupdate->getId();
                                             $_SESSION['nickname'] = $userupdate->getUsername();
                                             $_SESSION['firstname'] = $userupdate->getFirstname();
                                             $_SESSION['lastname'] = $userupdate->getLastname();
                                             $_SESSION['email'] = $userupdate->getEmail();
-                                            $_SESSION['Statut_id'] = $userupdate->getStatut();
+                                            $_SESSION['Statut_id'] = $userupdate->getStatut();*/
 
                                             header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
                                         }
@@ -575,9 +595,10 @@ class UserController
             $comManager = new CommentManager();
             $postManager = new PostManager();
 
-            $comManager->updateEditorComments($_SESSION['id'], $this->id);
+            $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+            $comManager->updateEditorComments($sessionId, $this->id);
             $comManager->deleteUserComments($this->id);
-            $postManager->updateAuthor($_SESSION['id'], $this->id);
+            $postManager->updateAuthor($sessionId, $this->id);
 
             $deleteUser = $userManager->deleteUser($this->id);
 

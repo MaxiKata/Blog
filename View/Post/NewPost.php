@@ -1,12 +1,16 @@
 <?php
+use \Blog\App\Entity\Session;
+
+$sessionId = Session::get('id', $filter, $fillWithEmptyString);
+$sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
 
 $title = "Nouvel Article";
 require_once('../View/layout.php'); ?>
 
 
 <?php
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2){ ?>
     <body>
         <?php require ('../View/header.php'); ?>
 

@@ -7,6 +7,7 @@ namespace Blog\App\Controller;
 use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
 use Blog\App\Entity\Comment;
+use Blog\App\Entity\Session;
 use Model\CommentManager;
 use Model\PostManager;
 
@@ -28,9 +29,12 @@ class CommentController
     public function publishAction()
     {
         $alert = $this->getAlert();
+
         session_start();
-        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
-        if($sessionId !== false){
+
+        $publish = filter_input(INPUT_POST, 'publish');
+        $sessionId = Session::get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        if(isset($publish) && isset($sessionId)){
 
             $comment = new Comment();
 
@@ -82,7 +86,7 @@ class CommentController
         session_start();
         $pId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
-        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionId = Session::get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
 
         if($sessionId !== false || $pId !== false || $commentId !== false && is_numeric($pId) && is_numeric($commentId)){
             $comment = new Comment();
@@ -115,8 +119,8 @@ class CommentController
         $alert = $this->getAlert();
 
         session_start();
-        $sessionId = filter_var($_SESSION['id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
-        $sessionStatut = filter_var($_SESSION['Statut_id'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionId = Session::get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $sessionStatut = Session::get('statut', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         $pId = filter_input(INPUT_POST, 'p_Id', FILTER_SANITIZE_STRING);
         $commentId = filter_input(INPUT_POST, 'comId', FILTER_SANITIZE_STRING);
         $commentContent = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
@@ -135,7 +139,10 @@ class CommentController
             if(!empty($verifyComment->getId()) && $verifyComment->getId() == $comment->getId() && $verifyComment->getPostId() == $comment->getPostId()){
 
                 if($sessionStatut == 2 || $sessionId == $verifyComment->getUserId()){
-                    if(isset($_POST['updatecomment'])){
+                    $updateCommentPost = filter_input(INPUT_POST, 'updatecomment');
+                    $deleteCommentPost = filter_input(INPUT_POST, 'deletecomment');
+
+                    if(isset($updateCommentPost)){
                         $updateComment = $commentManager->updateComment($comment);
                          if($updateComment == true){
                              header("Location: index.php?success=commentUpdate&id=" . $verifyComment->getPostId() . "&access=blog!read");
@@ -144,7 +151,7 @@ class CommentController
                              header("Location: index.php?error=commentUpdate&access=blog");
                          }
                     }
-                    elseif(isset($_POST['deletecomment'])){
+                    elseif(isset($deleteCommentPost)){
                         $deleteComment = $commentManager->deleteComment($comment->getId());
                         if($deleteComment == true){
                             header("Location: index.php?success=commentDelete&id=" . $verifyComment->getPostId() . "&access=blog!read");

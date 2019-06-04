@@ -1,4 +1,8 @@
 <?php
+use \Blog\App\Entity\Session;
+
+$sessionId = Session::get('id', $filter, $fillWithEmptyString);
+$sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
 
 $title = $draft->getTitle();
 $d_id = $draft->getId();
@@ -8,8 +12,8 @@ $d_category = $draft->getCategory();
 
 require_once('../View/layout.php');
 
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2){ ?>
     <body>
     <?php require ('../View/header.php'); ?>
 
@@ -47,6 +51,6 @@ if(isset($_SESSION['Statut_id'])){
     </body><?php }
 }
 else{
-    Home();
+    header("Location: index.php");
 }
 ?>

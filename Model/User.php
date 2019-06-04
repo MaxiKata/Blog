@@ -3,6 +3,7 @@
 namespace Model;
 
 use App\Manager;
+use Blog\App\Entity\Session;
 use Blog\App\Entity\User;
 
 /**
@@ -269,8 +270,8 @@ class UserManager extends Manager
      * @param $user
      * @return User
      */
-    private function setUser($user){
-
+    private function setUser($user)
+    {
         $userObj = new User();
         foreach (self::properties as $property => $bdd){
             $userObj->{"set$property"}($user["$bdd"]) ;
@@ -283,7 +284,8 @@ class UserManager extends Manager
      * @param $users
      * @return array
      */
-    private function setUsers($users){
+    private function setUsers($users)
+    {
          $finalComments = array();
 
          foreach($users as $user){

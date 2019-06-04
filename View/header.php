@@ -1,3 +1,6 @@
+<?php use \Blog\App\Entity\Session;
+$sessionId = Session::get('id', $filter, $fillWithEmptyString);
+$sessionStatut = Session::get('statut', $filter, $fillWithEmptyString); ?>
 
 <header>
     <!-- Navigation
@@ -15,8 +18,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?= $directory ?>/index.php?access=blog">Blog</a>
                     <?php
-                    if(isset($_SESSION['Statut_id'])){
-                        if($_SESSION['Statut_id'] == 2){ ?>
+                    if(isset($sessionStatut)){
+                        if($sessionStatut == 2){ ?>
                             <ul>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=  $directory ?>/index.php?access=blog!newpost">Nouvel Article</a>
@@ -29,7 +32,7 @@
                     } ?>
                 </li>
                 <?php
-                 if(isset($_SESSION['Statut_id'])){ ?>
+                 if(isset($sessionStatut)){ ?>
                      <li class="nav-item">
                         <a class="nav-link" href="<?= $directory ?>/index.php?access=user!list">Liste Utilisateurs</a>
                      </li>
@@ -38,8 +41,9 @@
             </ul>
             <div class="col-3 d-flex">
                 <?php
-                if(isset($_SESSION['id'])){ ?>
-                    <div class="ml-auto my-auto h5">Bienvenue <a href="<?=  $directory ?>/index.php?userid=<?=$_SESSION['id'] ?>&access=user!profil"><?= $_SESSION['nickname'] ?></a></div>
+
+                if(isset($sessionId)){ ?>
+                    <div class="ml-auto my-auto h5">Bonjour <a href="<?=  $directory ?>/index.php?userid=<?= $sessionId ?>&access=user!profil"><?= Session::get('username', $filter, $fillWithEmptyString) ?></a></div>
                     <form class="ml-2" action="<?= $directory ?>/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>
                 <?php }
                 else{ ?>

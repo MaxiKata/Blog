@@ -5,6 +5,7 @@ namespace Blog\App\Controller;
 use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
 use Blog\App\Entity\Article;
+use Blog\App\Entity\Session;
 use Model\CommentManager;
 use Model\PostManager;
 
@@ -62,7 +63,8 @@ class BlogController
         $alert = $this->getAlert();
 
         session_start();
-        if($_SESSION['Statut_id'] == 2){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        if($sessionStatut == 2){
             require_once('../View/Post/NewPost.php');
         }
         else{
@@ -78,10 +80,10 @@ class BlogController
         $titlePost = htmlspecialchars($_POST['title'], ENT_QUOTES);
         $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
         $category = htmlspecialchars($_POST['category'], ENT_QUOTES);
-        $userId = $_SESSION['id'];
+        $userId = $sessionStatut = Session::get('id', $filter, $fillWithEmptyString);
 
-
-        if($_SESSION['Statut_id'] == 2){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        if($sessionStatut == 2){
             if(isset($_POST['publish'])){
 
                 if(!empty($titlePost) || !empty($content) || !empty($category)){
@@ -133,7 +135,6 @@ class BlogController
                     $postManager = new PostManager();
                     $getCategoryColor = $postManager->getCategoryColor($draft->getCategory());
 
-
                     if(empty($getCategoryColor[0]) || $getCategoryColor == false){
                         $draft->setColor($this->randomColor());
                         $newdraft = $postManager->postNewDraft($draft);
@@ -175,7 +176,8 @@ class BlogController
         $alert = $this->getAlert();
 
         session_start();
-        if($_SESSION['Statut_id'] == 2){
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        if($sessionStatut == 2){
             $postManager = new PostManager();
             $draftStatut = 4;
 
@@ -206,7 +208,8 @@ class BlogController
         if(isset($_GET['id'])){
             $postId = htmlspecialchars($_GET['id'],ENT_QUOTES);
             session_start();
-            if($_SESSION['Statut_id'] == 2 && is_numeric($postId)){
+            $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+            if($sessionStatut == 2 && is_numeric($postId)){
                 $postManager = new PostManager();
                 $post = $postManager->getPost($postId);
 
@@ -233,7 +236,8 @@ class BlogController
         if(isset($_GET['id'])){
             $draftId = htmlspecialchars($_GET['id'],ENT_QUOTES);
             session_start();
-            if($_SESSION['Statut_id'] == 2 && is_numeric($draftId)){
+            $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+            if($sessionStatut == 2 && is_numeric($draftId)){
                 $postManager = new PostManager();
                 $draft = $postManager->getPost($draftId);
 
@@ -259,14 +263,17 @@ class BlogController
         $alert = $this->getAlert();
 
         session_start();
+        $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+
         $update = new Article();
         $update->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES));
         $update->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES));
         $update->setCategory(htmlspecialchars($_POST['category'], ENT_QUOTES));
         $update->setId(htmlspecialchars($_POST['id'], ENT_QUOTES));
-        $update->setUid($_SESSION['id']);
+        $update->setUid($sessionId);
 
-        if($_SESSION['Statut_id'] == 2)
+        if($sessionStatut == 2)
         {
             if(is_numeric($update->getId()) || !empty($update->getTitle()) || !empty($update->getContent()) || !empty($update->getCategory())){
                 $getArticle = new PostManager();

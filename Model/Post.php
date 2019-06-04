@@ -140,10 +140,10 @@ class PostManager extends Manager
         $content = $draft->getContent();
         $category = $draft->getCategory();
         $userId = $draft->getUid();
-        $color = $post->getColor();
+        $color = $draft->getColor();
 
         $db = $this->dbConnect();
-        $pushdraft = $db->prepare('INSERT INTO post(title, content, category, Statut_id, User_id, datePostCreate, datePostUpdate) VALUES (?, ?, ?,  4, ?, NOW(), NOW(), ?)');
+        $pushdraft = $db->prepare('INSERT INTO post(title, content, category, Statut_id, User_id, datePostCreate, datePostUpdate, categoryColor) VALUES (?, ?, ?,  4, ?, NOW(), NOW(), ?)');
         $newDraft = $pushdraft->execute(array($titlePost, $content, $category, $userId, $color));
 
         return $newDraft;

@@ -1,5 +1,9 @@
 <?php
 
+    use \Blog\App\Entity\Session;
+
+    $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+
     $title = $post->getTitle();
     $p_id = $post->getId();
     $p_dateUpd = $post->getDateUpdate() ;
@@ -8,8 +12,8 @@
 
 require_once('../View/layout.php');
 
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2){ ?>
     <body>
         <?php require ('../View/header.php'); ?>
 
@@ -48,6 +52,6 @@ if(isset($_SESSION['Statut_id'])){
     </body><?php }
 }
 else{
-    Home();
+    header("Location: index.php");
 }
 ?>
