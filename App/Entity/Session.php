@@ -11,7 +11,7 @@ class Session
         $_SESSION[$key] = $value;
     }
 
-    public static function get($key = null, $filter = null, $fillWithEmptyString = false)
+    public function get($key = null, $filter = null, $fillWithEmptyString = false)
     {
         if (!$key) {
             if (function_exists('filter_var_array')) {

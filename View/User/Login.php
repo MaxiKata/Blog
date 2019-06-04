@@ -1,9 +1,11 @@
 <?php
 session_start();
 use \Blog\App\Entity\Session;
-$sessionId = Session::get('id', $filter, $fillWithEmptyString);
-$sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
-$sessionUsername = Session::get('username', $filter, $fillWithEmptyString);
+
+$session = new Session();
+$sessionId = $session->get('id', $filter, $fillWithEmptyString);
+$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+$sessionUsername = $session->get('username', $filter, $fillWithEmptyString);
 
 $title = "Connexion";
 require_once('../View/layout.php'); ?>

@@ -1,5 +1,9 @@
 <?php
+    use \Blog\App\Entity\Session;
 
+    $session = new Session();
+    $sessionId = $session->get('id', $filter, $fillWithEmptyString);
+    $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
 
     $com_id = $comments->getId();
     $dateComUpdate_fr = $comments->getDateComUpdate();
@@ -10,8 +14,8 @@
 $title = 'Mettre à jour le commentaire';
 require_once('../View/layout.php');
 
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $com_uid){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2 || $sessionId == $com_uid){ ?>
         <body>
         <?php require ('../View/header.php'); ?>
 

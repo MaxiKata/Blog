@@ -2,7 +2,8 @@
 
     use \Blog\App\Entity\Session;
 
-    $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+    $session = new Session();
+    $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
 
     $title = $post->getTitle();
     $p_id = $post->getId();

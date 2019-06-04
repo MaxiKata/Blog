@@ -1,4 +1,8 @@
 <?php
+use \Blog\App\Entity\Session;
+$session = new Session();
+$sessionId = $session->get('id', $filter, $fillWithEmptyString);
+$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
 
 $title = "Mettez à jour votre profil";
 $uid = htmlspecialchars($useredit->getId(), ENT_QUOTES);
@@ -55,8 +59,8 @@ require_once('../View/layout.php'); ?>
                 <input type="password" id="confirm_password" name="confirm_password"/>
             </div>
             <?php
-            if(isset($_SESSION['Statut_id'])){
-                if($_SESSION['Statut_id'] == 2){ ?>
+            if(isset($sessionStatut)){
+                if($sessionStatut == 2){ ?>
                     <div class="text-center">
                         <select name="statut">
                             <option value="1" <?php if($u_statut == 1): ?> selected="selected" <?php endif; ?>>User</option>

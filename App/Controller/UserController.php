@@ -170,8 +170,9 @@ class UserController
     {
         $alert = $this->getAlert();
         session_start();
+        $session = new Session();
 
-        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
         if(isset($sessionStatut)){
 
             $userManager = new UserManager();
@@ -201,9 +202,10 @@ class UserController
         $alert = $this->getAlert();
 
         session_start();
+        $session = new Session();
 
-        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
-        $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $sessionId = $session->get('id', $filter, $fillWithEmptyString);
         if(isset($sessionStatut) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
             $this->id = htmlspecialchars($_GET['userid'], ENT_QUOTES);
 
@@ -236,8 +238,9 @@ class UserController
         session_start();
         $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
-        $sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
-        $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+        $session = new Session();
+        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $sessionId = $session->get('id', $filter, $fillWithEmptyString);
         if(isset($sessionId) && is_numeric($this->id)){
             $userManager = new UserManager();
             $getUser = $userManager->getUser($this->id);
@@ -595,7 +598,8 @@ class UserController
             $comManager = new CommentManager();
             $postManager = new PostManager();
 
-            $sessionId = Session::get('id', $filter, $fillWithEmptyString);
+            $session = new Session();
+            $sessionId = $session->get('id', $filter, $fillWithEmptyString);
             $comManager->updateEditorComments($sessionId, $this->id);
             $comManager->deleteUserComments($this->id);
             $postManager->updateAuthor($sessionId, $this->id);

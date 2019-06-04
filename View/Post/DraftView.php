@@ -1,8 +1,9 @@
 <?php
 use \Blog\App\Entity\Session;
 
-$sessionId = Session::get('id', $filter, $fillWithEmptyString);
-$sessionStatut = Session::get('statut', $filter, $fillWithEmptyString);
+$session = new Session();
+$sessionId = $session->get('id', $filter, $fillWithEmptyString);
+$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
 
 $title = $draft->getTitle();
 $d_id = $draft->getId();
