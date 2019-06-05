@@ -72,32 +72,24 @@ class UserController
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
 
             header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");
-            exit();
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
             header("Location:index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user");
-            exit();
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
             header("Location:index.php?error=invalidEmail&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
-            exit();
         }
         elseif(!preg_match("/^[a-zA-Z0-9]*$/", $this->username)){
             header("Location:index.php?error=invalidUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
-            exit();
         }
         elseif($password !== $confirmation){
             header("Location:index.php?error=passwordCheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user");
-            exit();
         }
-
         elseif(!empty(self::checkUser($this->username))){
             header("Location:index.php?error=usernameTaken&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user");
-            exit();
         }
         elseif(!empty(self::checkEmail($this->email))){
             header("Location:index.php?error=emailUsed&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
-            exit();
         }
         else{
             $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
