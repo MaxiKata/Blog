@@ -62,12 +62,12 @@ class UserController
 
     public function registerAction()
     {
-        $this->lastname = htmlspecialchars($_POST['lastname'], ENT_QUOTES);
-        $this->firstname = htmlspecialchars($_POST['firstname'], ENT_QUOTES);
-        $this->email = htmlspecialchars($_POST['email'], ENT_QUOTES);
-        $this->username = htmlspecialchars($_POST['username'], ENT_QUOTES);
-        $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
-        $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
+        $this->lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+        $this->firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+        $this->email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+        $this->username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $confirmation = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
 
@@ -119,8 +119,8 @@ class UserController
     {
         $alert = $this->getAlert();
 
-        $usernamemail = htmlspecialchars($_POST['usernamemail'], ENT_QUOTES);
-        $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
+        $usernamemail = filter_input(INPUT_POST, 'usernamemail', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
         if(empty($usernamemail) || empty($password)){
             header("Location:index.php?error=emptyFields&username=" . $usernamemail . "&access=user");
@@ -139,12 +139,7 @@ class UserController
                 if($pass_check == true){
                     session_start();
                     $session = new Session($password);
-                    /*$session->set('id', $user->getId());
-                    $session->set('username', $user->getUsername());
-                    $session->set('firstname', $user->getFirstname());
-                    $session->set('lastname', $user->getLastname());
-                    $session->set('email', $user->getEmail());
-                    $session->set('statut', $user->getStatut());*/
+
                     $session->setCookie('id', $user->getId());
                     $session->setCookie('username', $user->getUsername());
                     $session->setCookie('firstname', $user->getFirstname());
@@ -196,9 +191,9 @@ class UserController
             $nbUsers = $countUsers['nbUsers'];
             $perPage = 10;
             $nbPage = ceil($nbUsers/$perPage);
+            $page = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
-                $page = $_GET['p'];
+            if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $this->getUsersPage($page, $perPage, $nbPage);
             }
             else{
@@ -222,9 +217,9 @@ class UserController
         $session = new Session($key);
         $sessionId = $session->getCookie('id');
         $sessionStatut = $session->getCookie('statut');
+        $this->id = filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_STRING);
 
-        if(isset($sessionStatut) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
-            $this->id = htmlspecialchars($_GET['userid'], ENT_QUOTES);
+        if(isset($sessionStatut) && isset($this->id) && $this->id > 0 && is_numeric($this->id)){
 
             $user = new UserManager();
             $useredit = $user->getUser($this->id);
@@ -252,7 +247,7 @@ class UserController
     {
         $alert = $this->getAlert();
 
-        $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
+        $this->id = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_STRING);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -266,17 +261,26 @@ class UserController
             $getUser = $userManager->getUser($this->id);
             if(!empty($getUser->getId())){
                 if($sessionId == $getUser->getId() || $sessionStatut == 2){
-                    $this->lastname = empty(htmlspecialchars($_POST['lastname'], ENT_QUOTES)) ? $getUser->getLastname() : htmlspecialchars($_POST['lastname'], ENT_QUOTES) ;
-                    $this->firstname = empty(htmlspecialchars($_POST['firstname'], ENT_QUOTES)) ? $getUser->getFirstname() : htmlspecialchars($_POST['firstname'], ENT_QUOTES);
-                    $this->email = empty(htmlspecialchars($_POST['email'], ENT_QUOTES)) ? $getUser->getEmail() : htmlspecialchars($_POST['email'], ENT_QUOTES);
-                    $this->username = empty(htmlspecialchars($_POST['username'], ENT_QUOTES)) ? $getUser->getUsername() : htmlspecialchars($_POST['username'], ENT_QUOTES);
-                    $oldpassword = htmlspecialchars($_POST['oldpassword'], ENT_QUOTES);
-                    $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
-                    $confirmation = htmlspecialchars($_POST['confirm_password'], ENT_QUOTES);
-                    $this->statut = empty(htmlspecialchars($_POST['statut'], ENT_QUOTES)) ? $getUser->getStatut() : htmlspecialchars($_POST['statut'], ENT_QUOTES);
+                    $update = filter_input(INPUT_POST, 'update', FILTER_SANITIZE_STRING);
+                    $delete = filter_input(INPUT_POST, 'delete', FILTER_SANITIZE_STRING);
+
+                    $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+                    $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+                    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+                    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+                    $statut = filter_input(INPUT_POST, 'statut', FILTER_SANITIZE_STRING);
+                    $oldpassword = filter_input(INPUT_POST, 'oldpassword', FILTER_SANITIZE_STRING);
+                    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+                    $confirmation = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
+
+                    $this->lastname = empty($lastname) ? $getUser->getLastname() : $lastname ;
+                    $this->firstname = empty($firstname) ? $getUser->getFirstname() : $firstname;
+                    $this->email = empty($email) ? $getUser->getEmail() : $email;
+                    $this->username = empty($username) ? $getUser->getUsername() : $username;
+                    $this->statut = empty($statut) ? $getUser->getStatut() : $statut;
 
                     if($sessionStatut == 2){
-                        if(isset($_POST['update'])){
+                        if(isset($update)){
                             if($sessionId == $this->id){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
@@ -366,7 +370,7 @@ class UserController
                                 header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
                             }
                         }
-                        elseif(isset($_POST['delete'])){
+                        elseif(isset($delete)){
                             if($sessionId == $this->id){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
@@ -388,7 +392,7 @@ class UserController
                     elseif(!empty($oldpassword)){
                         $pass_check = password_verify($oldpassword, $getUser->getPassword());
                         if($pass_check == true){
-                            if(isset($_POST['update'])){
+                            if(isset($update)){
                                 if(empty($password) || empty($confirmation)){
                                     $this->id = $getUser->getId();
                                     $this->statut = $getUser->getStatut();
@@ -456,7 +460,7 @@ class UserController
                                     header("Location:index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil");
                                 }
                             }
-                            elseif(isset($_POST['delete'])){
+                            elseif(isset($delete)){
                                 $this->autoDelete();
                             }
                             else{
@@ -670,34 +674,34 @@ class UserController
      */
     private function getAlert()
     {
-        if(isset($_GET['success']) || isset($_GET['error'])){
-            if(isset($_GET['success'])){
+        $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
+        $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
+        if(isset($getSuccess) || isset($getError)){
+            if(isset($getSuccess)){
                 $success = new Success();
-                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
 
-                if(method_exists($success, $function) == true){
-                    $successAlert = $success->$function();
+                if(method_exists($success, $getSuccess) == true){
+                    $successAlert = $success->$getSuccess();
 
                     return $successAlert;
                 }
                 else{
                     $error = new Error();
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $getSuccess = "notAllowed";
+                    $errorAlert = $error->$getSuccess();
                     return $errorAlert;
                 }
             }
             else{
                 $error = new Error();
-                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
 
-                if(method_exists($error, $function) == true){
-                    $errorAlert = $error->$function();
+                if(method_exists($error, $getError) == true){
+                    $errorAlert = $error->$getError();
                     return $errorAlert;
                 }
                 else{
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $getError = "notAllowed";
+                    $errorAlert = $error->$getError();
 
                     return $errorAlert;
 
