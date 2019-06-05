@@ -59,9 +59,9 @@ require_once '../View/layout.php' ; ?>
         <?php }
         ?>
         <br>
-        <?php if(empty($comments)){
-            echo 'Soyez le premier à poster un commentaire';
-        }
+        <?php if(empty($comments)){ ?>
+            <span>Soyez le premier à poster un commentaire</span>
+        <?php }
         else{
             foreach($comments as $com)
             {
@@ -77,9 +77,9 @@ require_once '../View/layout.php' ; ?>
                     <h3>
                         Par <?= filter_var($com_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
                         <em>le <?= filter_var($com_dateUpdate, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></em>
-                        <?php if($com_statut == 6 && $com_username !== $com_edit_username) {
-                            echo 'Modifié par '. filter_var($com_edit_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        } ?>
+                        <?php if($com_statut == 6 && $com_username !== $com_edit_username) { ?>
+                            <span>Modifié par <?= filter_var($com_edit_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></span>
+                        <?php } ?>
                     </h3>
 
                     <p><?= filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></p>

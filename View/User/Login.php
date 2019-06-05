@@ -20,15 +20,15 @@ require_once '../View/layout.php' ; ?>
 <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
 
 <?php
-if(!empty($sessionId)){
-    echo filter_var($alert, FILTER_UNSAFE_RAW); ?>
+if(!empty($sessionId)){ ?>
+    <span><?= filter_var($alert, FILTER_UNSAFE_RAW); ?></span>
     <div class="text-center">
-        <?php echo '<p>Bienvenue ' . filter_var($sessionUsername, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</p>';
-        echo '<form action="' . filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>'; ?>
+        <p>Bienvenue <?=filter_var($sessionUsername, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></p>
+        <form action="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>
     </div>
 <?php }
-else{
-    echo filter_var($alert, FILTER_UNSAFE_RAW); ?>
+else{ ?>
+    <span><?= filter_var($alert, FILTER_UNSAFE_RAW); ?> </span>
 
     <div class="login">
         <h2 class="text-center">Inscription</h2>

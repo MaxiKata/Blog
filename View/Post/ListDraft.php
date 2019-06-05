@@ -36,11 +36,13 @@ require_once '../View/layout.php' ; ?>
             <?php } ?>
                 <div class="text-center h4">
                     <?php for($i=1; $i<=$nbPage; $i++){
-                        if($i==$page){
-                            echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
+                        if($i==$page){ ?>
+                            <span> <?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> </span>
+                            <?php
                         }
-                        else{
-                            echo '<a href="index.php?access=blog!draftlist&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
+                        else{ ?>
+                            <a href="index.php?access=blog!draftlist&p=<?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"><?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></a>
+                            <?php
                         }
                     } ?>
                 </div>
