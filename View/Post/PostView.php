@@ -26,7 +26,7 @@ require_once '../View/layout.php' ; ?>
         <p><a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog">Retour à la liste des billets</a></p>
         <?php
         if(isset($sessionStatut) && $sessionStatut == 2){ ?>
-            <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= $p_id ?>&access=blog!modifypost">Modifier</a></p>
+            <p><a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>&access=blog!modifypost">Modifier</a></p>
         <?php }
         ?>
     </div>

@@ -20,7 +20,7 @@ require_once '../View/layout.php' ; ?>
                 $content = nl2br($data->getContent());
                 ?>
             <a href="index.php?id=<?= filter_var($pId, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>&access=blog!draft">
-                <div class="article" style="border-color: <?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" onmouseover="this.style.backgroundColor='<?= $color?>'; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';" onmouseout="this.style.backgroundColor=''; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';">
+                <div class="article" style="border-color: <?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" onmouseover="this.style.backgroundColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>'; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';" onmouseout="this.style.backgroundColor=''; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';">
                     <h2 class="text-center mt-3">
                         <?= filter_var($pTitle, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
                     </h2>
@@ -37,10 +37,10 @@ require_once '../View/layout.php' ; ?>
                 <div class="text-center h4">
                     <?php for($i=1; $i<=$nbPage; $i++){
                         if($i==$page){
-                            return ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
+                            echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
                         }
                         else{
-                            return '<a href="index.php?access=blog!draftlist&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
+                            echo '<a href="index.php?access=blog!draftlist&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
                         }
                     } ?>
                 </div>
