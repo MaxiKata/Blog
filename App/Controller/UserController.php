@@ -124,7 +124,6 @@ class UserController
 
         if(empty($usernamemail) || empty($password)){
             header("Location:index.php?error=emptyFields&username=" . $usernamemail . "&access=user");
-            exit();
         }
         else{
             $userManager = new UserManager();

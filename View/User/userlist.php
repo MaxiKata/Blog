@@ -22,12 +22,12 @@ require_once '../View/layout.php' ; ?>
                 <div>
                     <h3>
                         <?= filter_var($username, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        if($user->getStatut() == 2){
-                           echo ' - Admin';
-                        }
-                        else{
-                            echo ' - User';
-                        } ?>
+                        if($user->getStatut() == 2){ ?>
+                           <span> - Admin</span>
+                        <?php }
+                        else{ ?>
+                            <span> - User</span>
+                        <?php } ?>
                     </h3>
                     <em>Consulter</em>
                 </div>
@@ -38,11 +38,13 @@ require_once '../View/layout.php' ; ?>
     </ul>
     <?php
     for($i=1; $i<=$nbPage; $i++){
-        if($i==$page){
-            echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
+        if($i==$page){ ?>
+            <span> <?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> </span>
+            <?php
         }
-        else{
-            echo '<a href="index.php?access=user!list&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
+        else{ ?>
+            <a href="index.php?access=user!list&p=<?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"><?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></a>
+            <?php
         }
     }
     ?>
