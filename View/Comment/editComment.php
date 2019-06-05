@@ -23,19 +23,19 @@ if(isset($sessionStatut)){
         <?php require ('../View/header.php'); ?>
 
         <p class="mt-3 comment"><a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>&access=blog!read">Retour à l'article</a></p>
-        <?= htmlspecialchars($alert); ?>
-        <form class="comment" action="<?= $directory ?>/index.php?access=comment!update" method="post">
+        <?= filter_var($alert, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
+        <form class="comment" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!update" method="post">
             <div class="d-grid">
-                <label for="content"><?= $title ?></label>
-                <textarea type="text" id="content" name="content"><?= $com_content; ?></textarea>
+                <label for="content"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></label>
+                <textarea type="text" id="content" name="content"><?= filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
             </div>
             <div class="text-center">
                 <button class="btn btn-success" type="submit" name="updatecomment">Mettre à jour</button>
                 <button class="btn btn-danger" type="submit" name="deletecomment">Supprimer commentaire</button>
             </div>
             <div>
-                <input type="text" id="p_Id" name="p_Id" hidden value="<?= $p_id; ?>">
-                <input type="text" id="comId" name="comId" hidden value="<?= $com_id; ?>">
+                <input type="text" id="p_Id" name="p_Id" hidden value="<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>">
+                <input type="text" id="comId" name="comId" hidden value="<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>">
             </div>
         </form>
         </body>
