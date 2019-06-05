@@ -22,7 +22,7 @@ if(isset($sessionStatut)){
         <body>
         <?php require ('../View/header.php'); ?>
 
-        <p class="mt-3 comment"><a href="<?=  $directory ?>/index.php?id=<?= filter_var($p_id, FILTER_SANITIZE_STRING); ?>&access=blog!read">Retour à l'article</a></p>
+        <p class="mt-3 comment"><a href="<?=  $directory ?>/index.php?id=<?php esc_attr($p_id); ?>&access=blog!read">Retour à l'article</a></p>
         <?= $alert; ?>
         <form class="comment" action="<?= $directory ?>/index.php?access=comment!update" method="post">
             <div class="d-grid">
