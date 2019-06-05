@@ -21,36 +21,34 @@ class HomeController
     }
     private function getAlert()
     {
-        if(isset($_GET['success']) || isset($_GET['error'])){
-            if(isset($_GET['success'])){
+        $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
+        $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
+        if(isset($getSuccess) || isset($getError)){
+            if(isset($getSuccess)){
                 $success = new Success();
-                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
 
-                if(method_exists($success, $function) == true){
-                    $successAlert = $success->$function();
+                if(method_exists($success, $getSuccess) == true){
+                    $successAlert = $success->$getSuccess();
 
                     return $successAlert;
                 }
                 else{
                     $error = new Error();
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
-
+                    $getSuccess = "notAllowed";
+                    $errorAlert = $error->$getSuccess();
                     return $errorAlert;
                 }
-
             }
             else{
                 $error = new Error();
-                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
 
-                if(method_exists($error, $function) == true){
-                    $errorAlert = $error->$function();
+                if(method_exists($error, $getError) == true){
+                    $errorAlert = $error->$getError();
                     return $errorAlert;
                 }
                 else{
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $getError = "notAllowed";
+                    $errorAlert = $error->$getError();
 
                     return $errorAlert;
                 }

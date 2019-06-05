@@ -29,12 +29,13 @@ class Router
 
     public function parseUrl()
     {
+        $getAccess = filter_input(INPUT_GET, 'access', FILTER_SANITIZE_STRING);
 
-        if(!isset($_GET['access'])){
-            $_GET['access'] = 'home';
+        if(!isset($getAccess)){
+            $getAccess = 'home';
         }
 
-        $this->page = $_GET['access'];
+        $this->page = $getAccess;
 
         // Cuts this page value with the exclamation point
         $access = explode('!', $this->page);
