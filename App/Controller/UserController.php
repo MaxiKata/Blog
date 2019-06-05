@@ -152,11 +152,9 @@ class UserController
                     file_put_contents('store', $serializePassword);
 
                     header("Location:index.php?success=login&username=" . $usernamemail . "&access=user");
-                    exit();
                 }
                 else{
                     header("Location:index.php?error=wrongPassword&username=" . $usernamemail . "&access=user");
-                    exit();
                 }
             }
         }

@@ -43,11 +43,13 @@ require_once '../View/layout.php'; ?>
             } ?>
             <div class="text-center h4">
                 <?php for($i=1; $i<=$nbPage; $i++){
-                    if($i==$page){
-                        echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
+                    if($i==$page){ ?>
+                <span> <?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> </span>
+                        <?php /*echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';*/
                     }
-                    else{
-                        echo '<a href="index.php?access=blog&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
+                    else{ ?>
+                <a href="index.php?access=blog&p=<?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"><?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></a>
+                       <?php /*echo '<a href="index.php?access=blog&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';*/
                     }
                 }
                 ?>
