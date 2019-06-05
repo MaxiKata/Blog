@@ -84,7 +84,7 @@ class Router
         // Calls the action method on the controller
         $response = call_user_func([$this->controller, $this->action]);
         // Shows the response
-        echo $response;
+        return $response;
     }
 }
 

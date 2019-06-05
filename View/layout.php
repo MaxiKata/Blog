@@ -1,5 +1,4 @@
 <?php
-session_start();
 $directory = '../../../Blog'?>
 
 <!DOCTYPE html>
@@ -20,7 +19,8 @@ $directory = '../../../Blog'?>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans%7cKanit%7cLobster">
 
         <!-- Supplément CSS -->
-        <link href="<?php echo filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . "/Public/css/style.css" ?>?t=<? echo time(); ?>" media="all" rel="stylesheet" type="text/css" />
+        <?php $time = time(); ?>
+        <link href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . "/Public/css/style.css" ?>?t=<?= filter_var($time, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" media="all" rel="stylesheet" type="text/css" />
 </head>
 
 
