@@ -1,7 +1,12 @@
 <?php use \Blog\App\Entity\Session;
-$session = new Session();
-$sessionId = $session->get('id', $filter, $fillWithEmptyString);
-$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString); ?>
+
+$serializePassword = file_get_contents('store');
+$sessionPassword = unserialize($serializePassword);
+$key = $sessionPassword->getPassword();
+$session = new Session($key);
+$sessionId = $session->getCookie('id');
+$sessionStatut = $session->getCookie('statut');
+$sessionUsername = $session->getCookie('username'); ?>
 
 <header>
     <!-- Navigation
@@ -19,7 +24,7 @@ $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString); ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= $directory ?>/index.php?access=blog">Blog</a>
                     <?php
-                    if(isset($sessionStatut)){
+                    if(!empty($sessionStatut)){
                         if($sessionStatut == 2){ ?>
                             <ul>
                                 <li class="nav-item">
@@ -33,7 +38,7 @@ $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString); ?>
                     } ?>
                 </li>
                 <?php
-                 if(isset($sessionStatut)){ ?>
+                 if(!empty($sessionStatut)){ ?>
                      <li class="nav-item">
                         <a class="nav-link" href="<?= $directory ?>/index.php?access=user!list">Liste Utilisateurs</a>
                      </li>
@@ -43,8 +48,8 @@ $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString); ?>
             <div class="col-3 d-flex">
                 <?php
 
-                if(isset($sessionId)){ ?>
-                    <div class="ml-auto my-auto h5">Bonjour <a href="<?=  $directory ?>/index.php?userid=<?= $sessionId ?>&access=user!profil"><?= Session::get('username', $filter, $fillWithEmptyString) ?></a></div>
+                if(!empty($sessionId)){ ?>
+                    <div class="ml-auto my-auto h5">Bonjour <a href="<?=  $directory ?>/index.php?userid=<?= $sessionId ?>&access=user!profil"><?= $sessionUsername ?></a></div>
                     <form class="ml-2" action="<?= $directory ?>/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>
                 <?php }
                 else{ ?>

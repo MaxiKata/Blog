@@ -62,9 +62,12 @@ class BlogController
     {
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionStatut = $session->getCookie('statut');
+
         if($sessionStatut == 2){
             require_once('../View/Post/NewPost.php');
         }
@@ -77,14 +80,16 @@ class BlogController
     {
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $userId = $session->getCookie('id');
+        $sessionStatut = $session->getCookie('statut');
         $titlePost = htmlspecialchars($_POST['title'], ENT_QUOTES);
         $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
         $category = htmlspecialchars($_POST['category'], ENT_QUOTES);
-        $userId = $session->get('id', $filter, $fillWithEmptyString);
 
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
         if($sessionStatut == 2){
             if(isset($_POST['publish'])){
 
@@ -177,9 +182,11 @@ class BlogController
     {
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionStatut = $session->getCookie('statut');
         if($sessionStatut == 2){
             $postManager = new PostManager();
             $draftStatut = 4;
@@ -210,9 +217,12 @@ class BlogController
 
         if(isset($_GET['id'])){
             $postId = htmlspecialchars($_GET['id'],ENT_QUOTES);
-            session_start();
-            $session = new Session();
-            $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+            $serializePassword = file_get_contents('store');
+            $sessionPassword = unserialize($serializePassword);
+            $key = $sessionPassword->getPassword();
+            $session = new Session($key);
+            $sessionStatut = $session->getCookie('statut');
+
             if($sessionStatut == 2 && is_numeric($postId)){
                 $postManager = new PostManager();
                 $post = $postManager->getPost($postId);
@@ -239,9 +249,12 @@ class BlogController
 
         if(isset($_GET['id'])){
             $draftId = htmlspecialchars($_GET['id'],ENT_QUOTES);
-            session_start();
-            $session = new Session();
-            $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+            $serializePassword = file_get_contents('store');
+            $sessionPassword = unserialize($serializePassword);
+            $key = $sessionPassword->getPassword();
+            $session = new Session($key);
+            $sessionStatut = $session->getCookie('statut');
+
             if($sessionStatut == 2 && is_numeric($draftId)){
                 $postManager = new PostManager();
                 $draft = $postManager->getPost($draftId);
@@ -267,9 +280,12 @@ class BlogController
     {
         $alert = $this->getAlert();
 
-        session_start();$session = new Session();
-$sessionId = $session->get('id', $filter, $fillWithEmptyString);
-$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
+        $sessionStatut = $session->getCookie('statut');
 
         $update = new Article();
         $update->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES));

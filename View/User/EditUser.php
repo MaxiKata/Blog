@@ -1,8 +1,11 @@
 <?php
 use \Blog\App\Entity\Session;
-$session = new Session();
-$sessionId = $session->get('id', $filter, $fillWithEmptyString);
-$sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+$serializePassword = file_get_contents('store');
+$sessionPassword = unserialize($serializePassword);
+$key = $sessionPassword->getPassword();
+$session = new Session($key);
+$sessionId = $session->getCookie('id');
+$sessionStatut = $session->getCookie('statut');
 
 $title = "Mettez à jour votre profil";
 $uid = htmlspecialchars($useredit->getId(), ENT_QUOTES);

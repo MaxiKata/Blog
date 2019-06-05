@@ -30,11 +30,12 @@ class CommentController
     {
         $alert = $this->getAlert();
 
-        session_start();
-
-        $session = new Session();
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
         $publish = filter_input(INPUT_POST, 'publish');
-        $sessionId = $session->get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         if(isset($publish) && isset($sessionId)){
 
             $comment = new Comment();
@@ -84,11 +85,13 @@ class CommentController
     {
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
         $pId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         $commentId = filter_input(INPUT_GET, 'commentid', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
-        $sessionId = $session->get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
 
         if($sessionId !== false || $pId !== false || $commentId !== false && is_numeric($pId) && is_numeric($commentId)){
             $comment = new Comment();
@@ -120,10 +123,13 @@ class CommentController
     {
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
-        $sessionId = $session->get('id', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
-        $sessionStatut = $session->get('statut', FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
+        $sessionStatut = $session->getCookie('statut');
+
         $pId = filter_input(INPUT_POST, 'p_Id', FILTER_SANITIZE_STRING);
         $commentId = filter_input(INPUT_POST, 'comId', FILTER_SANITIZE_STRING);
         $commentContent = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);

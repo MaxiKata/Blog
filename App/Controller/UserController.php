@@ -16,6 +16,7 @@ use Model\UserManager;
  */
 class UserController
 {
+    private $sessionPassword;
     /**
      * @var
      */
@@ -137,13 +138,22 @@ class UserController
                 $pass_check = password_verify($password, $user->getPassword());
                 if($pass_check == true){
                     session_start();
-                    $session = new Session();
-                    $session->set('id', $user->getId());
+                    $session = new Session($password);
+                    /*$session->set('id', $user->getId());
                     $session->set('username', $user->getUsername());
                     $session->set('firstname', $user->getFirstname());
                     $session->set('lastname', $user->getLastname());
                     $session->set('email', $user->getEmail());
-                    $session->set('statut', $user->getStatut());
+                    $session->set('statut', $user->getStatut());*/
+                    $session->setCookie('id', $user->getId());
+                    $session->setCookie('username', $user->getUsername());
+                    $session->setCookie('firstname', $user->getFirstname());
+                    $session->setCookie('lastname', $user->getLastname());
+                    $session->setCookie('email', $user->getEmail());
+                    $session->setCookie('statut', $user->getStatut());
+                    $sessionPassword = $session->getKey();
+                    $serializePassword = serialize($sessionPassword);
+                    file_put_contents('store', $serializePassword);
 
                     header("Location:index.php?success=login&username=" . $usernamemail . "&access=user");
                     exit();
@@ -159,7 +169,9 @@ class UserController
     public function logoutAction()
     {
         $alert = $this->getAlert();
-
+        $key = '';
+        $session = new Session($key);
+        $session->destroyCookie();
         session_start();
         session_unset();
         session_destroy();
@@ -169,10 +181,13 @@ class UserController
     public function listAction()
     {
         $alert = $this->getAlert();
-        session_start();
-        $session = new Session();
 
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionStatut = $session->getCookie('statut');
+
         if(isset($sessionStatut)){
 
             $userManager = new UserManager();
@@ -201,11 +216,13 @@ class UserController
 
         $alert = $this->getAlert();
 
-        session_start();
-        $session = new Session();
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
+        $sessionStatut = $session->getCookie('statut');
 
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
-        $sessionId = $session->get('id', $filter, $fillWithEmptyString);
         if(isset($sessionStatut) && isset($_GET['userid']) && $_GET['userid'] > 0 && is_numeric($_GET['userid'])){
             $this->id = htmlspecialchars($_GET['userid'], ENT_QUOTES);
 
@@ -235,12 +252,15 @@ class UserController
     {
         $alert = $this->getAlert();
 
-        session_start();
         $this->id = htmlspecialchars($_POST['userId'], ENT_QUOTES);
 
-        $session = new Session();
-        $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
-        $sessionId = $session->get('id', $filter, $fillWithEmptyString);
+        $serializePassword = file_get_contents('store');
+        $sessionPassword = unserialize($serializePassword);
+        $key = $sessionPassword->getPassword();
+        $session = new Session($key);
+        $sessionId = $session->getCookie('id');
+        $sessionStatut = $session->getCookie('statut');
+
         if(isset($sessionId) && is_numeric($this->id)){
             $userManager = new UserManager();
             $getUser = $userManager->getUser($this->id);
@@ -382,17 +402,15 @@ class UserController
                                             header("Location: index.php?error=connectionPdo&access=user");
                                         }
                                         else {
-                                            session_start();
-                                            $session = new Session();
-                                            $session->set('username', $userupdate->getUsername());
-                                            $session->set('firstname', $userupdate->getFirstname());
-                                            $session->set('lastname', $userupdate->getLastname());
-                                            $session->set('email', $userupdate->getEmail());
+                                            $serializePassword = file_get_contents('store');
+                                            $sessionPassword = unserialize($serializePassword);
+                                            $key = $sessionPassword->getPassword();
+                                            $session = new Session($key);
 
-                                            /*$_SESSION['nickname'] = $userupdate->getUsername();
-                                            $_SESSION['firstname'] = $userupdate->getFirstname();
-                                            $_SESSION['lastname'] = $userupdate->getLastname();
-                                            $_SESSION['email'] = $userupdate->getEmail();*/
+                                            $session->setCookie('username', $userupdate->getUsername());
+                                            $session->setCookie('firstname', $userupdate->getFirstname());
+                                            $session->setCookie('lastname', $userupdate->getLastname());
+                                            $session->setCookie('email', $userupdate->getEmail());
 
                                             header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
                                         }
@@ -415,21 +433,17 @@ class UserController
                                             header("Location: index.php?error=connectionPdo&access=user");
                                         }
                                         else {
-                                            session_start();
-                                            $session = new Session();
-                                            $session->set('id', $userupdate->getId());
-                                            $session->set('username', $userupdate->getUsername());
-                                            $session->set('firstname', $userupdate->getFirstname());
-                                            $session->set('lastname', $userupdate->getLastname());
-                                            $session->set('email', $userupdate->getEmail());
-                                            $session->set('statut', $userupdate->getStatut());
+                                            $serializePassword = file_get_contents('store');
+                                            $sessionPassword = unserialize($serializePassword);
+                                            $key = $sessionPassword->getPassword();
+                                            $session = new Session($key);
 
-                                            /*$_SESSION['id'] = $userupdate->getId();
-                                            $_SESSION['nickname'] = $userupdate->getUsername();
-                                            $_SESSION['firstname'] = $userupdate->getFirstname();
-                                            $_SESSION['lastname'] = $userupdate->getLastname();
-                                            $_SESSION['email'] = $userupdate->getEmail();
-                                            $_SESSION['Statut_id'] = $userupdate->getStatut();*/
+                                            $session->setCookie('id', $userupdate->getId());
+                                            $session->setCookie('username', $userupdate->getUsername());
+                                            $session->setCookie('firstname', $userupdate->getFirstname());
+                                            $session->setCookie('lastname', $userupdate->getLastname());
+                                            $session->setCookie('email', $userupdate->getEmail());
+                                            $session->setCookie('statut', $userupdate->getStatut());
 
                                             header("Location:index.php?userid=" . $user->getId() . "&success=update&access=user!profil");
                                         }
@@ -468,6 +482,13 @@ class UserController
         else{
             header("Location:index.php?error=notAllowed&access=user!list");
         }
+    }
+    private function setKey($key)
+    {
+        $password = new User();
+        $password->setPassword($key);
+
+        return $password;
     }
 
     /**
@@ -598,8 +619,12 @@ class UserController
             $comManager = new CommentManager();
             $postManager = new PostManager();
 
-            $session = new Session();
-            $sessionId = $session->get('id', $filter, $fillWithEmptyString);
+            $serializePassword = file_get_contents('store');
+            $sessionPassword = unserialize($serializePassword);
+            $key = $sessionPassword->getPassword();
+            $session = new Session($key);
+            $sessionId = $session->getCookie('id');
+
             $comManager->updateEditorComments($sessionId, $this->id);
             $comManager->deleteUserComments($this->id);
             $postManager->updateAuthor($sessionId, $this->id);

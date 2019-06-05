@@ -2,8 +2,12 @@
 
     use \Blog\App\Entity\Session;
 
-    $session = new Session();
-    $sessionStatut = $session->get('statut', $filter, $fillWithEmptyString);
+    $serializePassword = file_get_contents('store');
+    $sessionPassword = unserialize($serializePassword);
+    $key = $sessionPassword->getPassword();
+    $session = new Session($key);
+    $sessionId = $session->getCookie('id');
+    $sessionStatut = $session->getCookie('statut');
 
     $title = $post->getTitle();
     $p_id = $post->getId();
