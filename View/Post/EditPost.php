@@ -1,5 +1,14 @@
 <?php
 
+    use \Blog\App\Entity\Session;
+
+    $serializePassword = file_get_contents('store');
+    $sessionPassword = unserialize($serializePassword);
+    $key = $sessionPassword->getPassword();
+    $session = new Session($key);
+    $sessionId = $session->getCookie('id');
+    $sessionStatut = $session->getCookie('statut');
+
     $title = $post->getTitle();
     $p_id = $post->getId();
     $p_dateUpd = $post->getDateUpdate() ;
@@ -8,8 +17,8 @@
 
 require_once('../View/layout.php');
 
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2){ ?>
     <body>
         <?php require ('../View/header.php'); ?>
 
@@ -48,6 +57,6 @@ if(isset($_SESSION['Statut_id'])){
     </body><?php }
 }
 else{
-    Home();
+    header("Location: index.php");
 }
 ?>

@@ -16,7 +16,9 @@
             "App",
             "App/Controller",
             "App/Entity",
-            "router.php"
+            "router.php",
+            "View",
+            "View/User"
         ]
     }
 }

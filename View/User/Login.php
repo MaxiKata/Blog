@@ -1,4 +1,13 @@
 <?php
+use Blog\App\Entity\Session;
+
+$serializePassword = file_get_contents('store');
+$sessionPassword = unserialize($serializePassword);
+$key = $sessionPassword->getPassword();
+$session = new Session($key);
+$sessionId = $session->getCookie('id');
+$sessionStatut = $session->getCookie('statut');
+$sessionUsername = $session->getCookie('username');
 
 $title = "Connexion";
 require_once('../View/layout.php'); ?>
@@ -11,11 +20,11 @@ require_once('../View/layout.php'); ?>
 <h1><?= $title ?></h1>
 
 <?php
-if(isset($_SESSION['id'])){
+if(!empty($sessionId)){
     echo $alert; ?>
     <div class="text-center">
-        <?php echo '<p>Bienvenue ' . $_SESSION['nickname'] . '</p>';
-        echo '<form action="' . $directory . '/index.php?access=user!logout" method="post"><button class="btn btn-success" type="submit" name="logout">Se déconnecter</button></form>'; ?>
+        <?php echo '<p>Bienvenue ' . $sessionUsername . '</p>';
+        echo '<form action="' . $directory . '/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>'; ?>
     </div>
 <?php }
 else{

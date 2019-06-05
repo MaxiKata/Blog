@@ -1,12 +1,19 @@
 <?php
+use \Blog\App\Entity\Session;
+$serializePassword = file_get_contents('store');
+$sessionPassword = unserialize($serializePassword);
+$key = $sessionPassword->getPassword();
+$session = new Session($key);
+$sessionId = $session->getCookie('id');
+$sessionStatut = $session->getCookie('statut');
 
 $title = "Nouvel Article";
 require_once('../View/layout.php'); ?>
 
 
 <?php
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2){ ?>
     <body>
         <?php require ('../View/header.php'); ?>
 

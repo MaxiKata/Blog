@@ -1,5 +1,12 @@
 <?php
+    use \Blog\App\Entity\Session;
 
+    $serializePassword = file_get_contents('store');
+    $sessionPassword = unserialize($serializePassword);
+    $key = $sessionPassword->getPassword();
+    $session = new Session($key);
+    $sessionId = $session->getCookie('id');
+    $sessionStatut = $session->getCookie('statut');
 
     $com_id = $comments->getId();
     $dateComUpdate_fr = $comments->getDateComUpdate();
@@ -10,8 +17,8 @@
 $title = 'Mettre à jour le commentaire';
 require_once('../View/layout.php');
 
-if(isset($_SESSION['Statut_id'])){
-    if($_SESSION['Statut_id'] == 2 || $_SESSION['id'] == $com_uid){ ?>
+if(isset($sessionStatut)){
+    if($sessionStatut == 2 || $sessionId == $com_uid){ ?>
         <body>
         <?php require ('../View/header.php'); ?>
 
