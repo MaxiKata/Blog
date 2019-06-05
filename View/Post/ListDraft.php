@@ -17,7 +17,7 @@ require_once '../View/layout.php' ; ?>
                 $color = $data->getColor();
                 $pTitle = $data->getTitle();
                 $date = $data->getDateUpdate();
-                $content = $data->getContent();
+                $content = nl2br($data->getContent());
                 ?>
             <a href="index.php?id=<?= filter_var($pId, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>&access=blog!draft">
                 <div class="article" style="border-color: <?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" onmouseover="this.style.backgroundColor='<?= $color?>'; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';" onmouseout="this.style.backgroundColor=''; this.style.borderColor='<?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>';">
@@ -27,7 +27,7 @@ require_once '../View/layout.php' ; ?>
                     <span class="d-flex"><em>Publié le <?= filter_var($date, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></em></span>
 
                     <p>
-                        <?= nl2br(filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS)); ?>
+                        <?= filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
                         <br>
                     </p>
                     <button class="article-button btn" style="border: 1px solid <?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>;">Modifier</button>
