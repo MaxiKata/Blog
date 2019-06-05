@@ -22,8 +22,9 @@ class BlogController
         $article = 5;
         $nbPage = ceil($nbArt/$article);
 
-        if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
-            $page = $_GET['p'];
+        $page = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
+
+        if(isset($page) && is_numeric($page) && $page<=$nbPage){
             $this->getPostsPage($page, $article, $nbPage, $postStatut);
         }
         else{
@@ -35,26 +36,24 @@ class BlogController
     public function readAction()
     {
         $alert = $this->getAlert();
+        $postId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
-        if($_GET['access'] == 'blog!read'){
-            if(isset($_GET['id']) && $_GET['id']>0 && is_numeric($_GET['id'])){
-                $postId = htmlspecialchars($_GET['id']);
-                $postManager = new PostManager();
-                $post = $postManager->getPost($postId);
+        if(isset($postId) && $postId>0 && is_numeric($postId)){
+            $postManager = new PostManager();
+            $post = $postManager->getPost($postId);
 
-                if($post->getStatutId() == 3){
-                    $commentManager = new CommentManager();
-                    $comments = $commentManager->getComments($post->getId());
+            if($post->getStatutId() == 3){
+                $commentManager = new CommentManager();
+                $comments = $commentManager->getComments($post->getId());
 
-                    require_once ('../View/Post/PostView.php');
-                }
-                else{
-                    header('Location: index.php?error=article&access=blog');
-                }
+                require_once ('../View/Post/PostView.php');
             }
             else{
                 header('Location: index.php?error=article&access=blog');
             }
+        }
+        else{
+            header('Location: index.php?error=article&access=blog');
         }
     }
 
@@ -86,12 +85,14 @@ class BlogController
         $session = new Session($key);
         $userId = $session->getCookie('id');
         $sessionStatut = $session->getCookie('statut');
-        $titlePost = htmlspecialchars($_POST['title'], ENT_QUOTES);
-        $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
-        $category = htmlspecialchars($_POST['category'], ENT_QUOTES);
+        $titlePost = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+        $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+        $publish = filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING);
+        $draftPost = filter_input(INPUT_POST, 'draft', FILTER_SANITIZE_STRING);
 
         if($sessionStatut == 2){
-            if(isset($_POST['publish'])){
+            if(isset($publish)){
 
                 if(!empty($titlePost) || !empty($content) || !empty($category)){
                     $post = new Article();
@@ -131,7 +132,7 @@ class BlogController
                     header("Location: index.php?error=empyfields&access=blog!newpost");
                 }
             }
-            elseif(isset($_POST['draft'])){
+            elseif(isset($draftPost)){
                 if(!empty($titlePost) || !empty($content) || !empty($category)){
                     $draft = new Article();
                     $draft->setTitle($titlePost);
@@ -196,9 +197,9 @@ class BlogController
             $nbArt = $countPosts['nbArt'];
             $article = 5;
             $nbPage = ceil($nbArt/$article);
+            $page = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
-                $page = $_GET['p'];
+            if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $this->getPostsPage($page, $article, $nbPage, $draftStatut);
             }
             else{
@@ -214,9 +215,9 @@ class BlogController
     public function modifypostAction()
     {
         $alert = $this->getAlert();
+        $postId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
-        if(isset($_GET['id'])){
-            $postId = htmlspecialchars($_GET['id'],ENT_QUOTES);
+        if(isset($postId)){
             $serializePassword = file_get_contents('store');
             $sessionPassword = unserialize($serializePassword);
             $key = $sessionPassword->getPassword();
@@ -246,9 +247,9 @@ class BlogController
     public function draftAction()
     {
         $alert = $this->getAlert();
+        $draftId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
-        if(isset($_GET['id'])){
-            $draftId = htmlspecialchars($_GET['id'],ENT_QUOTES);
+        if(isset($draftId)){
             $serializePassword = file_get_contents('store');
             $sessionPassword = unserialize($serializePassword);
             $key = $sessionPassword->getPassword();
@@ -286,12 +287,16 @@ class BlogController
         $session = new Session($key);
         $sessionId = $session->getCookie('id');
         $sessionStatut = $session->getCookie('statut');
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+        $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+        $postId = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING);
 
         $update = new Article();
-        $update->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES));
-        $update->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES));
-        $update->setCategory(htmlspecialchars($_POST['category'], ENT_QUOTES));
-        $update->setId(htmlspecialchars($_POST['id'], ENT_QUOTES));
+        $update->setTitle($title);
+        $update->setContent($content);
+        $update->setCategory($category);
+        $update->setId($postId);
         $update->setUid($sessionId);
 
         if($sessionStatut == 2)
@@ -299,8 +304,11 @@ class BlogController
             if(is_numeric($update->getId()) || !empty($update->getTitle()) || !empty($update->getContent()) || !empty($update->getCategory())){
                 $getArticle = new PostManager();
                 $article = $getArticle->getPost($update->getId());
+                $updateDraft = filter_input(INPUT_POST, 'updatedraft', FILTER_SANITIZE_STRING);
+                $publish = filter_input(INPUT_POST, 'publish', FILTER_SANITIZE_STRING);
+                $delete = filter_input(INPUT_POST, 'deletearticle', FILTER_SANITIZE_STRING);
                 if(!empty($article->getId())){
-                    if(isset($_POST['updatedraft'])){
+                    if(isset($updateDraft)){
 
                         $getCategoryColor = $getArticle->getCategoryColor($update->getCategory());
 
@@ -332,7 +340,7 @@ class BlogController
                             }
                         }
                     }
-                    elseif(isset($_POST['publish'])){
+                    elseif(isset($publish)){
 
                         $getCategoryColor = $getArticle->getCategoryColor($update->getCategory());
 
@@ -362,7 +370,7 @@ class BlogController
                             }
                         }
                     }
-                    elseif(isset($_POST['deletearticle'])){
+                    elseif(isset($delete)){
                         $comments = new CommentManager();
                         $getComments = $comments->getComments($update->getId());
 
@@ -413,7 +421,7 @@ class BlogController
     public function categoryAction(){
         $alert = $this->getAlert();
 
-        $category = htmlspecialchars($_GET['category']);
+        $category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
 
         $postManager = new PostManager();
         $getArticleCategory = $postManager->getArticleCategory($category);
@@ -426,9 +434,9 @@ class BlogController
             $nbArt = $getArticleCategory['nbArt'];
             $article = 5;
             $nbPage = ceil($nbArt/$article);
+            $page = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_STRING);
 
-            if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']<=$nbPage){
-                $page = $_GET['p'];
+            if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $posts = $postManager->getCategory($page, $article, $category);
 
                 require_once ('../View/Post/ListPost.php');
@@ -478,20 +486,21 @@ class BlogController
      */
     private function getAlert()
     {
-        if(isset($_GET['success']) || isset($_GET['error'])){
-            if(isset($_GET['success'])){
+        $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
+        $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
+        if(isset($getSuccess) || isset($getError)){
+            if(isset($getSuccess)){
                 $success = new Success();
-                $function = htmlspecialchars($_GET['success'], ENT_QUOTES);
 
-                if(method_exists($success, $function) == true){
-                    $successAlert = $success->$function();
+                if(method_exists($success, $getSuccess) == true){
+                    $successAlert = $success->$getSuccess();
 
                     return $successAlert;
                 }
                 else{
                     $error = new Error();
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $getSuccess = "notAllowed";
+                    $errorAlert = $error->$getSuccess();
 
                     return $errorAlert;
                 }
@@ -499,15 +508,14 @@ class BlogController
             }
             else{
                 $error = new Error();
-                $function = htmlspecialchars($_GET['error'], ENT_QUOTES);
 
-                if(method_exists($error, $function) == true){
-                    $errorAlert = $error->$function();
+                if(method_exists($error, $getError) == true){
+                    $errorAlert = $error->$getError();
                     return $errorAlert;
                 }
                 else{
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
+                    $getError = "notAllowed";
+                    $errorAlert = $error->$getError();
 
                     return $errorAlert;
                 }
