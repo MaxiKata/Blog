@@ -12,7 +12,8 @@
     $dateComUpdate_fr = $comments->getDateComUpdate();
     $com_content = $comments->getContent();
     $com_uid = $comments->getUserID();
-    $p_id = $comments->getPostID();
+    $p_id = htmlspecialchars($comments->getPostID());
+    $directory = htmlspecialchars($directory, ENT_QUOTES);
 
 $title = 'Mettre à jour le commentaire';
 require_once('../View/layout.php');
@@ -22,7 +23,7 @@ if(isset($sessionStatut)){
         <body>
         <?php require ('../View/header.php'); ?>
 
-        <p class="mt-3 comment"><a href="<?= htmlspecialchars($directory, ENT_QUOTES); ?>/index.php?id=<?= htmlspecialchars($p_id, ENT_QUOTES); ?>&access=blog!read">Retour à l'article</a></p>
+        <p class="mt-3 comment"><a href="<?= $directory; ?>/index.php?id=<?= $p_id; ?>&access=blog!read">Retour à l'article</a></p>
         <?= $alert; ?>
         <form class="comment" action="<?= $directory ?>/index.php?access=comment!update" method="post">
             <div class="d-grid">
