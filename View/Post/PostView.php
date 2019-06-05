@@ -15,30 +15,30 @@
     $p_author = $post->getUserName();
 
 
-require_once('../View/layout.php'); ?>
+require_once '../View/layout.php' ; ?>
 
 <body>
-    <?php require ('../View/header.php'); ?>
+    <?php require '../View/header.php' ; ?>
 
-    <h1><?= $title ?></h1>
-    <?= $alert; ?>
+    <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
+    <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <div class="linksMenu">
-        <p><a href="<?= $directory ?>/index.php?access=blog">Retour à la liste des billets</a></p>
+        <p><a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog">Retour à la liste des billets</a></p>
         <?php
         if(isset($sessionStatut) && $sessionStatut == 2){ ?>
-            <p><a href="<?=$directory ?>/index.php?id=<?= $p_id ?>&access=blog!modifypost">Modifier</a></p>
+            <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= $p_id ?>&access=blog!modifypost">Modifier</a></p>
         <?php }
         ?>
     </div>
 
     <article >
         <h3>
-            Par <?= $p_author;?>
-            <em>le <?= $p_dateUpd ?></em>
+            Par <?= filter_var($p_author, FILTER_SANITIZE_FULL_SPECIAL_CHARS);?>
+            <em>le <?= filter_var($p_dateUpd, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></em>
         </h3>
 
         <p>
-            <?= nl2br($p_content); ?>
+            <?= nl2br(filter_var($p_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS)); ?>
         </p>
     </article>
     <div class="comment">
@@ -46,7 +46,7 @@ require_once('../View/layout.php'); ?>
         <?php
         if(isset($sessionStatut)){
             if($sessionStatut == 1 || $sessionStatut == 2 ){ ?>
-                <form class="post-comment" action="<?= $directory ?>/index.php?access=comment!publish" method="post">
+                <form class="post-comment" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!publish" method="post">
                     <label for="comment" hidden >Commentaire</label>
                     <textarea type="text" id="comment" name="comment" placeholder="N'hésitez pas à laisser un petit message"></textarea>
                     <button class="btn btn-success" type="submit" name="publish">Publier</button>
@@ -55,7 +55,7 @@ require_once('../View/layout.php'); ?>
             <?php }
         }
         else{ ?>
-            <a href="<?= $directory ?>/index.php?access=user"><button>Connectez vous vite pour répondre</button></a>
+            <a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user"><button>Connectez vous vite pour répondre</button></a>
         <?php }
         ?>
         <br>
@@ -75,20 +75,20 @@ require_once('../View/layout.php'); ?>
                 ?>
                 <div >
                     <h3>
-                        Par <?= $com_username; ?>
-                        <em>le <?= $com_dateUpdate; ?></em>
+                        Par <?= filter_var($com_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
+                        <em>le <?= filter_var($com_dateUpdate, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></em>
                         <?php if($com_statut == 6 && $com_username !== $com_edit_username) {
-                            echo 'Modifié par '. $com_edit_username;
+                            echo 'Modifié par '. filter_var($com_edit_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         } ?>
                     </h3>
 
-                    <p><?= nl2br($com_content); ?></p>
+                    <p><?= nl2br(filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS)); ?></p>
                     <?php
                     if(isset($sessionStatut) && $sessionStatut == 2){ ?>
-                        <p><a href="<?=$directory ?>/index.php?access=comment!modify&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
+                        <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!modify&id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>&commentid=<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">Modifier</a></p>
                     <?php }
                     elseif(isset($sessionStatut) && $sessionId == $com_uid){ ?>
-                        <p><a href="<?=$directory ?>/index.php?access=comment!modify&id=<?= $p_id ?>&commentid=<?= $com_id ?>">Modifier</a></p>
+                        <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!modify&id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>&commentid=<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">Modifier</a></p>
                     <?php }
                     ?>
                 </div>

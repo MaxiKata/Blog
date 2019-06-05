@@ -16,38 +16,38 @@ $u_firstname = htmlspecialchars($useredit->getFirstname(), ENT_QUOTES);
 $u_email = htmlspecialchars($useredit->getEmail(), ENT_QUOTES);
 
 
-require_once('../View/layout.php'); ?>
+require_once '../View/layout.php' ; ?>
 
 <body>
-    <?php require ('../View/header.php'); ?>
+    <?php require '../View/header.php' ; ?>
 
-    <h1><?= $title ?> de <?= $u_username ?></h1>
+    <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?> de <?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS)  ?></h1>
 
     <div class="userprofil">
         <p><a href="index.php?access=user!list">Retour à la liste des utilisateurs</a></p>
         <h3 class="text-center">
-            Nom d'utilisateur <?= $u_username ?>
+            Nom d'utilisateur <?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>
         </h3>
         <p class="text-center">
-            Cet utilisateur a posté <?= $comment[0]["COUNT(id)"]; ?> commentaire(s).
+            Cet utilisateur a posté <?php $commentId = $comment[0]["COUNT(id)"]; echo filter_var($commentId, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> commentaire(s).
         </p>
-        <?= $alert; ?>
-        <form action="<?= $directory ?>/index.php?access=user!update" method="post">
+        <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
+        <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!update" method="post">
             <div class="d-flex">
                 <label for="lastname">Nom de famille</label>
-                <input type="text" id="lastname" name="lastname" value="<?= $u_lastname ?>"/>
+                <input type="text" id="lastname" name="lastname" value="<?= filter_var($u_lastname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="firstname" value="<?= $u_firstname ?>"/>
+                <input type="text" id="firstname" name="firstname" value="<?= filter_var($u_firstname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="email">Votre Email</label>
-                <input type="email" id="email" name="email" value="<?= $u_email ?>"/>
+                <input type="email" id="email" name="email" value="<?= filter_var($u_email, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" name="username" value="<?= $u_username ?>"/>
+                <input type="text" id="username" name="username" value="<?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="oldpassword">Mot de passe Actuel</label>
@@ -73,7 +73,7 @@ require_once('../View/layout.php'); ?>
                 <?php }
                 else{ ?>
                     <div>
-                        <input type="text" id="statut" name="statut" hidden value="<?= $u_statut ?>">
+                        <input type="text" id="statut" name="statut" hidden value="<?= filter_var($u_statut, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">
                     </div>
                 <?php }
             }
@@ -83,7 +83,7 @@ require_once('../View/layout.php'); ?>
                 <button class="btn btn-danger" type="submit" name="delete">Supprimer Utilisateur</button>
             </div>
             <div>
-                <input type="text" id="userId" name="userId" hidden value="<?= $uid ?>">
+                <input type="text" id="userId" name="userId" hidden value="<?= filter_var($uid, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">
             </div>
         </form>
     </div>

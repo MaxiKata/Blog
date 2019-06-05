@@ -8,19 +8,19 @@ $sessionId = $session->getCookie('id');
 $sessionStatut = $session->getCookie('statut');
 
 $title = "Nouvel Article";
-require_once('../View/layout.php'); ?>
+require_once '../View/layout.php'; ?>
 
 
 <?php
 if(isset($sessionStatut)){
     if($sessionStatut == 2){ ?>
     <body>
-        <?php require ('../View/header.php'); ?>
+        <?php require '../View/header.php'; ?>
 
-        <h1><?= $title ?></h1>
-        <?= $alert; ?>
+        <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
+        <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
         <article>
-            <form action="<?= $directory ?>/index.php?access=blog!newarticle" method="post">
+            <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog!newarticle" method="post">
                 <div class="d-grid">
                     <label for="title">Titre de votre article</label>
                     <textarea type="text" id="title" name="title"></textarea>

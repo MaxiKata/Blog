@@ -148,6 +148,7 @@ class UserController
                     $session->setCookie('statut', $user->getStatut());
                     $sessionPassword = $session->getKey();
                     $serializePassword = serialize($sessionPassword);
+
                     file_put_contents('store', $serializePassword);
 
                     header("Location:index.php?success=login&username=" . $usernamemail . "&access=user");

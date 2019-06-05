@@ -10,44 +10,44 @@ $sessionStatut = $session->getCookie('statut');
 $sessionUsername = $session->getCookie('username');
 
 $title = "Connexion";
-require_once('../View/layout.php'); ?>
+require_once '../View/layout.php' ; ?>
 
 
 <body>
-<?php require ('../View/header.php'); ?>
+<?php require '../View/header.php' ; ?>
 
 
-<h1><?= $title ?></h1>
+<h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
 
 <?php
 if(!empty($sessionId)){
-    echo $alert; ?>
+    echo filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <div class="text-center">
-        <?php echo '<p>Bienvenue ' . $sessionUsername . '</p>';
-        echo '<form action="' . $directory . '/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>'; ?>
+        <?php echo '<p>Bienvenue ' . filter_var($sessionUsername, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</p>';
+        echo '<form action="' . filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '/index.php?access=user!logout" method="post"><button class="btn btn-primary" type="submit" name="logout">Se déconnecter</button></form>'; ?>
     </div>
 <?php }
 else{
-    echo $alert; ?>
+    echo filter_var($alert, FILTER_UNSAFE_RAW); ?>
 
     <div class="login">
         <h2 class="text-center">Inscription</h2>
-        <form class="mb-5" action="<?= $directory ?>/index.php?access=user!register" method="post">
+        <form class="mb-5" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!register" method="post">
             <div class="d-flex">
                 <label for="lastname">Nom de famille</label>
-                <input type="text" id="lastname" name="lastname" value="<?= htmlspecialchars($_GET["lastname"]) ?>"/>
+                <input type="text" id="lastname" name="lastname" value="<?= filter_input(INPUT_GET, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="firstname" value="<?= htmlspecialchars($_GET["firstname"]) ?>"/>
+                <input type="text" id="firstname" name="firstname" value="<?= filter_input(INPUT_GET, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="email">Votre Email</label>
-                <input type="email" id="email" name="email" value="<?= htmlspecialchars($_GET["email"]) ?>"/>
+                <input type="email" id="email" name="email" value="<?= filter_input(INPUT_GET, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="username">Pseudonyme</label>
-                <input type="text" id="username" name="username" value="<?= htmlspecialchars($_GET["username"]) ?>"/>
+                <input type="text" id="username" name="username" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="password">Mot de passe</label>
@@ -64,10 +64,10 @@ else{
 
 
         <h2 class="text-center">Connexion</h2>
-        <form class="mb-5" action="<?= $directory ?>/index.php?access=user!login" method="post">
+        <form class="mb-5" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!login" method="post">
             <div class="d-flex">
                 <label for="usernamemail">Pseudonyme / Email </label>
-                <input type="text" id="usernamemail" name="usernamemail" value="<?= htmlspecialchars($_GET["username"]) ?>"/>
+                <input type="text" id="usernamemail" name="usernamemail" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="password">Mot de passe</label>

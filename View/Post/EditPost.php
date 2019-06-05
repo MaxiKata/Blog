@@ -22,24 +22,24 @@ if(isset($sessionStatut)){
     <body>
         <?php require ('../View/header.php'); ?>
 
-        <h1><?= $title ?></h1>
+        <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
         <article>
-            <em>Publié le <?= $p_dateUpd ?></em>
+            <em>Publié le <?= filter_var($p_dateUpd, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></em>
             <br>
-            <a href="<?=  $directory ?>/index.php?id=<?= $p_id ?>&access=blog!read">Retour à l'article</a>
-            <?= $alert; ?>
-            <form action="<?= $directory ?>/index.php?access=blog!updatearticle" method="post">
+            <a href="<?=  filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>&access=blog!read">Retour à l'article</a>
+            <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
+            <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog!updatearticle" method="post">
                 <div class="d-grid">
                     <label for="title">Titre de votre article</label>
-                    <textarea type="text" id="title" name="title"><?= $title; ?></textarea>
+                    <textarea type="text" id="title" name="title"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="content">Article</label>
-                    <textarea type="text" id="content" name="content"><?= $p_content; ?></textarea>
+                    <textarea type="text" id="content" name="content"><?= filter_var($p_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="category">Catégorie</label>
-                    <textarea type="text" id="category" name="category"><?= $p_category; ?></textarea>
+                    <textarea type="text" id="category" name="category"><?= filter_var($p_category, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-inline-grid text-center">
                     <button class="btn btn-success" type="submit" name="publish">Re-Publier</button>
@@ -47,7 +47,7 @@ if(isset($sessionStatut)){
                     <button class="btn btn-danger" type="submit" name="deletearticle">Supprimer Article</button>
                 </div>
                 <div>
-                    <input type="text" id="id" name="id" hidden value="<?= $p_id; ?>" >
+                    <input type="text" id="id" name="id" hidden value="<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" >
                 </div>
 
             </form>
