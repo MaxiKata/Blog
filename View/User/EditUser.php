@@ -14,7 +14,7 @@ $u_username = htmlspecialchars($useredit->getUsername(), ENT_QUOTES);
 $u_lastname = htmlspecialchars($useredit->getLastname(), ENT_QUOTES);
 $u_firstname = htmlspecialchars($useredit->getFirstname(), ENT_QUOTES);
 $u_email = htmlspecialchars($useredit->getEmail(), ENT_QUOTES);
-
+$commentId = $comment[0]["COUNT(id)"];
 
 require_once '../View/layout.php' ; ?>
 
@@ -29,7 +29,7 @@ require_once '../View/layout.php' ; ?>
             Nom d'utilisateur <?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>
         </h3>
         <p class="text-center">
-            Cet utilisateur a posté <?php $commentId = $comment[0]["COUNT(id)"]; echo filter_var($commentId, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> commentaire(s).
+            Cet utilisateur a posté <?= filter_var($commentId, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?> commentaire(s).
         </p>
         <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
         <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!update" method="post">

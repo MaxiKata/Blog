@@ -10,7 +10,7 @@ require_once '../View/layout.php'; ?>
     <h1><?php if(isset($category)){ ?>
         <a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></a>
     <?php } else{
-        echo filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        return filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     } ?>
      <?php if(isset($category)){ ?> / <?= filter_var($category, FILTER_SANITIZE_FULL_SPECIAL_CHARS);} ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
@@ -44,10 +44,10 @@ require_once '../View/layout.php'; ?>
             <div class="text-center h4">
                 <?php for($i=1; $i<=$nbPage; $i++){
                     if($i==$page){
-                        echo ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
+                        return ' ' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' ';
                     }
                     else{
-                        echo '<a href="index.php?access=blog&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
+                        return '<a href="index.php?access=blog&p=' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '">' . filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a>';
                     }
                 }
                 ?>
