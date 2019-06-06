@@ -17,7 +17,7 @@ class UserController
     /**
      * @var
      */
-    private $id;
+    private $idUser;
     /**
      * @var
      */
@@ -229,12 +229,12 @@ class UserController
         $session = new Session($key);
         $sessionId = $session->getCookie('id');
         $sessionStatut = $session->getCookie('statut');
-        $this->id = filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_STRING);
+        $this->idUser = filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_STRING);
 
-        if(isset($sessionStatut) && isset($this->id) && $this->id > 0 && is_numeric($this->id)){
+        if(isset($sessionStatut) && isset($this->idUser) && $this->idUser > 0 && is_numeric($this->idUser)){
 
             $user = new UserManager();
-            $useredit = $user->getUser($this->id);
+            $useredit = $user->getUser($this->idUser);
 
             $commentManager = new CommentManager();
             $comment = $commentManager->countComments($useredit->getId());
@@ -266,7 +266,7 @@ class UserController
         $table = array($alert);
         $getAlert->useUnused($table);
 
-        $this->id = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_STRING);
+        $this->idUser = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_STRING);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -275,9 +275,9 @@ class UserController
         $sessionId = $session->getCookie('id');
         $sessionStatut = $session->getCookie('statut');
 
-        if(isset($sessionId) && is_numeric($this->id)){
+        if(isset($sessionId) && is_numeric($this->idUser)){
             $userManager = new UserManager();
-            $getUser = $userManager->getUser($this->id);
+            $getUser = $userManager->getUser($this->idUser);
             if(!empty($getUser->getId())){
                 if($sessionId == $getUser->getId() || $sessionStatut == 2){
                     $update = filter_input(INPUT_POST, 'update', FILTER_SANITIZE_STRING);
@@ -300,11 +300,11 @@ class UserController
 
                     if($sessionStatut == 2){
                         if(isset($update)){
-                            if($sessionId == $this->id){
+                            if($sessionId == $this->idUser){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
                                     if(empty($password) || empty($confirmation)){
-                                        $this->id = $getUser->getId();
+                                        $this->idUser = $getUser->getId();
                                         $user = $this->setUser();
                                         $controlUser = $this->controlUser($user);
                                         if($controlUser == true){
@@ -325,7 +325,7 @@ class UserController
                                     }
                                     elseif($password == $confirmation){
                                         $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                        $this->id = $getUser->getId();
+                                        $this->idUser = $getUser->getId();
                                         $user = $this->setUser();
                                         $controlUser = $this->controlUser($user);
 
@@ -351,12 +351,12 @@ class UserController
                                     <?php }
                                 }
                                 else{
-                                    $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->id . ""; ?>
+                                    $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
                                     <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
                             elseif(empty($password) || empty($confirmation)){
-                                $this->id = $getUser->getId();
+                                $this->idUser = $getUser->getId();
                                 $user = $this->setUser();
                                 $controlUser = $this->controlUser($user);
 
@@ -378,7 +378,7 @@ class UserController
                             }
                             elseif($password == $confirmation){
                                 $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                $this->id = $getUser->getId();
+                                $this->idUser = $getUser->getId();
                                 $user = $this->setUser();
                                 $controlUser = $this->controlUser($user);
 
@@ -404,13 +404,13 @@ class UserController
                             <?php }
                         }
                         elseif(isset($delete)){
-                            if($sessionId == $this->id){
+                            if($sessionId == $this->idUser){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
                                     $this->autoDelete();
                                 }
                                 else{
-                                    $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->id . ""; ?>
+                                    $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
                                     <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
@@ -429,7 +429,7 @@ class UserController
                         if($pass_check == true){
                             if(isset($update)){
                                 if(empty($password) || empty($confirmation)){
-                                    $this->id = $getUser->getId();
+                                    $this->idUser = $getUser->getId();
                                     $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
                                     $controlUser = $this->controlUser($user);
@@ -463,7 +463,7 @@ class UserController
                                 }
                                 elseif($password == $confirmation){
                                     $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                    $this->id = $getUser->getId();
+                                    $this->idUser = $getUser->getId();
                                     $this->statut = $getUser->getStatut();
                                     $user = $this->setUser();
                                     $controlUser = $this->controlUser($user);
@@ -540,7 +540,7 @@ class UserController
      */
     private function setUser(){
         $this->properties = array(
-            "Id" => $this->id,
+            "Id" => $this->idUser,
             "Lastname" => $this->lastname,
             "Firstname" => $this->firstname,
             'Email' => $this->email,
@@ -626,19 +626,19 @@ class UserController
 
         $userManager = new UserManager();
 
-        $getAdmins = $userManager->getAdmins($this->id);
-        $getInformations = $userManager->getUsersArticle($this->id);
+        $getAdmins = $userManager->getAdmins($this->idUser);
+        $getInformations = $userManager->getUsersArticle($this->idUser);
 
 
         if(!empty($getInformations[0]['c_UserId']) || !empty($getInformations[0]['p_UserId']) || !empty($getInformations[0]['com_UserIdEdit'])){
             $comManager = new CommentManager();
             $postManager = new PostManager();
 
-            $comManager->updateEditorComments($getAdmins[0]->getId(), $this->id);
-            $comManager->deleteUserComments($this->id);
-            $postManager->updateAuthor($getAdmins[0]->getId(), $this->id);
+            $comManager->updateEditorComments($getAdmins[0]->getId(), $this->idUser);
+            $comManager->deleteUserComments($this->idUser);
+            $postManager->updateAuthor($getAdmins[0]->getId(), $this->idUser);
 
-            $deleteUser = $userManager->deleteUser($this->id);
+            $deleteUser = $userManager->deleteUser($this->idUser);
 
             if($deleteUser == true){
                 $this->logoutAction();
@@ -651,7 +651,7 @@ class UserController
             <?php }
         }
         else{
-            $deleteUser = $userManager->deleteUser($this->id);
+            $deleteUser = $userManager->deleteUser($this->idUser);
 
             if($deleteUser == true){
                 $this->logoutAction();
@@ -673,7 +673,7 @@ class UserController
         $getAlert->useUnused($table);
 
         $userManager = new UserManager();
-        $getInformations = $userManager->getUsersArticle($this->id);
+        $getInformations = $userManager->getUsersArticle($this->idUser);
 
         if(!empty($getInformations[0]['c_UserId']) || !empty($getInformations[0]['p_UserId']) || !empty($getInformations[0]['com_UserIdEdit'])){
             $comManager = new CommentManager();
@@ -685,11 +685,11 @@ class UserController
             $session = new Session($key);
             $sessionId = $session->getCookie('id');
 
-            $comManager->updateEditorComments($sessionId, $this->id);
-            $comManager->deleteUserComments($this->id);
-            $postManager->updateAuthor($sessionId, $this->id);
+            $comManager->updateEditorComments($sessionId, $this->idUser);
+            $comManager->deleteUserComments($this->idUser);
+            $postManager->updateAuthor($sessionId, $this->idUser);
 
-            $deleteUser = $userManager->deleteUser($this->id);
+            $deleteUser = $userManager->deleteUser($this->idUser);
 
             if($deleteUser == true){
                 $url = "index.php?access=user!list&success=userDeleted"; ?>
@@ -701,7 +701,7 @@ class UserController
             <?php }
         }
         else{
-            $deleteUser = $userManager->deleteUser($this->id);
+            $deleteUser = $userManager->deleteUser($this->idUser);
 
             if($deleteUser == true){
                 $url = "index.php?access=user!list&success=userDeleted"; ?>
