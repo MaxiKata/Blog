@@ -69,11 +69,10 @@ class UserController
         $confirmation = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
-            $url = "index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user";
-            $url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            echo "<script>window.location='{$url}'</script>";
+            $url = "index.php?error=emptyFields&lastname=$this->lastname&firstname=$this->firstname&email=$this->email&username=$this->username&access=user"; ?>
+            <script type="text/javascript"t>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             /*header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");*/
-        }
+        <?php }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
             $url = "index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user";
             echo "<script>window.location='{$url}'</script>";
