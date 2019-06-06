@@ -70,6 +70,7 @@ class UserController
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
             $url = "index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user";
+            $url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             echo "<script>window.location='{$url}'</script>";
             /*header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");*/
         }
