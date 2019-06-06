@@ -557,20 +557,20 @@ class BlogController
      */
     private function randomColor()
     {
-        $r=rand(0,255);
-        $g=rand(0,255);
-        $b=rand(0,255);
+        $reds=rand(0,255);
+        $green=rand(0,255);
+        $blue=rand(0,255);
 
 
         for(; ; ){
-            if($this->lightness($r, $g, $b) >= .8){
-                $color = "#".dechex($r).dechex($g).dechex($b);
+            if($this->lightness($reds, $green, $blue) >= .8){
+                $color = "#".dechex($reds).dechex($green).dechex($blue);
                 break;
             }
             else{
-                $r=rand(0,255);
-                $g=rand(0,255);
-                $b=rand(0,255);
+                $reds=rand(0,255);
+                $green=rand(0,255);
+                $blue=rand(0,255);
             }
         }
 
@@ -583,9 +583,9 @@ class BlogController
      * @param int $B
      * @return float
      */
-    private function lightness($R = 255, $G = 255, $B = 255)
+    private function lightness($REDS = 255, $GREEN = 255, $BLUE = 255)
     {
-        return (max($R, $G, $B) + min($R, $G, $B)) / 510.0; // HSL algorithm
+        return (max($REDS, $GREEN, $BLUE) + min($REDS, $GREEN, $BLUE)) / 510.0; // HSL algorithm
     }
 
 }
