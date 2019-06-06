@@ -15,12 +15,12 @@
     $p_content = $post->getContent();
     $p_category = $post->getCategory();
 
-require_once('../View/layout.php');
+require_once '../View/layout.php';
 
 if(isset($sessionStatut)){
     if($sessionStatut == 2){ ?>
     <body>
-        <?php require ('../View/header.php'); ?>
+        <?php require '../View/header.php'; ?>
 
         <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
         <article>

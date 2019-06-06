@@ -105,7 +105,7 @@ class CommentController
                 $getCom = new CommentManager();
                 $comments = $getCom->getComment($comment);
 
-                require_once('../View/Comment/editComment.php');
+                require_once '../View/Comment/editComment.php';
             }
             else{
                 header("Location: index.php?error=notAllowed&access=blog");

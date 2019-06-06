@@ -46,7 +46,7 @@ class BlogController
                 $commentManager = new CommentManager();
                 $comments = $commentManager->getComments($post->getId());
 
-                require_once ('../View/Post/PostView.php');
+                require_once '../View/Post/PostView.php';
             }
             else{
                 header('Location: index.php?error=article&access=blog');
@@ -68,7 +68,7 @@ class BlogController
         $sessionStatut = $session->getCookie('statut');
 
         if($sessionStatut == 2){
-            require_once('../View/Post/NewPost.php');
+            require_once '../View/Post/NewPost.php' ;
         }
         else{
             header("Location: index.php?error=notAllowed&access=blog");
@@ -229,7 +229,7 @@ class BlogController
                 $post = $postManager->getPost($postId);
 
                 if(!empty($post->getId()) && $post->getStatutId() == 3){
-                    require_once ('../View/Post/EditPost.php');
+                    require_once '../View/Post/EditPost.php';
                 }
                 else{
                     header("Location: index.php?error=noPost&access=blog");
@@ -261,7 +261,7 @@ class BlogController
                 $draft = $postManager->getPost($draftId);
 
                 if(!empty($draft->getId()) && $draft->getStatutId() == 4){
-                    require_once ('../View/Post/DraftView.php');
+                    require_once '../View/Post/DraftView.php';
                 }
                 else{
                     header("Location: index.php?error=noDraft&access=blog");
@@ -439,14 +439,14 @@ class BlogController
             if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $posts = $postManager->getCategory($page, $article, $category);
 
-                require_once ('../View/Post/ListPost.php');
+                require_once '../View/Post/ListPost.php';
             }
             else{
 
                 $page = 1;
                 $posts = $postManager->getCategory($page, $article, $category);
 
-                require_once ('../View/Post/ListPost.php');
+                require_once '../View/Post/ListPost.php';
             }
         }
         else{
@@ -473,10 +473,10 @@ class BlogController
         $posts = $postManager->countPostLimit($page, $article, $statut);
         if($statut == 3){
 
-            require_once ('../View/Post/ListPost.php');
+            require_once '../View/Post/ListPost.php';
         }
         else{
-            require_once ('../View/Post/ListDraft.php');
+            require_once '../View/Post/ListDraft.php';
         }
 
     }
