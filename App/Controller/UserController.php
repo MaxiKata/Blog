@@ -2,8 +2,6 @@
 
 namespace Blog\App\Controller;
 
-use Blog\App\Alerts\Error;
-use Blog\App\Alerts\Success;
 use Blog\App\Entity\Session;
 use Blog\App\Entity\User;
 use Model\CommentManager;
@@ -16,7 +14,6 @@ use Model\UserManager;
  */
 class UserController
 {
-    private $sessionPassword;
     /**
      * @var
      */
@@ -72,10 +69,14 @@ class UserController
         $confirmation = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
-            header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");
+            $url = "index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user";
+            echo "<script>window.location='{$url}'</script>";
+            /*header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");*/
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
-            header("Location:index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user");
+            $url = "index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user";
+            echo "<script>window.location='{$url}'</script>";
+            /*header("Location:index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user");*/
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
             header("Location:index.php?error=invalidEmail&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user");
@@ -682,45 +683,4 @@ class UserController
 
         require_once '../View/User/userlist.php';
     }
-
-    /**
-     * @return mixed
-     */
-    /*private function getAlert()
-    {
-        $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
-        $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
-        if(isset($getSuccess) || isset($getError)){
-            if(isset($getSuccess)){
-                $success = new Success();
-
-                if(method_exists($success, $getSuccess) == true){
-                    $successAlert = $success->$getSuccess();
-
-                    return $successAlert;
-                }
-                else{
-                    $error = new Error();
-                    $getSuccess = "notAllowed";
-                    $errorAlert = $error->$getSuccess();
-                    return $errorAlert;
-                }
-            }
-            else{
-                $error = new Error();
-
-                if(method_exists($error, $getError) == true){
-                    $errorAlert = $error->$getError();
-                    return $errorAlert;
-                }
-                else{
-                    $getError = "notAllowed";
-                    $errorAlert = $error->$getError();
-
-                    return $errorAlert;
-
-                }
-            }
-        }
-    }*/
 }
