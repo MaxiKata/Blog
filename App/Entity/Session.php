@@ -4,6 +4,8 @@
 namespace Blog\App\Entity;
 
 
+use Blog\App\Controller\HomeController;
+
 class Session
 {
     private $key;
@@ -40,6 +42,9 @@ class Session
         $datas = filter_input_array(INPUT_COOKIE);
 
         foreach($datas as $method=>$data){
+            $useUnused = new HomeController();
+            $table = array($data);
+            $useUnused->useUnused($table);
             setcookie($method, '', time()-86400);
         }
     }

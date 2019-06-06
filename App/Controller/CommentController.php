@@ -18,7 +18,10 @@ class CommentController
      */
     public function indexAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         header("Location: index.php?access=blog");
     }
@@ -28,7 +31,10 @@ class CommentController
      */
     public function publishAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -83,7 +89,8 @@ class CommentController
      */
     public function modifyAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -104,6 +111,8 @@ class CommentController
             if($post->getStatutId() == 3){
                 $getCom = new CommentManager();
                 $comments = $getCom->getComment($comment);
+                $table = array($alert, $comments);
+                $getAlert->useUnused($table);
 
                 require_once '../View/Comment/editComment.php';
             }
@@ -121,7 +130,10 @@ class CommentController
      */
     public function updateAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -190,7 +202,7 @@ class CommentController
     /**
      * @return mixed
      */
-    private function getAlert()
+    /*private function getAlert()
     {
         $success = filter_input(INPUT_GET, 'success');
         $error = filter_input(INPUT_GET, 'error');
@@ -229,9 +241,6 @@ class CommentController
                 }
 
             }
-
-
-
         }
-    }
+    }*/
 }
