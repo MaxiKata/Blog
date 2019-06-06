@@ -16,6 +16,7 @@ class HomeController
         $postManager = new PostManager();
         $categories = $postManager->getCategories();
         $articles = $postManager->getLastArticles();
+        extract($alert, $categories, $articles);
 
         require_once '../View/home.php';
     }
