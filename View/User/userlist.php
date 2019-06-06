@@ -36,6 +36,7 @@ require_once '../View/layout.php' ; ?>
         <?php
     } ?>
     </ul>
+    <div class="text-center h4">
     <?php
     for($i=1; $i<=$nbPage; $i++){
         if($i==$page){ ?>
@@ -46,6 +47,6 @@ require_once '../View/layout.php' ; ?>
             <a href="index.php?access=user!list&p=<?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"><?= filter_var($i, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></a>
             <?php
         }
-    }
-    ?>
+    } ?>
+    </div>
 </body>
