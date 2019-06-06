@@ -16,11 +16,14 @@ class HomeController
         $postManager = new PostManager();
         $categories = $postManager->getCategories();
         $articles = $postManager->getLastArticles();
-        extract($alert, $categories, $articles);
+
+        $table = array($alert, $categories, $articles);
+
+        $this->useUnused($table);
 
         require_once '../View/home.php';
     }
-    private function getAlert()
+    public function getAlert()
     {
         $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
         $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
@@ -55,5 +58,9 @@ class HomeController
                 }
             }
         }
+    }
+    public function useUnused($table)
+    {
+        return $table;
     }
 }
