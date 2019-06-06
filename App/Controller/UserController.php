@@ -57,7 +57,7 @@ class UserController
     public function indexAction()
     {
         $alert = $this->getAlert();
-        require_once('../View/User/Login.php');
+        require_once '../View/User/Login.php';
     }
 
     public function registerAction()
@@ -221,10 +221,10 @@ class UserController
                 header('Location:index.php?access=user!list&error=noUser');
             }
             elseif($sessionId == $useredit->getId() || $sessionStatut == 2){
-                require_once ('../View/User/EditUser.php');
+                require_once '../View/User/EditUser.php';
             }
             else{
-                require_once ('../View/User/userprofil.php');
+                require_once '../View/User/userprofil.php';
             }
 
         }
@@ -656,7 +656,7 @@ class UserController
         $userManager = new UserManager();
         $users = $userManager->getUsers($page, $perPage);
 
-        require_once ('../View/User/userlist.php');
+        require_once '../View/User/userlist.php';
     }
 
     /**

@@ -1,11 +1,11 @@
 <?php
 
 $title = 'Bienvenue';
-require_once('../View/layout.php'); ?>
+require_once '../View/layout.php'; ?>
 
 
 <body>
-    <?php require('../View/header.php'); ?>
+    <?php require '../View/header.php'; ?>
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <section class="w-50 mx-auto mb-4">
