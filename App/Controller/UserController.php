@@ -46,8 +46,6 @@ class UserController
      * @var
      */
     private $statut;
-    
-    private $alertMessage;
 
     /**
      * @var
@@ -56,7 +54,11 @@ class UserController
 
     public function indexAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
+
         require_once '../View/User/Login.php';
     }
 
@@ -70,7 +72,6 @@ class UserController
         $confirmation = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
-
             header("Location:index.php?error=emptyFields&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username ."&access=user");
         }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
@@ -109,7 +110,10 @@ class UserController
 
     public function loginAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $usernamemail = filter_input(INPUT_POST, 'usernamemail', FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
@@ -153,7 +157,11 @@ class UserController
 
     public function logoutAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
+
         $key = '';
         $session = new Session($key);
         $session->destroyCookie();
@@ -165,7 +173,10 @@ class UserController
 
     public function listAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -199,7 +210,8 @@ class UserController
     public function profilAction()
     {
 
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -216,6 +228,8 @@ class UserController
 
             $commentManager = new CommentManager();
             $comment = $commentManager->countComments($useredit->getId());
+            $table = array($alert, $comment);
+            $getAlert->useUnused($table);
 
             if($useredit->getId() == NULL){
                 header('Location:index.php?access=user!list&error=noUser');
@@ -235,7 +249,10 @@ class UserController
 
     public function updateAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $this->id = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_STRING);
 
@@ -335,7 +352,6 @@ class UserController
                                 else{
                                     header("Location:index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil");
                                 }
-
                             }
                             elseif($password == $confirmation){
                                 $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -477,14 +493,6 @@ class UserController
             header("Location:index.php?error=notAllowed&access=user!list");
         }
     }
-    private function setKey($key)
-    {
-        $password = new User();
-        $password->setPassword($key);
-
-        return $password;
-    }
-
     /**
      * @return User
      */
@@ -540,7 +548,10 @@ class UserController
      */
     private function checkUser($nickname)
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $user = new UserManager();
         $check = $user->getUsername($nickname);
@@ -554,7 +565,10 @@ class UserController
      */
     private function checkEmail($email)
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $user = new UserManager();
         $checkEmail = $user->getEmail($email);
@@ -563,7 +577,10 @@ class UserController
 
     private function autoDelete()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $userManager = new UserManager();
 
@@ -604,7 +621,10 @@ class UserController
 
     private function deleteUser()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $userManager = new UserManager();
         $getInformations = $userManager->getUsersArticle($this->id);
@@ -651,10 +671,14 @@ class UserController
      */
     private function getUsersPage($page, $perPage, $nbPage)
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
 
         $userManager = new UserManager();
         $users = $userManager->getUsers($page, $perPage);
+
+        $table = array($alert, $users, $nbPage);
+        $getAlert->useUnused($table);
 
         require_once '../View/User/userlist.php';
     }
@@ -662,7 +686,7 @@ class UserController
     /**
      * @return mixed
      */
-    private function getAlert()
+    /*private function getAlert()
     {
         $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
         $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
@@ -698,5 +722,5 @@ class UserController
                 }
             }
         }
-    }
+    }*/
 }

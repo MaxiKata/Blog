@@ -35,7 +35,8 @@ class BlogController
 
     public function readAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
         $postId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
         if(isset($postId) && $postId>0 && is_numeric($postId)){
@@ -45,6 +46,9 @@ class BlogController
             if($post->getStatutId() == 3){
                 $commentManager = new CommentManager();
                 $comments = $commentManager->getComments($post->getId());
+
+                $table = array($alert, $comments);
+                $getAlert->useUnused($table);
 
                 require_once '../View/Post/PostView.php';
             }
@@ -59,7 +63,10 @@ class BlogController
 
     public function newpostAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -77,7 +84,10 @@ class BlogController
 
     public function newarticleAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -181,7 +191,10 @@ class BlogController
 
     public function draftlistAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -214,7 +227,11 @@ class BlogController
 
     public function modifypostAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+
+        $getAlert->useUnused($table);
         $postId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
         if(isset($postId)){
@@ -246,7 +263,11 @@ class BlogController
 
     public function draftAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
+
         $draftId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 
         if(isset($draftId)){
@@ -279,7 +300,10 @@ class BlogController
 
     public function updatearticleAction()
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
+        $table = array($alert);
+        $getAlert->useUnused($table);
 
         $serializePassword = file_get_contents('store');
         $sessionPassword = unserialize($serializePassword);
@@ -419,7 +443,8 @@ class BlogController
     }
 
     public function categoryAction(){
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
 
         $category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING);
 
@@ -438,6 +463,8 @@ class BlogController
 
             if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $posts = $postManager->getCategory($page, $article, $category);
+                $table = array($alert, $categories, $postStatut, $posts);
+                $getAlert->useUnused($table);
 
                 require_once '../View/Post/ListPost.php';
             }
@@ -445,6 +472,8 @@ class BlogController
 
                 $page = 1;
                 $posts = $postManager->getCategory($page, $article, $category);
+                $table = array($alert, $categories, $postStatut, $posts);
+                $getAlert->useUnused($table);
 
                 require_once '../View/Post/ListPost.php';
             }
@@ -465,17 +494,21 @@ class BlogController
      */
     private function getPostsPage($page, $article, $nbPage, $statut)
     {
-        $alert = $this->getAlert();
+        $getAlert = new HomeController();
+        $alert = $getAlert->getAlert();
 
         $postManager = new PostManager();
         $categories = $postManager->getCategories();
 
         $posts = $postManager->countPostLimit($page, $article, $statut);
         if($statut == 3){
-
+            $table = array($alert, $categories, $nbPage, $posts);
+            $getAlert->useUnused($table);
             require_once '../View/Post/ListPost.php';
         }
         else{
+            $table = array($alert, $categories, $nbPage, $posts);
+            $getAlert->useUnused($table);
             require_once '../View/Post/ListDraft.php';
         }
 
@@ -484,7 +517,7 @@ class BlogController
     /**
      * @return mixed
      */
-    private function getAlert()
+    /*private function getAlert()
     {
         $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
         $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
@@ -522,7 +555,7 @@ class BlogController
 
             }
         }
-    }
+    }*/
 
     /**
      * @return string
