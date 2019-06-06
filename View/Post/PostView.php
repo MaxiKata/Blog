@@ -38,7 +38,7 @@ require_once '../View/layout.php' ; ?>
         </h3>
 
         <p>
-            <?= filter_var($p_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
+            <?= filter_var($p_content, FILTER_UNSAFE_RAW); ?>
         </p>
     </article>
     <div class="comment">
@@ -67,7 +67,7 @@ require_once '../View/layout.php' ; ?>
             {
                 $com_username = $com->getUUsername();
                 $com_edit_username = $com->getUsUsername();
-                $com_content = nl2br($com->getContent());
+                $com_content = $com->getContent();
                 $com_dateUpdate = $com->getDateComUpdate();
                 $com_statut = $com->getStatutId();
                 $com_id = $com->getId();
@@ -82,7 +82,7 @@ require_once '../View/layout.php' ; ?>
                         <?php } ?>
                     </h3>
 
-                    <p><?= filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></p>
+                    <p><?= filter_var($com_content, FILTER_SANITIZE_SPECIAL_CHARS); ?></p>
                     <?php
                     if(isset($sessionStatut) && $sessionStatut == 2){ ?>
                         <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!modify&id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>&commentid=<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">Modifier</a></p>
