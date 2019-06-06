@@ -84,8 +84,8 @@ class UserController
             $url = "index.php?error=invalidUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user"; ?>
             <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-        elseif($password !== $confirmation){ ?>
-            $url = "index.php?error=passwordCheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user";
+        elseif($password !== $confirmation){
+            $url = "index.php?error=passwordCheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user"; ?>
             <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!empty(self::checkUser($this->username))){
@@ -140,8 +140,8 @@ class UserController
             else{
                 $pass_check = password_verify($password, $user->getPassword());
                 if($pass_check == true){
-                    session_start();
-                    $session = new Session($password);
+                    $dbPassword = $user->getPassword();
+                    $session = new Session($dbPassword);
 
                     $session->setCookie('id', $user->getId());
                     $session->setCookie('username', $user->getUsername());
