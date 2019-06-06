@@ -3,9 +3,6 @@
 
 namespace Blog\App\Controller;
 
-
-use Blog\App\Alerts\Error;
-use Blog\App\Alerts\Success;
 use Blog\App\Entity\Comment;
 use Blog\App\Entity\Session;
 use Model\CommentManager;
@@ -23,8 +20,9 @@ class CommentController
         $table = array($alert);
         $getAlert->useUnused($table);
 
-        header("Location: index.php?access=blog");
-    }
+        $url = "index.php?access=blog"; ?>
+        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     /**
      *
@@ -60,27 +58,33 @@ class CommentController
                         $result = $publishCom->publishComment($comment);
 
                         if($result == true){
-                            header("Location: index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read");
-                        }
+                            $url = "index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                         else{
-                            header("Location: index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read");
-                        }
+                            $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                     }
                     else{
-                        header("Location: index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read");
-                    }
+                        $url = "index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read"; ?>
+                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <?php }
                 }
                 else{
-                    header("Location: index.php?error=notAllowed&access=blog");
-                }
+                    $url = "index.php?error=notAllowed&access=blog"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
 
     }
 
@@ -117,12 +121,14 @@ class CommentController
                 require_once '../View/Comment/editComment.php';
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     /**
@@ -166,81 +172,44 @@ class CommentController
                     if(isset($updateCommentPost)){
                         $updateComment = $commentManager->updateComment($comment);
                          if($updateComment == true){
-                             header("Location: index.php?success=commentUpdate&id=" . $verifyComment->getPostId() . "&access=blog!read");
-                         }
+                             $url = "index.php?success=commentUpdate&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
+                             <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                         <?php }
                          else{
-                             header("Location: index.php?error=commentUpdate&access=blog");
-                         }
+                             $url = "index.php?error=commentUpdate&access=blog"; ?>
+                             <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                         <?php }
                     }
                     elseif(isset($deleteCommentPost)){
                         $deleteComment = $commentManager->deleteComment($comment->getId());
                         if($deleteComment == true){
-                            header("Location: index.php?success=commentDelete&id=" . $verifyComment->getPostId() . "&access=blog!read");
-                        }
+                            $url = "index.php?success=commentDelete&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                         else{
-                            header("Location: index.php?error=commentDelete&access=blog");
-                        }
+                            $url = "index.php?error=commentDelete&access=blog"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
 
                     }
                     else{
-                        header("Location: index.php?error=notAllowed&access=blog");
-                    }
+                        $url = "index.php?error=notAllowed&access=blog"; ?>
+                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <?php }
                 }
                 else{
-                    header("Location: index.php?error=notAllowed&access=blog");
-                }
+                    $url = "index.php?error=notAllowed&access=blog"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
-
-    /**
-     * @return mixed
-     */
-    /*private function getAlert()
-    {
-        $success = filter_input(INPUT_GET, 'success');
-        $error = filter_input(INPUT_GET, 'error');
-        if(isset($success) || isset($error)){
-            if(isset($success)){
-                $successObj = new Success();
-                $function = htmlspecialchars($success, ENT_QUOTES);
-
-                if(method_exists($successObj, $function) == true){
-                    $successAlert = $successObj->$function();
-
-                    return $successAlert;
-                }
-                else{
-                    $error = new Error();
-                    $function = "notAllowed";
-                    $errorAlert = $error->$function();
-
-                    return $errorAlert;
-                }
-
-            }
-            else{
-                $errorObj = new Error();
-                $function = htmlspecialchars($error, ENT_QUOTES);
-
-                if(method_exists($errorObj, $function) == true){
-                    $errorAlert = $errorObj->$function();
-                    return $errorAlert;
-                }
-                else{
-                    $function = "notAllowed";
-                    $errorAlert = $errorObj->$function();
-
-                    return $errorAlert;
-                }
-
-            }
-        }
-    }*/
 }

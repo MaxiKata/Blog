@@ -41,10 +41,12 @@ if(isset($sessionStatut)){
         </body>
     <?php }
     else{
-        header("Location: index.php?access=blog");
-    }
+        $url = "index.php?access=blog"; ?>
+        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 }
 else{
-    header("Location: index.php");
-}
+    $url = "index.php"; ?>
+    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+<?php }
 ?>

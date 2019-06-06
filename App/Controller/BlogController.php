@@ -2,8 +2,6 @@
 
 namespace Blog\App\Controller;
 
-use Blog\App\Alerts\Error;
-use Blog\App\Alerts\Success;
 use Blog\App\Entity\Article;
 use Blog\App\Entity\Session;
 use Model\CommentManager;
@@ -53,12 +51,14 @@ class BlogController
                 require_once '../View/Post/PostView.php';
             }
             else{
-                header('Location: index.php?error=article&access=blog');
-            }
+                $url = "index.php?error=article&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header('Location: index.php?error=article&access=blog');
-        }
+            $url = "index.php?error=article&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function newpostAction()
@@ -78,8 +78,9 @@ class BlogController
             require_once '../View/Post/NewPost.php' ;
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function newarticleAction()
@@ -120,27 +121,32 @@ class BlogController
                         $newpost = $postManager->postNewPost($post);
 
                         if($newpost == true){
-                            header("Location: index.php?success=newPost&access=blog");
-                        }
+                            $url = "index.php?success=newPost&access=blog"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                         else{
-                            header("Location: index.php?error=newPost&access=blog!newpost");
-                        }
+                            $url = "index.php?error=newPost&access=blog!newpost"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                     }
                     else{
                         $post->setColor($getCategoryColor[0]);
                         $newpost = $postManager->postNewPost($post);
 
                         if($newpost == true){
-                            header("Location: index.php?success=newPost&access=blog");
-                        }
-                        else{
-                            header("Location: index.php?error=newPost&access=blog!newpost");
-                        }
+                            $url = "index.php?success=newPost&access=blog"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
+                    else{
+                            $url = "index.php?error=newPost&access=blog!newpost"; ?>
+                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <?php }
                     }
                 }
                 else{
-                    header("Location: index.php?error=empyfields&access=blog!newpost");
-                }
+                    $url = "index.php?error=empyfields&access=blog!newpost"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             elseif(isset($draftPost)){
                 if(!empty($titlePost) || !empty($content) || !empty($category)){
@@ -158,35 +164,42 @@ class BlogController
                         $newdraft = $postManager->postNewDraft($draft);
 
                         if($newdraft == true){
-                            header("Location: index.php?success=newDraft&access=blog!draftlist");
-                        }
+                            $url = "index.php?success=newDraft&access=blog!draftlist"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                         else{
-                            header("Location: index.php?error=newDraft&access=blog!newpost");
-                        }
+                            $url = "index.php?error=newDraft&access=blog!newpost"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                     }
                     else{
                         $draft->setColor($getCategoryColor[0]);
                         $newdraft = $postManager->postNewDraft($draft);
 
                         if($newdraft == true){
-                            header("Location: index.php?success=newDraft&access=blog!draftlist");
-                        }
+                            $url = "index.php?success=newDraft&access=blog!draftlist"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                         else{
-                            header("Location: index.php?error=newDraft&access=blog!newpost");
-                        }
+                            $url = "index.php?error=newDraft&access=blog!newpost"; ?>
+                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
                     }
                 }
                 else{
-                    header("Location: index.php?error=empyfields&access=blog!newpost");
-                }
+                    $url = "index.php?error=empyfields&access=blog!newpost"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog!newpost");
-            }
+                $url = "index.php?error=notAllowed&access=blog!newpost"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed");
-        }
+            $url = "index.php?error=notAllowed"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function draftlistAction()
@@ -221,8 +234,9 @@ class BlogController
             }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function modifypostAction()
@@ -249,16 +263,19 @@ class BlogController
                     require_once '../View/Post/EditPost.php';
                 }
                 else{
-                    header("Location: index.php?error=noPost&access=blog");
-                }
+                    $url = "index.php?error=noPost&access=blog"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function draftAction()
@@ -285,17 +302,20 @@ class BlogController
                     require_once '../View/Post/DraftView.php';
                 }
                 else{
-                    header("Location: index.php?error=noDraft&access=blog");
-                }
+                    $url = "index.php?error=noDraft&access=blog"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
 
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function updatearticleAction()
@@ -344,11 +364,13 @@ class BlogController
                             if($updateArticle == true){
 
                                 $newArticle = $getArticle->getPost($update->getId());
-                                header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
-                            }
+                                $url = "index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                             else{
-                                header("Location: index.php?error=notAllowed&access=blog");
-                            }
+                                $url = "index.php?error=notAllowed&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                         else{
                             $update->setColor($getCategoryColor[0]);
@@ -357,11 +379,13 @@ class BlogController
                             if($updateArticle == true){
 
                                 $newArticle = $getArticle->getPost($update->getId());
-                                header("Location: index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist");
-                            }
+                                $url = "index.php?success=updateDraft&id=" . $newArticle->getId() . "&access=blog!draftlist"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                             else{
-                                header("Location: index.php?error=notAllowed&access=blog");
-                            }
+                                $url = "index.php?error=notAllowed&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                     }
                     elseif(isset($publish)){
@@ -375,11 +399,13 @@ class BlogController
                             if($updateArticle == true){
 
                                 $newArticle = $getArticle->getPost($update->getId());
-                                header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
-                            }
+                                $url = "index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                             else{
-                                header("Location: index.php?error=notAllowed&access=blog");
-                            }
+                                $url = "index.php?error=notAllowed&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                         else{
                             $update->setColor($getCategoryColor[0]);
@@ -387,11 +413,13 @@ class BlogController
                             if($updateArticle == true){
 
                                 $newArticle = $getArticle->getPost($update->getId());
-                                header("Location: index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read");
-                            }
+                                $url = "index.php?success=updatePost&id=" . $newArticle->getId() . "&access=blog!read"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                             else{
-                                header("Location: index.php?error=notAllowed&access=blog");
-                            }
+                                $url = "index.php?error=notAllowed&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                     }
                     elseif(isset($delete)){
@@ -405,41 +433,50 @@ class BlogController
                             if($result == true){
                                 $deleteArticle = $getArticle->deleteArticle($update->getId());
                                 if($deleteArticle == true){
-                                    header("Location: index.php?success=articleDelete&access=blog");
-                                }
+                                    $url = "index.php?success=articleDelete&access=blog"; ?>
+                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                <?php }
                                 else{
-                                    header("Location: index.php?error=articleDelete&access=blog");
-                                }
+                                    $url = "index.php?error=articleDelete&access=blog"; ?>
+                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                <?php }
                             }
                             else{
-                                header("Location: index.php?error=commentDelete&access=blog");
-                            }
+                                $url = "index.php?error=commentDelete&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                         else{
                             $deleteArticle = $getArticle->deleteArticle($update->getId());
                             if($deleteArticle == true){
-                                header("Location: index.php?success=articleDelete&access=blog");
-                            }
+                                $url = "index.php?success=articleDelete&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                             else{
-                                header("Location: index.php?error=articleDelete&access=blog");
-                            }
+                                $url = "index.php?error=articleDelete&access=blog"; ?>
+                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
                         }
                     }
                     else{
-                        header("Location: index.php?error=notAllowed&access=blog!draftlist");
-                    }
+                        $url = "index.php?error=notAllowed&access=blog!draftlist"; ?>
+                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <?php }
                 }
                 else{
-                    header("Location: index.php?error=noDraft&access=blog!draftlist");
-                }
+                    $url = "index.php?error=noDraft&access=blog!draftlist"; ?>
+                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
             }
             else{
-                header("Location: index.php?error=notAllowed&access=blog");
-            }
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
         }
         else{
-            header("Location: index.php?error=notAllowed&access=blog");
-        }
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 
     public function categoryAction(){
@@ -480,8 +517,9 @@ class BlogController
         }
         else{
 
-            header("Location: index.php?access=blog&error=notAllowed");
-        }
+            $url = "index.php?access=blog&error=notAllowed"; ?>
+            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
 
 
     }
@@ -513,49 +551,6 @@ class BlogController
         }
 
     }
-
-    /**
-     * @return mixed
-     */
-    /*private function getAlert()
-    {
-        $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
-        $getError = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
-        if(isset($getSuccess) || isset($getError)){
-            if(isset($getSuccess)){
-                $success = new Success();
-
-                if(method_exists($success, $getSuccess) == true){
-                    $successAlert = $success->$getSuccess();
-
-                    return $successAlert;
-                }
-                else{
-                    $error = new Error();
-                    $getSuccess = "notAllowed";
-                    $errorAlert = $error->$getSuccess();
-
-                    return $errorAlert;
-                }
-
-            }
-            else{
-                $error = new Error();
-
-                if(method_exists($error, $getError) == true){
-                    $errorAlert = $error->$getError();
-                    return $errorAlert;
-                }
-                else{
-                    $getError = "notAllowed";
-                    $errorAlert = $error->$getError();
-
-                    return $errorAlert;
-                }
-
-            }
-        }
-    }*/
 
     /**
      * @return string
