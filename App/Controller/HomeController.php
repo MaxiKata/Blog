@@ -2,7 +2,6 @@
 
 namespace Blog\App\Controller;
 
-
 use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
 use Model\PostManager;
