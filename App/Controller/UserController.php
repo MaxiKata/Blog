@@ -140,8 +140,8 @@ class UserController
             else{
                 $pass_check = password_verify($password, $user->getPassword());
                 if($pass_check == true){
-                    session_start();
-                    $session = new Session($password);
+                    $dbPassword = $user->getPassword();
+                    $session = new Session($dbPassword);
 
                     $session->setCookie('id', $user->getId());
                     $session->setCookie('username', $user->getUsername());
