@@ -33,7 +33,7 @@ require_once '../View/layout.php'; ?>
                     <span class="d-flex"><em>Publié le <?= filter_var($date, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></em></span>
 
                     <p>
-                        <?= filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
+                        <?= filter_var($content, FILTER_UNSAFE_RAW); ?>
                         <br>
                     </p>
                     <button class="article-button btn" style="border: 1px solid <?= filter_var($color, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>;">Consulter</button>
