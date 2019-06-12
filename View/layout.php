@@ -1,5 +1,5 @@
 <?php
-$directory = '../../../Blog'?>
+$directory = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__)))))) . "Blog" ?>
 
 <!DOCTYPE html>
 <html lang="fr">
