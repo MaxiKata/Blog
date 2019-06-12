@@ -8,15 +8,15 @@ Project made with PHP
 
 ##Intallation
 
-Installation of composer => https://getcomposer.org/download/
+Installation of composer => [https://getcomposer.org/download/](https://getcomposer.org/download/)
 
 Installation of tracy via composer: ```composer require tracy/tracy```
 
-Get more details of tracy => https://packagist.org/packages/tracy/tracy
+Get more details of tracy => [https://packagist.org/packages/tracy/tracy](https://packagist.org/packages/tracy/tracy)
 
 ##Overview
 This project is a blog with simple actions:
-- Website Type: **Blog**
-- Users Profile: **User** or **Admin**
-- Article Status: **Published** or **Draft**
-- Comment Status: **Published** or **Modified**
+-   Website Type: **Blog**
+-   Users Profile: **User** or **Admin**
+-   Article Status: **Published** or **Draft**
+-   Comment Status: **Published** or **Modified**
