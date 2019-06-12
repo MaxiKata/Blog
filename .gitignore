@@ -3,3 +3,4 @@ vendor/
 Public/img/
 .DS_Store
 App/DBConnect.php
+Public/store
