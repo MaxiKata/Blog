@@ -1,4 +1,4 @@
-#   Blog
+# Blog
 Blog is the fifth project of my studies.
 Project made with PHP
 
@@ -7,7 +7,7 @@ Project made with PHP
 ![Project](https://img.shields.io/badge/Project-5-blue.svg)
 ![PHP](https://img.shields.io/badge/PHP-7.2-blue.svg)
 
-##  Intallation
+## Intallation
 
 Installation of composer => [https://getcomposer.org/download/](https://getcomposer.org/download/)
 
@@ -15,7 +15,7 @@ Installation of tracy via composer: ```composer require tracy/tracy```
 
 Get more details of tracy => [https://packagist.org/packages/tracy/tracy](https://packagist.org/packages/tracy/tracy)
 
-##  Overview
+## Overview
 This project is a blog with simple actions:
 -   Website Type: **Blog**
 -   Users Profile: **User** or **Admin**
