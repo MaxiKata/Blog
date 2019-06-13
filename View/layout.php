@@ -1,5 +1,5 @@
 <?php
-$directory = '../../../Blog'?>
+$directory = '../../../../Blog' ?>
 
 <!DOCTYPE html>
 <html lang="fr">
