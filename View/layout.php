@@ -9,8 +9,9 @@ $directory = '../../../../Blog' ?>
         <meta http-equiv="X-UA-Compatible"  content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!--Main Title -->
+        <!--Main Title & logo -->
         <?= (!empty($title))?'<title>'.filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS) .'</title>':'<title> Blog </title>'; ?>
+        <link rel="icon" href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . "/Public/img/mini-logo.png" ?>" type="img/gif" sizes="16x16">
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
