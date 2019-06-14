@@ -52,12 +52,12 @@ if(isset($sessionStatut)){
 
             </form>
         </article>
-
+        <?php require '../View/footer.php'; ?>
 
     </body><?php }
 }
 else{
     $url = "index.php"; ?>
-    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
 <?php }
 ?>

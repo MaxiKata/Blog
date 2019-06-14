@@ -87,5 +87,5 @@ require_once '../View/layout.php' ; ?>
             </div>
         </form>
     </div>
-
+    <?php require '../View/footer.php'; ?>
 </body>

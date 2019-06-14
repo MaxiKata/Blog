@@ -56,6 +56,9 @@ article form div, .userprofil form div, .login form div{
 article #content{
     height: 20em;
 }
+footer{
+    border-top: 2px solid #24292e;
+}
 .absolute-bloc{
     position: absolute;
     transform: translate(0, -100%);
@@ -346,4 +349,11 @@ li:hover .last-article .triangle-right{
     padding: 1em;
     border: 1px solid #24292e;
     border-radius: .3em;
+}
+.h-300{
+    height:300px;
+}
+.social-logo{
+    height: 50px;
+    width: 50px;
 }

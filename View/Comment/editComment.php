@@ -38,15 +38,16 @@ if(isset($sessionStatut)){
                 <input type="text" id="comId" name="comId" hidden value="<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>">
             </div>
         </form>
+        <?php require '../View/footer.php'; ?>
         </body>
     <?php }
     else{
         $url = "index.php?access=blog"; ?>
-        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 }
 else{
     $url = "index.php"; ?>
-    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
 <?php }
 ?>
