@@ -48,4 +48,5 @@ require_once '../View/layout.php' ; ?>
                 </div>
         </div>
     </div>
+    <?php require '../View/footer.php'; ?>
 </body>

@@ -20,5 +20,5 @@ require_once '../View/layout.php'; ?>
             <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
         </p>
     </div>
-
+    <?php require '../View/footer.php'; ?>
 </body>

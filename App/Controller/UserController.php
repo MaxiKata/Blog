@@ -70,31 +70,31 @@ class UserController
 
         if(empty($this->lastname) || empty($this->firstname) || empty($this->email) || empty($this->username) || empty($password) || empty($confirmation)) {
             $url = "index.php?error=emptyFields&lastname=$this->lastname&firstname=$this->firstname&email=$this->email&username=$this->username&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-0]*$/", $this->username)){
             $url = "index.php?error=invalidEmailUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
             $url = "index.php?error=invalidEmail&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!preg_match("/^[a-zA-Z0-9]*$/", $this->username)){
             $url = "index.php?error=invalidUsername&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif($password !== $confirmation){
             $url = "index.php?error=passwordCheck&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&username=" . $this->username . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!empty(self::checkUser($this->username))){
             $url = "index.php?error=usernameTaken&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&email=" . $this->email . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         elseif(!empty(self::checkEmail($this->email))){
             $url = "index.php?error=emailUsed&lastname=" . $this->lastname . "&firstname=" . $this->firstname . "&username=" . $this->username . "&access=user"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         else{
             $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -105,11 +105,11 @@ class UserController
 
             if($result == 'error'){
                 $url = "index.php?error=connectionPdo&access=user"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $url = "index.php?success=register&access=user"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
     }
@@ -126,7 +126,7 @@ class UserController
 
         if(empty($usernamemail) || empty($password)){
             $url = "index.php?error=emptyFields&username=" . $usernamemail . "&access=user"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
         else{
             $userManager = new UserManager();
@@ -135,7 +135,7 @@ class UserController
 
             if(empty($user->getUsername()) || empty($user->getEmail())){
                 $url = "index.php?error=noUser&access=user"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $pass_check = password_verify($password, $user->getPassword());
@@ -155,11 +155,11 @@ class UserController
                     file_put_contents('store', $serializePassword);
 
                     $url = "index.php?success=login&username=" . $usernamemail . "&access=user"; ?>
-                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
                 else{
                     $url = "index.php?error=wrongPassword&username=" . $usernamemail . "&access=user"; ?>
-                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
             }
         }
@@ -177,7 +177,7 @@ class UserController
         $session->destroyCookie();
 
         $url = "index.php?success=logout&access=user"; ?>
-        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
     public function listAction()
@@ -213,7 +213,7 @@ class UserController
         }
         else{
             $url = "index.php?error=notAllowed"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
     }
 
@@ -243,7 +243,7 @@ class UserController
 
             if($useredit->getId() == NULL){
                 $url = "index.php?access=user!list&error=noUser"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             elseif($sessionId == $useredit->getId() || $sessionStatut == 2){
                 require_once '../View/User/EditUser.php';
@@ -255,7 +255,7 @@ class UserController
         }
         else{
             $url = "index.php?error=notAllowed"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
     }
 
@@ -311,16 +311,16 @@ class UserController
                                             $userupdate = $userManager->easyUpdateUser($user);
                                             if($userupdate =='error'){
                                                 $url = "index.php?error=connectionPdo&access=user"; ?>
-                                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                             <?php }
                                             else {
                                                 $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                             <?php }
                                         }
                                         else{
                                             $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                     }
                                     elseif($password == $confirmation){
@@ -333,26 +333,26 @@ class UserController
                                             $userupdate = $userManager->hardUpdateUser($user);
                                             if($userupdate =='error'){
                                                 $url = "index.php?error=connectionPdo&access=user"; ?>
-                                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                             <?php }
                                             else {
                                                 $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                             <?php }
                                         }
                                         else{
                                             $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                     }
                                     else{
                                         $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
-                                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                     <?php }
                                 }
                                 else{
                                     $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
-                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
                             elseif(empty($password) || empty($confirmation)){
@@ -364,16 +364,16 @@ class UserController
                                     $userupdate = $userManager->easyUpdateUser($user);
                                     if($userupdate == 'error'){
                                         $url = "index.php?error=connectionPdo&access=user"; ?>
-                                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                     <?php }
                                     else{
                                         $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                     <?php }
                                 }
                                 else{
                                     $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
                             elseif($password == $confirmation){
@@ -386,21 +386,21 @@ class UserController
                                    $userupdate = $userManager->hardUpdateUser($user);
                                    if($userupdate =='error'){
                                        $url = "index.php?error=connectionPdo&access=user"; ?>
-                                       <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                       <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                    <?php }
                                    else {
                                        $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                       <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                       <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                    <?php }
                                }
                                else{
                                    $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                <?php }
                             }
                             else{
                                 $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
-                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                             <?php }
                         }
                         elseif(isset($delete)){
@@ -411,7 +411,7 @@ class UserController
                                 }
                                 else{
                                     $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
-                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
                             else{
@@ -421,7 +421,7 @@ class UserController
                         }
                         else{
                             $url = "index.php?userid=". $getUser->getId() ."&error=notAllowed&access=user!profil"; ?>
-                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                         <?php }
                     }
                     elseif(!empty($oldpassword)){
@@ -439,7 +439,7 @@ class UserController
                                         $userupdate = $userManager->easyUpdateUser($user);
                                         if($userupdate =='error'){
                                             $url = "index.php?error=connectionPdo&access=user"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                         else {
                                             $serializePassword = file_get_contents('store');
@@ -453,12 +453,12 @@ class UserController
                                             $session->setCookie('email', $userupdate->getEmail());
 
                                             $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                     }
                                     else{
                                         $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                     <?php }
                                 }
                                 elseif($password == $confirmation){
@@ -473,7 +473,7 @@ class UserController
                                         $userupdate = $userManager->hardUpdateUser($user);
                                         if($userupdate =='error'){
                                             $url = "index.php?error=connectionPdo&access=user"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                         else {
                                             $serializePassword = file_get_contents('store');
@@ -489,17 +489,17 @@ class UserController
                                             $session->setCookie('statut', $userupdate->getStatut());
 
                                             $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
-                                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                         <?php }
                                     }
                                     else{
                                         $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                     <?php }
                                 }
                                 else{
                                     $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
-                                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                                 <?php }
                             }
                             elseif(isset($delete)){
@@ -507,32 +507,32 @@ class UserController
                             }
                             else{
                                 $url = "index.php?userid=". $getUser->getId() ."&error=notAllowed&access=user!profil"; ?>
-                                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                             <?php }
                         }
                         else{
                             $url = "index.php?userid=". $getUser->getId() ."&error=wrongPassword&access=user!profil"; ?>
-                            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                         <?php }
                     }
                     else{
                         $url = "index.php?userid=". $getUser->getId() ."&error=wrongPassword&access=user!profil"; ?>
-                        <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                     <?php }
                 }
                 else{
                     $url = "index.php?userid=". $getUser->getId() . "&error=notAllowed&access=user!list"; ?>
-                    <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
             }
             else{
                 $url = "index.php?error=noUser&access=user!list"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
         else{
             $url = "index.php?error=notAllowed&access=user!list"; ?>
-            <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
     }
     /**
@@ -643,11 +643,11 @@ class UserController
             if($deleteUser == true){
                 $this->logoutAction();
                 $url = "index.php?success=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $url = "index.php?access=user!list&error=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
         else{
@@ -656,11 +656,11 @@ class UserController
             if($deleteUser == true){
                 $this->logoutAction();
                 $url = "index.php?success=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $url = "index.php?access=user!list&error=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
     }
@@ -693,11 +693,11 @@ class UserController
 
             if($deleteUser == true){
                 $url = "index.php?access=user!list&success=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $url = "index.php?access=user!list&error=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
         else{
@@ -705,11 +705,11 @@ class UserController
 
             if($deleteUser == true){
                 $url = "index.php?access=user!list&success=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
             else{
                 $url = "index.php?access=user!list&error=userDeleted"; ?>
-                <script type="text/javascript">window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
         }
     }

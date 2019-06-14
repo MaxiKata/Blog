@@ -81,8 +81,7 @@ else{ ?>
 <?php }
 ?>
 
-
-
+<?php require '../View/footer.php'; ?>
 
 </body>
 
