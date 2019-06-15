@@ -31,16 +31,17 @@ class CommentManager extends Manager
      * @param Comment $comment
      * @return bool
      */
-    public function publishComment(Comment $comment)
+    public function postComment(Comment $comment)
     {
         $content = $comment->getContent();
+        $statut_id = $comment->getStatutId();
         $userId = $comment->getUserId();
         $postId = $comment->getPostId();
         $userId2 = $comment->getUserId();
 
         $db = $this->dbConnect();
-        $comment = $db->prepare('INSERT INTO comment(content, dateComCreate, dateComUpdate, Statut_id, User_id, Post_id, UserId_edit) VALUES (?, NOW(), NOW(), 5, ?, ?, ?)');
-        $newcomm = $comment->execute(array($content, $userId, $postId, $userId2));
+        $comment = $db->prepare('INSERT INTO comment(content, dateComCreate, dateComUpdate, Statut_id, User_id, Post_id, UserId_edit) VALUES (?, NOW(), NOW(), ?, ?, ?, ?)');
+        $newcomm = $comment->execute(array($content, $statut_id, $userId, $postId, $userId2));
 
         return $newcomm;
     }
@@ -58,10 +59,27 @@ class CommentManager extends Manager
         ON com.User_id = u.id
         LEFT JOIN users us
         ON com.UserId_edit = us.id
-        WHERE com.Post_id = ? ORDER BY dateComUpdate DESC LIMIT 10');
-        $req->execute(array($postId));
+        WHERE com.Post_id = ? AND com.Statut_id = 5 OR com.Post_id = ? AND com.Statut_id = 6 ORDER BY dateComUpdate DESC LIMIT 10');
+        $req->execute(array($postId, $postId));
         $getComment = $req->fetchAll();
 
+        $comments = $this->setComments($getComment);
+
+        return $comments;
+    }
+
+    public function getCommentAwaiting()
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT com.id AS com_id, com.content AS com_content, DATE_FORMAT(dateComCreate, \' %d/%m/%Y à %Hh%imin%ss\') AS dateComCreate_fr, DATE_FORMAT(dateComUpdate, \' %d/%m/%Y à %Hh%imin%ss\') AS dateComUpdate_fr, com.Statut_id AS com_StatutId, com.User_id AS com_UserId, com.Post_id AS com_PostId, com.UserId_edit AS com_UserIdEdit, u.nickname AS u_username, us.nickname AS us_username
+        FROM comment com
+        LEFT JOIN users u
+        ON com.User_id = u.id
+        LEFT JOIN users us
+        ON com.UserId_edit = us.id
+        WHERE com.Statut_id = 7 ORDER BY dateComUpdate LIMIT 10');
+        $req->execute();
+        $getComment = $req->fetchAll();
         $comments = $this->setComments($getComment);
 
         return $comments;
@@ -103,12 +121,21 @@ class CommentManager extends Manager
         $content = $comment->getContent();
         $userID = $comment->getUserIdEdit();
         $com_id = $comment->getId();
+        $statut = $comment->getStatutId();
 
         $db = $this->dbConnect();
-        $req = $db->prepare('UPDATE comment SET content = ?, dateComUpdate = NOW(), Statut_id = 6, UserId_edit = ? WHERE id = ?');
-        $updateComment = $req->execute(array($content, $userID, $com_id));
+        $req = $db->prepare('UPDATE comment SET content = ?, dateComUpdate = NOW(), Statut_id = ?, UserId_edit = ? WHERE id = ?');
+        $updateComment = $req->execute(array($content, $statut, $userID, $com_id));
 
         return $updateComment;
+    }
+    public function easyUpdate($statut, $comId)
+    {
+        $db =$this->dbConnect();
+        $req = $db->prepare('UPDATE comment SET Statut_id = ? WHERE id = ?');
+        $result = $req->execute(array($statut, $comId));
+
+        return $result;
     }
 
     /**

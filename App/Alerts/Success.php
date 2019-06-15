@@ -25,6 +25,14 @@ class Success
     /**
      * @return string
      */
+    public function commentPost()
+    {
+        return "<p class=\"success\"><span>Commentaire bien posté et sera validé par un Admin</span></p>";
+    }
+
+    /**
+     * @return string
+     */
     public function commentPublish()
     {
         return "<p class=\"success\"><span>Commentaire bien publié</span></p>";
