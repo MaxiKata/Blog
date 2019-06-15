@@ -122,13 +122,15 @@ class CommentController
                 $getAlert->useUnused($table);
 
                 require_once '../View/Comment/editComment.php';
-            }
+            } else{
+                $url = "index.php?error=notAllowed&access=blog"; ?>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
+        } else{
             $url = "index.php?error=notAllowed&access=blog"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-        $url = "index.php?error=notAllowed&access=blog"; ?>
-        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-    <?php }
+    }
 
     /**
      *
