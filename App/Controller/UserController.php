@@ -128,42 +128,36 @@ class UserController
             $url = "index.php?error=emptyFields&username=" . $usernamemail . "&access=user"; ?>
                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-        else{
-            $userManager = new UserManager();
-            $user = $userManager->getInformation($usernamemail, $usernamemail);
+        $userManager = new UserManager();
+        $user = $userManager->getInformation($usernamemail, $usernamemail);
 
 
-            if(empty($user->getUsername()) || empty($user->getEmail())){
-                $url = "index.php?error=noUser&access=user"; ?>
-                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-            <?php }
-            else{
-                $pass_check = password_verify($password, $user->getPassword());
-                if($pass_check == true){
-                    $dbPassword = $user->getPassword();
-                    $session = new Session($dbPassword);
+        if(empty($user->getUsername()) || empty($user->getEmail())){
+            $url = "index.php?error=noUser&access=user"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
+        $pass_check = password_verify($password, $user->getPassword());
+        if($pass_check == true){
+            $dbPassword = $user->getPassword();
+            $session = new Session($dbPassword);
 
-                    $session->setCookie('id', $user->getId());
-                    $session->setCookie('username', $user->getUsername());
-                    $session->setCookie('firstname', $user->getFirstname());
-                    $session->setCookie('lastname', $user->getLastname());
-                    $session->setCookie('email', $user->getEmail());
-                    $session->setCookie('statut', $user->getStatut());
-                    $sessionPassword = $session->getKey();
-                    $serializePassword = serialize($sessionPassword);
+            $session->setCookie('id', $user->getId());
+            $session->setCookie('username', $user->getUsername());
+            $session->setCookie('firstname', $user->getFirstname());
+            $session->setCookie('lastname', $user->getLastname());
+            $session->setCookie('email', $user->getEmail());
+            $session->setCookie('statut', $user->getStatut());
+            $sessionPassword = $session->getKey();
+            $serializePassword = serialize($sessionPassword);
 
-                    file_put_contents('store', $serializePassword);
+            file_put_contents('store', $serializePassword);
 
-                    $url = "index.php?success=login&username=" . $usernamemail . "&access=user"; ?>
-                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                <?php }
-                else{
-                    $url = "index.php?error=wrongPassword&username=" . $usernamemail . "&access=user"; ?>
-                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                <?php }
-            }
-        }
-    }
+            $url = "index.php?success=login&username=" . $usernamemail . "&access=user"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
+        $url = "index.php?error=wrongPassword&username=" . $usernamemail . "&access=user"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     public function logoutAction()
     {
@@ -193,7 +187,7 @@ class UserController
         $session = new Session($key);
         $sessionStatut = $session->getCookie('statut');
 
-        if(isset($sessionStatut)){
+        if($sessionStatut == true){
 
             $userManager = new UserManager();
             $countUsers = $userManager->countUsers();
@@ -206,10 +200,8 @@ class UserController
             if(isset($page) && is_numeric($page) && $page<=$nbPage){
                 $this->getUsersPage($page, $perPage, $nbPage);
             }
-            else{
-                $page = 1;
-                $this->getUsersPage($page, $perPage, $nbPage);
-            }
+            $page = 1;
+            $this->getUsersPage($page, $perPage, $nbPage);
         }
         else{
             $url = "index.php?error=notAllowed"; ?>
@@ -338,79 +330,9 @@ class UserController
                         $pass_check = password_verify($oldpassword, $getUser->getPassword());
                         if($pass_check == true){
                             if(isset($update)){
-                                if(empty($password) || empty($confirmation)){
-                                    $this->idUser = $getUser->getId();
-                                    $this->statut = $getUser->getStatut();
-                                    $user = $this->setUser();
-                                    $controlUser = $this->controlUser($user);
-
-                                    if($controlUser == true){
-
-                                        $userupdate = $userManager->easyUpdateUser($user);
-                                        if($userupdate =='error'){
-                                            $url = "index.php?error=connectionPdo&access=user"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                        else {
-                                            $serializePassword = file_get_contents('store');
-                                            $sessionPassword = unserialize($serializePassword);
-                                            $key = $sessionPassword->getPassword();
-                                            $session = new Session($key);
-
-                                            $session->setCookie('username', $userupdate->getUsername());
-                                            $session->setCookie('firstname', $userupdate->getFirstname());
-                                            $session->setCookie('lastname', $userupdate->getLastname());
-                                            $session->setCookie('email', $userupdate->getEmail());
-
-                                            $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                    }
-                                    else{
-                                        $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                    <?php }
-                                }
-                                elseif($password == $confirmation){
-                                    $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                    $this->idUser = $getUser->getId();
-                                    $this->statut = $getUser->getStatut();
-                                    $user = $this->setUser();
-                                    $controlUser = $this->controlUser($user);
-
-                                    if($controlUser == true){
-
-                                        $userupdate = $userManager->hardUpdateUser($user);
-                                        if($userupdate =='error'){
-                                            $url = "index.php?error=connectionPdo&access=user"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                        else {
-                                            $serializePassword = file_get_contents('store');
-                                            $sessionPassword = unserialize($serializePassword);
-                                            $key = $sessionPassword->getPassword();
-                                            $session = new Session($key);
-
-                                            $session->setCookie('id', $userupdate->getId());
-                                            $session->setCookie('username', $userupdate->getUsername());
-                                            $session->setCookie('firstname', $userupdate->getFirstname());
-                                            $session->setCookie('lastname', $userupdate->getLastname());
-                                            $session->setCookie('email', $userupdate->getEmail());
-                                            $session->setCookie('statut', $userupdate->getStatut());
-
-                                            $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                    }
-                                    else{
-                                        $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                    <?php }
-                                }
-                                else{
-                                    $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
-                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                <?php }
+                                $this->idUser = $getUser->getId();
+                                $this->statut = $getUser->getStatut();
+                                $this->userUpdate($password, $confirmation);
                             }
                             elseif(isset($delete)){
                                 $this->autoDelete();
@@ -679,6 +601,81 @@ class UserController
                 <?php }
                 else {
                     $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+            }
+            else{
+                $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
+        }
+        else{
+            $url = "index.php?userid=". $this->idUser ."&error=wrongPasswords&access=user!profil"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
+    }
+
+    private function userUpdate($password, $confirmation)
+    {
+        $userManager = new UserManager();
+
+        if(empty($password) || empty($confirmation)){
+            $user = $this->setUser();
+            $controlUser = $this->controlUser($user);
+
+            if($controlUser == true){
+
+                $userupdate = $userManager->easyUpdateUser($user);
+                if($userupdate =='error'){
+                    $url = "index.php?error=connectionPdo&access=user"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+                else {
+                    $serializePassword = file_get_contents('store');
+                    $sessionPassword = unserialize($serializePassword);
+                    $key = $sessionPassword->getPassword();
+                    $session = new Session($key);
+
+                    $session->setCookie('username', $userupdate->getUsername());
+                    $session->setCookie('firstname', $userupdate->getFirstname());
+                    $session->setCookie('lastname', $userupdate->getLastname());
+                    $session->setCookie('email', $userupdate->getEmail());
+
+                    $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+            }
+            else{
+                $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
+        }
+        elseif($password == $confirmation){
+            $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
+            $user = $this->setUser();
+            $controlUser = $this->controlUser($user);
+
+            if($controlUser == true){
+
+                $userupdate = $userManager->hardUpdateUser($user);
+                if($userupdate =='error'){
+                    $url = "index.php?error=connectionPdo&access=user"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+                else {
+                    $serializePassword = file_get_contents('store');
+                    $sessionPassword = unserialize($serializePassword);
+                    $key = $sessionPassword->getPassword();
+                    $session = new Session($key);
+
+                    $session->setCookie('id', $userupdate->getId());
+                    $session->setCookie('username', $userupdate->getUsername());
+                    $session->setCookie('firstname', $userupdate->getFirstname());
+                    $session->setCookie('lastname', $userupdate->getLastname());
+                    $session->setCookie('email', $userupdate->getEmail());
+                    $session->setCookie('statut', $userupdate->getStatut());
+
+                    $url = "index.php?userid=" . $user->getId() . "&success=update&access=user!profil"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
             }
