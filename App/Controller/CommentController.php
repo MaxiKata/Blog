@@ -67,41 +67,29 @@ class CommentController
                             <?php }
                                 $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                        <?php } else{
-                            $comment->setStatutId(5);
-                            $result = $publishCom->postComment($comment);
+                        <?php }
+                        $comment->setStatutId(5);
+                        $result = $publishCom->postComment($comment);
 
-                            if($result == true){
-                                $url = "index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
-                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                            else{
-                                $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
-                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                        }
-                    }
-                    else{
-                        $url = "index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read"; ?>
+                        if($result == true){
+                            $url = "index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
+                        $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
                         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                     <?php }
-                }
-                else{
-                    $url = "index.php?error=notAllowed&access=blog"; ?>
+                    $url = "index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
-            }
-            else{
                 $url = "index.php?error=notAllowed&access=blog"; ?>
                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
-        }
-        else{
             $url = "index.php?error=notAllowed&access=blog"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-
-    }
+        $url = "index.php?error=notAllowed&access=blog"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     /**
      *
@@ -135,16 +123,12 @@ class CommentController
 
                 require_once '../View/Comment/editComment.php';
             }
-            else{
-                $url = "index.php?error=notAllowed&access=blog"; ?>
-                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-            <?php }
-        }
-        else{
             $url = "index.php?error=notAllowed&access=blog"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-    }
+        $url = "index.php?error=notAllowed&access=blog"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     /**
      *
@@ -193,57 +177,41 @@ class CommentController
                                 $url = "index.php?success=commentUpdate&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                             <?php }
-                            else{
-                                $url = "index.php?error=commentUpdate&access=blog"; ?>
-                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                        }
-                        else{
-                            $comment->setStatutId(7);
+                            $url = "index.php?error=commentUpdate&access=blog"; ?>
+                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
+                        $comment->setStatutId(7);
 
-                            $updateComment = $commentManager->updateComment($comment);
-                            if($updateComment == true){
-                                $url = "index.php?success=commentPost&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
-                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                            else{
-                                $url = "index.php?error=commentUpdate&access=blog"; ?>
-                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                        }
-                    }
+                        $updateComment = $commentManager->updateComment($comment);
+                        if($updateComment == true){
+                            $url = "index.php?success=commentPost&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
+                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                        <?php }
+                        $url = "index.php?error=commentUpdate&access=blog"; ?>
+                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                    <?php }
+
                     elseif(isset($deleteCommentPost)){
                         $deleteComment = $commentManager->deleteComment($comment->getId());
                         if($deleteComment == true){
                             $url = "index.php?success=commentDelete&id=" . $verifyComment->getPostId() . "&access=blog!read"; ?>
                             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                         <?php }
-                        else{
-                            $url = "index.php?error=commentDelete&access=blog"; ?>
-                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                        <?php }
-
-                    }
-                    else{
-                        $url = "index.php?error=notAllowed&access=blog"; ?>
+                        $url = "index.php?error=commentDelete&access=blog"; ?>
                         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                     <?php }
-                }
-                else{
                     $url = "index.php?error=notAllowed&access=blog"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
-            }
-            else{
                 $url = "index.php?error=notAllowed&access=blog"; ?>
                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
-        }
-        else{
             $url = "index.php?error=notAllowed&access=blog"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-    }
+        $url = "index.php?error=notAllowed&access=blog"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     public function listAction()
     {
@@ -265,11 +233,9 @@ class CommentController
 
             require '../View/Comment/commentList.php';
         }
-        else{
-            $url = "index.php?error=notAllowed&access=blog"; ?>
-            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-        <?php }
-    }
+        $url = "index.php?error=notAllowed&access=blog"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     public function validateAction()
     {
@@ -309,17 +275,15 @@ class CommentController
 
                     $this->delete($result);
                 }
-                else{
-                    $url = "index.php?error=notAllowed&access=comment!list"; ?>
-                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                <?php }
-            }
-            else{
                 $url = "index.php?error=notAllowed&access=comment!list"; ?>
                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
-        }
-    }
+            $url = "index.php?error=notAllowed&access=comment!list"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
+        $url = "index.php?error=notAllowed&access=comment!list"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     private function delete($result)
     {
@@ -327,11 +291,9 @@ class CommentController
             $url = "index.php?success=commentDelete&access=comment!list"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-        else{
-            $url = "index.php?error=commentDelete&access=comment!list"; ?>
-            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-        <?php }
-    }
+        $url = "index.php?error=commentDelete&access=comment!list"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 
     private function update($result)
     {
@@ -339,9 +301,7 @@ class CommentController
             $url = "index.php?success=commentPublish&access=comment!list"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
-        else{
-            $url = "index.php?error=commentPublish&access=comment!list"; ?>
-            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-        <?php }
-    }
+        $url = "index.php?error=commentPublish&access=comment!list"; ?>
+        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+    <?php }
 }
