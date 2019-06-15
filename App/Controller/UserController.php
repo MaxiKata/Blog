@@ -303,105 +303,16 @@ class UserController
                             if($sessionId == $this->idUser){
                                 $countAdmin = $userManager->countAdmin();
                                 if($countAdmin["nbAdmins"] > 1){
-                                    if(empty($password) || empty($confirmation)){
-                                        $this->idUser = $getUser->getId();
-                                        $user = $this->setUser();
-                                        $controlUser = $this->controlUser($user);
-                                        if($controlUser == true){
-                                            $userupdate = $userManager->easyUpdateUser($user);
-                                            if($userupdate =='error'){
-                                                $url = "index.php?error=connectionPdo&access=user"; ?>
-                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                            <?php }
-                                            else {
-                                                $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                            <?php }
-                                        }
-                                        else{
-                                            $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                    }
-                                    elseif($password == $confirmation){
-                                        $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                        $this->idUser = $getUser->getId();
-                                        $user = $this->setUser();
-                                        $controlUser = $this->controlUser($user);
+                                    $this->idUser = $getUser->getId();
 
-                                        if($controlUser == true){
-                                            $userupdate = $userManager->hardUpdateUser($user);
-                                            if($userupdate =='error'){
-                                                $url = "index.php?error=connectionPdo&access=user"; ?>
-                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                            <?php }
-                                            else {
-                                                $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                            <?php }
-                                        }
-                                        else{
-                                            $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                        <?php }
-                                    }
-                                    else{
-                                        $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
-                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                    <?php }
+                                    $this->update($password, $confirmation);
                                 }
-                                else{
-                                    $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
-                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                <?php }
-                            }
-                            elseif(empty($password) || empty($confirmation)){
-                                $this->idUser = $getUser->getId();
-                                $user = $this->setUser();
-                                $controlUser = $this->controlUser($user);
-
-                                if($controlUser == true){
-                                    $userupdate = $userManager->easyUpdateUser($user);
-                                    if($userupdate == 'error'){
-                                        $url = "index.php?error=connectionPdo&access=user"; ?>
-                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                    <?php }
-                                    else{
-                                        $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                    <?php }
-                                }
-                                else{
-                                    $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                <?php }
-                            }
-                            elseif($password == $confirmation){
-                                $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                                $this->idUser = $getUser->getId();
-                                $user = $this->setUser();
-                                $controlUser = $this->controlUser($user);
-
-                               if($controlUser == true){
-                                   $userupdate = $userManager->hardUpdateUser($user);
-                                   if($userupdate =='error'){
-                                       $url = "index.php?error=connectionPdo&access=user"; ?>
-                                       <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                   <?php }
-                                   else {
-                                       $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
-                                       <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                                   <?php }
-                               }
-                               else{
-                                   $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
-                                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                               <?php }
-                            }
-                            else{
-                                $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
+                                $url = "index.php?access=user!profil&error=chooseAdmin&userid=" . $this->idUser . ""; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                             <?php }
+                            $this->idUser = $getUser->getId();
+
+                            $this->update($password, $confirmation);
                         }
                         elseif(isset($delete)){
                             if($sessionId == $this->idUser){
@@ -417,7 +328,6 @@ class UserController
                             else{
                                 $this->deleteUser();
                             }
-
                         }
                         else{
                             $url = "index.php?userid=". $getUser->getId() ."&error=notAllowed&access=user!profil"; ?>
@@ -731,5 +641,55 @@ class UserController
         $getAlert->useUnused($table);
 
         require_once '../View/User/userlist.php';
+    }
+
+    private function update($password, $confirmation)
+    {
+        $userManager = new UserManager();
+
+        if(empty($password) || empty($confirmation)){
+            $user = $this->setUser();
+            $controlUser = $this->controlUser($user);
+            if($controlUser == true){
+                $userupdate = $userManager->easyUpdateUser($user);
+                if($userupdate =='error'){
+                    $url = "index.php?error=connectionPdo&access=user"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+                else {
+                    $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+            }
+            else{
+                $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
+        }
+        elseif($password == $confirmation){
+            $this->pass_hash = password_hash($password, PASSWORD_DEFAULT);
+            $user = $this->setUser();
+            $controlUser = $this->controlUser($user);
+
+            if($controlUser == true){
+                $userupdate = $userManager->hardUpdateUser($user);
+                if($userupdate =='error'){
+                    $url = "index.php?error=connectionPdo&access=user"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+                else {
+                    $url = "index.php?userid=" . $userupdate->getId() . "&success=update&access=user!profil"; ?>
+                    <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                <?php }
+            }
+            else{
+                $url = "index.php?userid=" . $user->getId() . "&error=usernameTaken&access=user!profil"; ?>
+                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+            <?php }
+        }
+        else{
+            $url = "index.php?userid=". $this->idUser ."&error=wrongPasswords&access=user!profil"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
     }
 }
