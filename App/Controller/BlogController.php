@@ -343,8 +343,7 @@ class BlogController
         $update->setId($postId);
         $update->setUid($sessionId);
 
-        if($sessionStatut == 2)
-        {
+        if($sessionStatut == 2) {
             if(is_numeric($update->getId()) || !empty($update->getTitle()) || !empty($update->getContent()) || !empty($update->getCategory())){
                 $getArticle = new PostManager();
                 $article = $getArticle->getPost($update->getId());
@@ -516,7 +515,6 @@ class BlogController
             }
         }
         else{
-
             $url = "index.php?access=blog&error=notAllowed"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
