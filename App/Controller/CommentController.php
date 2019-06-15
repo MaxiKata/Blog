@@ -64,11 +64,10 @@ class CommentController
                             if($result == true){
                                 $url = "index.php?success=commentPost&id=" . $post->getId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php } else{
+                            <?php }
                                 $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                            <?php }
-                        } else{
+                        <?php } else{
                             $comment->setStatutId(5);
                             $result = $publishCom->postComment($comment);
 
