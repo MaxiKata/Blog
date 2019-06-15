@@ -685,7 +685,7 @@ class UserController
             <?php }
         }
         else{
-            $url = "index.php?userid=". $getUser->getId() ."&error=wrongPasswords&access=user!profil"; ?>
+            $url = "index.php?userid=". $this->idUser ."&error=wrongPasswords&access=user!profil"; ?>
             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
         <?php }
     }
