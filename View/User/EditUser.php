@@ -18,7 +18,7 @@ $commentId = $comment[0]["COUNT(id)"];
 
 require_once '../View/layout.php' ; ?>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php' ; ?>
 
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?> de <?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS)  ?></h1>
@@ -51,7 +51,7 @@ require_once '../View/layout.php' ; ?>
             </div>
             <div class="d-flex">
                 <label for="oldpassword">Mot de passe Actuel</label>
-                <input type="password" id="oldpassword" name="oldpassword"/>
+                <input type="password" id="oldpassword" name="oldpassword" <?php if($sessionStatut == 1){ ?> required <?php } ?>>
             </div>
             <div class="d-flex">
                 <label for="password">Nouveau mot de passe</label>

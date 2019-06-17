@@ -3,7 +3,7 @@
 $title = "Liste des utilisateurs";
 require_once '../View/layout.php' ; ?>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php' ; ?>
 
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>

@@ -3,7 +3,7 @@
 $title = "Blog";
 require_once '../View/layout.php'; ?>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php';
     $category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
 

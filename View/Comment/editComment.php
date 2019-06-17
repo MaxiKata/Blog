@@ -19,7 +19,7 @@ require_once '../View/layout.php';
 
 if(isset($sessionStatut)){
     if($sessionStatut == 2 || $sessionId == $com_uid){ ?>
-        <body>
+        <body class="d-flex flex-column h-100">
         <?php require '../View/header.php'; ?>
 
         <p class="mt-3 comment"><a href="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>&access=blog!read">Retour à l'article</a></p>
