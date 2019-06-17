@@ -2,7 +2,7 @@
 $directory = '../../../../Blog' ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-100">
     <head>
         <!-- Required meta tags -->
         <meta charset ="utf-8" />

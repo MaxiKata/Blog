@@ -4,7 +4,7 @@ $title = 'Bienvenue sur le blog de Maxime Guilhem';
 require_once '../View/layout.php'; ?>
 
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php'; ?>
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>

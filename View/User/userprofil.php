@@ -3,7 +3,7 @@
 $title = "Consulter le profil";
 require_once '../View/layout.php'; ?>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php';
     $username = $useredit->getUsername();
     $commentId = $comment[0]["COUNT(id)"]; ?>

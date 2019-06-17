@@ -17,7 +17,7 @@
 
 require_once '../View/layout.php' ; ?>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php require '../View/header.php' ; ?>
 
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
@@ -37,7 +37,7 @@ require_once '../View/layout.php' ; ?>
             <em>le <?= filter_var($p_dateUpd, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></em>
         </h3>
 
-        <p>
+        <p  class="text-justify">
             <?= filter_var($p_content, FILTER_UNSAFE_RAW); ?>
         </p>
     </article>
@@ -60,7 +60,9 @@ require_once '../View/layout.php' ; ?>
         ?>
         <br>
         <?php if(empty($comments)){ ?>
-            <span>Soyez le premier à poster un commentaire</span>
+            <p class="text-center">Soyez le premier à poster un commentaire
+                <a class="mx-auto my-auto" href="<?=  filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user"><button class="btn btn-primary">Se Connecter / S'inscrire</button></a>
+            </p>
         <?php }
         else{
             foreach($comments as $com)
@@ -82,7 +84,7 @@ require_once '../View/layout.php' ; ?>
                         <?php } ?>
                     </h3>
 
-                    <p><?= filter_var($com_content, FILTER_SANITIZE_SPECIAL_CHARS); ?></p>
+                    <p class="text-justify"><?= filter_var($com_content, FILTER_SANITIZE_SPECIAL_CHARS); ?></p>
                     <?php
                     if(isset($sessionStatut) && $sessionStatut == 2){ ?>
                         <p><a href="<?=filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!modify&id=<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>&commentid=<?= filter_var($com_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">Modifier</a></p>
