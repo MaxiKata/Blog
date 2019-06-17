@@ -60,7 +60,7 @@ require_once '../View/layout.php' ; ?>
         ?>
         <br>
         <?php if(empty($comments)){ ?>
-            <p>Soyez le premier à poster un commentaire
+            <p class="text-center">Soyez le premier à poster un commentaire
                 <a class="mx-auto my-auto" href="<?=  filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user"><button class="btn btn-primary">Se Connecter / S'inscrire</button></a>
             </p>
         <?php }
