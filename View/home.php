@@ -1,11 +1,11 @@
 <?php
 
 $title = 'Bienvenue sur le blog de Maxime Guilhem';
-require_once '../View/layout.php'; ?>
+require_once 'layout.php'; ?>
 
 
 <body class="d-flex flex-column h-100">
-    <?php require '../View/header.php'; ?>
+    <?php require 'header.php'; ?>
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <section class="container mx-auto mb-4">
@@ -73,7 +73,7 @@ require_once '../View/layout.php'; ?>
                         <label for="first_name">First Name *</label>
                     </td>
                     <td valign="top">
-                        <input  type="text" name="first_name" maxlength="50" size="30">
+                        <input class="w-100"  type="text" name="first_name" maxlength="50" size="30">
                     </td>
                 </tr>
                 <tr>
@@ -81,7 +81,7 @@ require_once '../View/layout.php'; ?>
                     <label for="last_name">Last Name *</label>
                     </td>
                     <td valign="top">
-                        <input  type="text" name="last_name" maxlength="50" size="30">
+                        <input class="w-100"  type="text" name="last_name" maxlength="50" size="30">
                     </td>
                 </tr>
                 <tr>
@@ -89,7 +89,7 @@ require_once '../View/layout.php'; ?>
                         <label for="email">Email Address *</label>
                     </td>
                     <td valign="top">
-                        <input  type="email" name="email_from" maxlength="80" size="30">
+                        <input class="w-100"  type="email" name="email_from" maxlength="80" size="30">
                     </td>
                 </tr>
                 <tr>
@@ -97,7 +97,7 @@ require_once '../View/layout.php'; ?>
                         <label for="telephone">Telephone Number</label>
                     </td>
                     <td valign="top">
-                        <input  type="text" name="telephone" maxlength="30" size="30">
+                        <input class="w-100"  type="text" name="telephone" maxlength="30" size="30">
                     </td>
                 </tr>
                 <tr>
@@ -105,12 +105,13 @@ require_once '../View/layout.php'; ?>
                         <label for="comments">Comments *</label>
                     </td>
                     <td valign="top">
-                        <textarea  name="comments" maxlength="1000" cols="29" rows="6"></textarea>
+                        <textarea class="w-100"  name="comments" maxlength="1000" cols="29" rows="6"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-center">
-                        <button class="btn btn-success" type="submit" name="email">Envoyer</button>
+                    <td></td>
+                    <td class="text-center">
+                        <button class="btn btn-primary" type="submit" name="email">Envoyer</button>
                     </td>
                 </tr>
             </table>

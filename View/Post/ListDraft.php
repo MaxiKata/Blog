@@ -9,7 +9,7 @@ require_once '../View/layout.php' ; ?>
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <div class="d-flex article-page">
-        <div class="article-list">
+        <div class="article-list col-6 mx-auto">
             <?php
             foreach($posts as $data)
             {
