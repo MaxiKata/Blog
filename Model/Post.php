@@ -205,9 +205,9 @@ class PostManager extends Manager
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT COUNT(id) AS nbPost, category, categoryColor AS color FROM post WHERE Statut_id = 3 GROUP BY category, categoryColor ORDER BY category');
         $req->execute();
-        $nbArticlesPerCategory = $req->fetchAll();
+        $articlesPerCategory = $req->fetchAll();
 
-        return $nbArticlesPerCategory;
+        return $articlesPerCategory;
     }
     public function getLastArticles()
     {
