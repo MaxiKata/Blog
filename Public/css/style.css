@@ -42,7 +42,7 @@ h1 a{
 h1 a:hover{
     text-decoration: none;
 }
-article, .article-list, .userprofil, .login{
+article, .userprofil, .login{
     margin-left: auto;
     margin-right: auto;
     width: 60%;
@@ -52,6 +52,9 @@ article form div, .userprofil form div, .login form div{
 }
 article #content{
     height: 20em;
+}
+aside h2{
+    font-size: 1.4rem;
 }
 footer .container{
     border-top: 2px solid #24292e;
@@ -100,6 +103,7 @@ footer .container{
     margin: 1%;
     border-style: solid;
     border-radius: .5%;
+    overflow: hidden;
 }
 .article h3{
     margin-left: 2%;
@@ -108,18 +112,19 @@ footer .container{
 }
 .article p{
     width: 100%;
+    height: 5rem;
     padding-top: 2%;
     padding-left: 2%;
     padding-right: 2%;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical
+    -webkit-box-orient: vertical;
 }
 .article em{
     margin-left: auto;
     margin-right:auto;
-    font-size: 1.4rem;
+    font-size: 1rem;
 }
 .article-button{
     float: right;
@@ -353,4 +358,22 @@ li:hover .last-article .triangle-right{
 .social-logo{
     height: 50px;
     width: 50px;
+}
+@media only screen and (min-width: 768px){
+    .article em{
+        height: 1.4rem;
+    }
+    aside h2{
+        font-size: 2rem;
+    }
+}
+@media only screen and (min-width: 992px){
+    .article p{
+        height: 5.3rem;
+    }
+}
+@media only screen and (min-width: 1200px){
+    .article p{
+        height: 5.6rem;
+    }
 }
