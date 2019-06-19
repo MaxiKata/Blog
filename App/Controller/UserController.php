@@ -103,7 +103,7 @@ class UserController
             $register = new UserManager();
             $result = $register->register($user);
 
-            if($result == 'error'){
+            if($result == false){
                 $url = "index.php?error=connectionPdo&access=user"; ?>
                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
             <?php }
@@ -574,7 +574,7 @@ class UserController
             $controlUser = $this->controlUser($user);
             if($controlUser == true){
                 $userupdate = $userManager->easyUpdateUser($user);
-                if($userupdate =='error'){
+                if($userupdate == false){
                     $url = "index.php?error=connectionPdo&access=user"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
@@ -595,7 +595,7 @@ class UserController
 
             if($controlUser == true){
                 $userupdate = $userManager->hardUpdateUser($user);
-                if($userupdate =='error'){
+                if($userupdate == false){
                     $url = "index.php?error=connectionPdo&access=user"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
@@ -626,7 +626,7 @@ class UserController
             if($controlUser == true){
 
                 $userupdate = $userManager->easyUpdateUser($user);
-                if($userupdate =='error'){
+                if($userupdate == false){
                     $url = "index.php?error=connectionPdo&access=user"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
@@ -658,7 +658,7 @@ class UserController
             if($controlUser == true){
 
                 $userupdate = $userManager->hardUpdateUser($user);
-                if($userupdate =='error'){
+                if($userupdate == false){
                     $url = "index.php?error=connectionPdo&access=user"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
