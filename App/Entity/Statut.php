@@ -1,13 +1,24 @@
 <?php
 
-
 namespace Blog\App\Entity;
 
-
+/**
+ * Class Statut
+ * @package Blog\App\Entity
+ */
 class Statut
 {
+    /**
+     * @var
+     */
     private $id;
+    /**
+     * @var
+     */
     private $type;
+    /**
+     * @var
+     */
     private $name;
 
     /**

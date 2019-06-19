@@ -4,6 +4,10 @@
 namespace Blog\App\Alerts;
 
 
+/**
+ * Class Success
+ * @package Blog\App\Alerts
+ */
 class Success
 {
     /**
@@ -117,6 +121,10 @@ class Success
     {
         return "<p class=\"success\"><span>Suppression de compte réussite</span></p>";
     }
+
+    /**
+     * @return string
+     */
     public function contact()
     {
         return "<p class=\"success\"><span>Merci pour votre message, nous vous contacterons au plus vite</span></p>";

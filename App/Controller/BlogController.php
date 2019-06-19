@@ -7,9 +7,16 @@ use Blog\App\Entity\Session;
 use Model\CommentManager;
 use Model\PostManager;
 
+/**
+ * Class BlogController
+ * @package Blog\App\Controller
+ */
 class BlogController
 {
 
+    /**
+     *
+     */
     public function indexAction()
     {
         $postManager = new PostManager();
@@ -31,6 +38,9 @@ class BlogController
         }
     }
 
+    /**
+     *
+     */
     public function readAction()
     {
         $getAlert = new HomeController();
@@ -61,6 +71,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function newpostAction()
     {
         $getAlert = new HomeController();
@@ -83,6 +96,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function newarticleAction()
     {
         $getAlert = new HomeController();
@@ -202,6 +218,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function draftlistAction()
     {
         $getAlert = new HomeController();
@@ -239,6 +258,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function modifypostAction()
     {
         $getAlert = new HomeController();
@@ -278,6 +300,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function draftAction()
     {
         $getAlert = new HomeController();
@@ -318,6 +343,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function updatearticleAction()
     {
         $getAlert = new HomeController();
@@ -478,6 +506,9 @@ class BlogController
         <?php }
     }
 
+    /**
+     *
+     */
     public function categoryAction(){
         $getAlert = new HomeController();
         $alert = $getAlert->getAlert();

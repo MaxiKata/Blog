@@ -49,6 +49,9 @@ class UserController
      */
     private $properties;
 
+    /**
+     *
+     */
     public function indexAction()
     {
         $getAlert = new HomeController();
@@ -59,6 +62,9 @@ class UserController
         require_once '../View/User/Login.php';
     }
 
+    /**
+     *
+     */
     public function registerAction()
     {
         $this->lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
@@ -114,6 +120,9 @@ class UserController
         }
     }
 
+    /**
+     *
+     */
     public function loginAction()
     {
         $getAlert = new HomeController();
@@ -159,6 +168,9 @@ class UserController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     *
+     */
     public function logoutAction()
     {
         $getAlert = new HomeController();
@@ -174,6 +186,9 @@ class UserController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     *
+     */
     public function listAction()
     {
         $getAlert = new HomeController();
@@ -209,6 +224,9 @@ class UserController
         <?php }
     }
 
+    /**
+     *
+     */
     public function profilAction()
     {
 
@@ -251,6 +269,9 @@ class UserController
         <?php }
     }
 
+    /**
+     *
+     */
     public function updateAction()
     {
         $getAlert = new HomeController();
@@ -449,6 +470,9 @@ class UserController
         return $checkEmail;
     }
 
+    /**
+     *
+     */
     private function autoDelete()
     {
         $getAlert = new HomeController();
@@ -497,6 +521,9 @@ class UserController
         }
     }
 
+    /**
+     *
+     */
     private function deleteUser()
     {
         $getAlert = new HomeController();
@@ -565,6 +592,10 @@ class UserController
         require_once '../View/User/userlist.php';
     }
 
+    /**
+     * @param $password
+     * @param $confirmation
+     */
     private function update($password, $confirmation)
     {
         $userManager = new UserManager();
@@ -615,6 +646,10 @@ class UserController
         <?php }
     }
 
+    /**
+     * @param $password
+     * @param $confirmation
+     */
     private function userUpdate($password, $confirmation)
     {
         $userManager = new UserManager();

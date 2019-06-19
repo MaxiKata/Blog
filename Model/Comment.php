@@ -5,7 +5,6 @@ namespace Model;
 use App\Manager;
 use Blog\App\Entity\Comment;
 
-
 /**
  * Class CommentManager
  * @package Model
@@ -68,6 +67,9 @@ class CommentManager extends Manager
         return $comments;
     }
 
+    /**
+     * @return array
+     */
     public function getCommentAwaiting()
     {
         $db = $this->dbConnect();
@@ -129,6 +131,12 @@ class CommentManager extends Manager
 
         return $updateComment;
     }
+
+    /**
+     * @param $statut
+     * @param $comId
+     * @return bool
+     */
     public function easyUpdate($statut, $comId)
     {
         $db =$this->dbConnect();

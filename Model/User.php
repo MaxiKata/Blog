@@ -3,7 +3,6 @@
 namespace Model;
 
 use App\Manager;
-use Blog\App\Entity\Session;
 use Blog\App\Entity\User;
 
 /**

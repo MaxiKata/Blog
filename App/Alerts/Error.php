@@ -4,6 +4,10 @@
 namespace Blog\App\Alerts;
 
 
+/**
+ * Class Error
+ * @package Blog\App\Alerts
+ */
 class Error
 {
     /**
@@ -141,6 +145,10 @@ class Error
     {
         return "<p class=\"error\"><span>Vous n'êtes pas autorisé à faire cette action :-)</span></p>";
     }
+
+    /**
+     * @return string
+     */
     public function connectionPdo()
     {
         return "<p class=\"error\"><span>Un problème serveur est survenu.</span></p>";
@@ -184,5 +192,12 @@ class Error
     public function wrongPasswords()
     {
         return "<p class=\"error\"><span>Les mots de passe renseignés doivent être les mêmes</span></p>";
+    }
+    /**
+     * @return string
+     */
+    public function contact()
+    {
+        return "<p class=\"error\"><span>Une erreur est survenue, merci de ré-essayer plus tard</span></p>";
     }
 }

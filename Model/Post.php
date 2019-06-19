@@ -5,7 +5,6 @@ namespace Model;
 use App\Manager;
 use Blog\App\Entity\Article;
 
-
 /**
  * Class PostManager
  * @package Model
@@ -209,6 +208,10 @@ class PostManager extends Manager
 
         return $articlesPerCategory;
     }
+
+    /**
+     * @return array
+     */
     public function getLastArticles()
     {
         $db = $this->dbConnect();
@@ -256,6 +259,10 @@ class PostManager extends Manager
         return $posts;
     }
 
+    /**
+     * @param $category
+     * @return mixed
+     */
     public function getCategoryColor($category)
     {
         $db = $this->dbConnect();
@@ -267,6 +274,9 @@ class PostManager extends Manager
         return $getCategoryColor;
     }
 
+    /**
+     * @return array
+     */
     public function getCategoryColors()
     {
         $db = $this->dbConnect();

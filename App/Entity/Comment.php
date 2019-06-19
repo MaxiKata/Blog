@@ -1,20 +1,52 @@
 <?php
 
-
 namespace Blog\App\Entity;
 
-
+/**
+ * Class Comment
+ * @package Blog\App\Entity
+ */
 class Comment
 {
+    /**
+     * @var
+     */
     private $id;
+    /**
+     * @var
+     */
     private $content;
+    /**
+     * @var
+     */
     private $dateComCreate;
+    /**
+     * @var
+     */
     private $dateComUpdate;
+    /**
+     * @var
+     */
     private $statut_id;
+    /**
+     * @var
+     */
     private $user_Id;
+    /**
+     * @var
+     */
     private $Post_id;
+    /**
+     * @var
+     */
     private $UserId_edit;
+    /**
+     * @var
+     */
     private $u_username;
+    /**
+     * @var
+     */
     private $us_username;
 
     /**

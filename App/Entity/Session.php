@@ -1,26 +1,42 @@
 <?php
 
-
 namespace Blog\App\Entity;
-
 
 use Blog\App\Controller\HomeController;
 
+/**
+ * Class Session
+ * @package Blog\App\Entity
+ */
 class Session
 {
+    /**
+     * @var
+     */
     private $key;
 
+    /**
+     * Session constructor.
+     * @param $key
+     */
     public function __construct($key)
     {
         $this->key = $key;
     }
 
+    /**
+     * @param $id
+     * @param $value
+     */
     public function setCookie($id, $value)
     {
         $data = $this->encrypt($value, $this->key);
         setcookie($id, $data, time()+86400);
     }
 
+    /**
+     * @return User
+     */
     public function getKey()
     {
         $password = new User();
@@ -29,6 +45,10 @@ class Session
         return $password;
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function getCookie($id)
     {
         $edata = filter_input(INPUT_COOKIE, $id);
@@ -37,6 +57,9 @@ class Session
         return $data;
     }
 
+    /**
+     *
+     */
     public function destroyCookie()
     {
         $datas = filter_input_array(INPUT_COOKIE);
@@ -49,6 +72,11 @@ class Session
         }
     }
 
+    /**
+     * @param $data
+     * @param $password
+     * @return string
+     */
     private function encrypt($data, $password)
     {
         // Set a random salt
@@ -69,6 +97,11 @@ class Session
         return base64_encode($salt . $encrypted_data);
     }
 
+    /**
+     * @param $edata
+     * @param $password
+     * @return string
+     */
     private function decrypt($edata, $password) {
         $data = base64_decode($edata);
         $salt = substr($data, 0, 16);
