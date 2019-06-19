@@ -11,7 +11,9 @@ Project made with PHP
 
 Installation of composer => [https://getcomposer.org/download/](https://getcomposer.org/download/)
 
-Get more details of tracy => [https://packagist.org/packages/tracy/tracy](https://packagist.org/packages/tracy/tracy)
+For local development, you should install tracy debugger. 
+Get tracy debugger => [https://packagist.org/packages/tracy/tracy](https://packagist.org/packages/tracy/tracy)
+If you install on live server, tracy MUST be comment in Public/indepx.php lines 8 & 10. Otherwise you would get "**Error 500**"
 
 ## Overview
 This project is a blog with simple actions:
