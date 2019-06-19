@@ -8,6 +8,10 @@ use Blog\App\Entity\Session;
 use Model\CommentManager;
 use Model\PostManager;
 
+/**
+ * Class CommentController
+ * @package Blog\App\Controller
+ */
 class CommentController
 {
     /**
@@ -215,6 +219,9 @@ class CommentController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     *
+     */
     public function listAction()
     {
         $getAlert = new HomeController();
@@ -239,6 +246,9 @@ class CommentController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     *
+     */
     public function validateAction()
     {
         $getAlert = new HomeController();
@@ -287,6 +297,9 @@ class CommentController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     * @param $result
+     */
     private function delete($result)
     {
         if($result == true){
@@ -297,6 +310,9 @@ class CommentController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     * @param $result
+     */
     private function update($result)
     {
         if($result == true){

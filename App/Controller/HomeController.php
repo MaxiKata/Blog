@@ -6,8 +6,15 @@ use Blog\App\Alerts\Error;
 use Blog\App\Alerts\Success;
 use Model\PostManager;
 
+/**
+ * Class HomeController
+ * @package Blog\App\Controller
+ */
 class HomeController
 {
+    /**
+     *
+     */
     public function indexAction()
     {
         $alert = $this->getAlert();
@@ -22,6 +29,10 @@ class HomeController
 
         require_once '../View/home.php';
     }
+
+    /**
+     * @return mixed
+     */
     public function getAlert()
     {
         $getSuccess = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING);
@@ -58,6 +69,11 @@ class HomeController
             }
         }
     }
+
+    /**
+     * @param $table
+     * @return mixed
+     */
     public function useUnused($table)
     {
         return $table;

@@ -1,17 +1,40 @@
 <?php
 
-
 namespace Blog\App\Entity;
 
-
+/**
+ * Class User
+ * @package Blog\App\Entity
+ */
 class User
 {
+    /**
+     * @var
+     */
     private $id;
+    /**
+     * @var
+     */
     private $lastname;
+    /**
+     * @var
+     */
     private $firstname;
+    /**
+     * @var
+     */
     private $email;
+    /**
+     * @var
+     */
     private $username;
+    /**
+     * @var
+     */
     private $password;
+    /**
+     * @var
+     */
     private $statut;
 
     /**

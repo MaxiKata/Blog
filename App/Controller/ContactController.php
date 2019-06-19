@@ -2,8 +2,15 @@
 
 namespace Blog\App\Controller;
 
+/**
+ * Class ContactController
+ * @package Blog\App\Controller
+ */
 class ContactController
 {
+    /**
+     *
+     */
     public function indexAction()
     {
         $getAlert = new HomeController();
@@ -15,6 +22,9 @@ class ContactController
         <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
     <?php }
 
+    /**
+     *
+     */
     public function emailAction()
     {
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
@@ -63,6 +73,10 @@ class ContactController
         }
     }
 
+    /**
+     * @param $string
+     * @return mixed
+     */
     private function clean_string($string) {
         $bad = array("content-type","bcc:","to:","cc:","href");
         return str_replace($bad,"",$string);

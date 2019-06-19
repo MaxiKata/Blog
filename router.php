@@ -2,19 +2,44 @@
 
 namespace Blog;
 
+/**
+ * Class Router
+ * @package Blog
+ */
 class Router
 {
     // Default constants
+    /**
+     *
+     */
     const DEFAULT_PATH        = 'Blog\App\Controller\\';
+    /**
+     *
+     */
     const DEFAULT_CONTROLLER  = 'HomeController';
+    /**
+     *
+     */
     const DEFAULT_ACTION      = 'indexAction';
 
     // Default properties
+    /**
+     * @var null
+     */
     protected $page           = null;
+    /**
+     * @var string
+     */
     protected $controller     = self::DEFAULT_CONTROLLER;
+    /**
+     * @var string
+     */
     protected $action         = self::DEFAULT_ACTION;
 
 
+    /**
+     * Router constructor.
+     */
     public function __construct()
     {
         // Parses the request query
@@ -27,6 +52,9 @@ class Router
         $this->setAction();
     }
 
+    /**
+     *
+     */
     public function parseUrl()
     {
         $getAccess = filter_input(INPUT_GET, 'access', FILTER_SANITIZE_STRING);
@@ -49,6 +77,9 @@ class Router
 
     }
 
+    /**
+     *
+     */
     public function setController()
     {
         // Constructs the current controller
@@ -65,6 +96,9 @@ class Router
         }
     }
 
+    /**
+     *
+     */
     public function setAction()
     {
         // Constructs the current action method
@@ -78,6 +112,9 @@ class Router
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function run()
     {
         // Creates the current controller instance

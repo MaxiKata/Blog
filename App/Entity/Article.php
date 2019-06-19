@@ -4,17 +4,51 @@
 namespace Blog\App\Entity;
 
 
+/**
+ * Class Article
+ * @package Blog\App\Entity
+ */
 class Article
 {
+    /**
+     * @var
+     */
     private $id;
+    /**
+     * @var
+     */
     private $title;
+    /**
+     * @var
+     */
     private $content;
+    /**
+     * @var
+     */
     private $category;
+    /**
+     * @var
+     */
     private $statutId;
+    /**
+     * @var
+     */
     private $uid;
+    /**
+     * @var
+     */
     private $dateCreate;
+    /**
+     * @var
+     */
     private $dateUpdate;
+    /**
+     * @var
+     */
     private $color;
+    /**
+     * @var
+     */
     private $userName;
 
     /**
