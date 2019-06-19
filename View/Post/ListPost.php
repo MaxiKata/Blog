@@ -16,7 +16,8 @@ require_once '../View/layout.php'; ?>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <div class="article-page">
         <div class="row">
-            <div class="article-list offset-3 col-6">
+            <div class="article-list col-12 offset-sm-3 col-sm-6 order-2 order-sm-1">
+                <h2 class="text-center">Articles</h2>
                 <?php
                 foreach($posts as $data)
                 {
@@ -43,7 +44,7 @@ require_once '../View/layout.php'; ?>
                     <?php
                 } ?>
             </div>
-            <aside class="col-3">
+            <aside class="col-6 mx-auto col-sm-3 mx-sm-0 order-1 order-sm-2">
                 <h2>Catégories</h2>
                 <ul>
                     <?php foreach($categories as $category) {
@@ -67,7 +68,7 @@ require_once '../View/layout.php'; ?>
                     <?php } ?>
                 </ul>
             </aside>
-            <div class="col-4 mx-auto my-3 text-center">
+            <div class="col-4 mx-auto my-3 text-center order-3">
                 <div class="text-center h4">
                     <?php for($i=1; $i<=$nbPage; $i++){
                         if($i==$page){ ?>
