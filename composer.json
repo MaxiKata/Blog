@@ -1,6 +1,7 @@
 {
-    "name": "vendor/blog",
-    "description": "Vendor blog",
+    "name": "MaxiKata/blog",
+    "description": "MaxiKata - Projet 5 - blog",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "Guilhemmaxime",
