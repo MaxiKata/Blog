@@ -35,37 +35,37 @@ require_once '../View/layout.php' ; ?>
         <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!update" method="post">
             <div class="d-flex">
                 <label for="lastname">Nom de famille</label>
-                <input type="text" id="lastname" name="lastname" value="<?= filter_var($u_lastname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="lastname" name="lastname" value="<?= filter_var($u_lastname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="firstname" value="<?= filter_var($u_firstname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="firstname" name="firstname" value="<?= filter_var($u_firstname, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="email">Votre Email</label>
-                <input type="email" id="email" name="email" value="<?= filter_var($u_email, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="email" id="email" name="email" value="<?= filter_var($u_email, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" name="username" value="<?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="username" name="username" value="<?= filter_var($u_username, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="oldpassword">Mot de passe Actuel</label>
-                <input type="password" id="oldpassword" name="oldpassword" <?php if($sessionStatut == 1){ ?> required <?php } ?>>
+                <input class="border" type="password" id="oldpassword" name="oldpassword" <?php if($sessionStatut == 1){ ?> required <?php } ?>>
             </div>
             <div class="d-flex">
                 <label for="password">Nouveau mot de passe</label>
-                <input type="password" id="password" name="password"/>
+                <input class="border" type="password" id="password" name="password"/>
             </div>
             <div class="d-flex">
                 <label for="confirm_password">Confirmer nouveau votre mot de passe</label>
-                <input type="password" id="confirm_password" name="confirm_password"/>
+                <input class="border" type="password" id="confirm_password" name="confirm_password"/>
             </div>
             <?php
             if(isset($sessionStatut)){
                 if($sessionStatut == 2){ ?>
                     <div class="text-center">
-                        <select name="statut">
+                        <select class="border" name="statut">
                             <option value="1" <?php if($u_statut == 1): ?> selected="selected" <?php endif; ?>>User</option>
                             <option value="2" <?php if($u_statut == 2): ?> selected="selected" <?php endif; ?>>Admin</option>
                         </select>
@@ -79,8 +79,8 @@ require_once '../View/layout.php' ; ?>
             }
              ?>
             <div class="text-center">
-                <button class="btn btn-primary" type="submit" name="update">Mettre à jour</button>
-                <button class="btn btn-danger" type="submit" name="delete">Supprimer Utilisateur</button>
+                <button class="btn btn-primary my-1" type="submit" name="update">Mettre à jour</button>
+                <button class="btn btn-danger my-1" type="submit" name="delete">Supprimer Utilisateur</button>
             </div>
             <div>
                 <input type="text" id="userId" name="userId" hidden value="<?= filter_var($uid, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>">

@@ -3,11 +3,15 @@ use Blog\App\Entity\Session;
 
 $serializePassword = file_get_contents('store');
 $sessionPassword = unserialize($serializePassword);
-$key = $sessionPassword->getPassword();
-$session = new Session($key);
-$sessionId = $session->getCookie('id');
-$sessionStatut = $session->getCookie('statut');
-$sessionUsername = $session->getCookie('username');
+if($sessionPassword == false){
+
+}else{
+    $key = $sessionPassword->getPassword();
+    $session = new Session($key);
+    $sessionId = $session->getCookie('id');
+    $sessionStatut = $session->getCookie('statut');
+    $sessionUsername = $session->getCookie('username');
+}
 
 $title = "Connexion";
 require_once '../View/layout.php' ; ?>
@@ -35,27 +39,27 @@ else{ ?>
         <form class="mb-5" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!register" method="post">
             <div class="d-flex">
                 <label for="lastname">Nom de famille</label>
-                <input type="text" id="lastname" name="lastname" value="<?= filter_input(INPUT_GET, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="lastname" name="lastname" value="<?= filter_input(INPUT_GET, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="firstname" value="<?= filter_input(INPUT_GET, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="firstname" name="firstname" value="<?= filter_input(INPUT_GET, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="email">Votre Email</label>
-                <input type="email" id="email" name="email" value="<?= filter_input(INPUT_GET, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="email" id="email" name="email" value="<?= filter_input(INPUT_GET, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
-                <label for="username">Pseudonyme</label>
-                <input type="text" id="username" name="username" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <label for="username">Pseudo</label>
+                <input class="border" type="text" id="username" name="username" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password"/>
+                <input class="border" type="password" id="password" name="password"/>
             </div>
             <div class="d-flex">
                 <label for="confirm_password">Confirmer votre mot de passe</label>
-                <input type="password" id="confirm_password" name="confirm_password"/>
+                <input class="border" type="password" id="confirm_password" name="confirm_password"/>
             </div>
             <div class="text-center">
                 <button class="btn btn-success" type="submit" name="register">S'inscrire</button>
@@ -67,11 +71,11 @@ else{ ?>
         <form class="mb-5" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=user!login" method="post">
             <div class="d-flex">
                 <label for="usernamemail">Pseudonyme / Email </label>
-                <input type="text" id="usernamemail" name="usernamemail" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
+                <input class="border" type="text" id="usernamemail" name="usernamemail" value="<?= filter_input(INPUT_GET, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>"/>
             </div>
             <div class="d-flex">
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password"/>
+                <input class="border" type="password" id="password" name="password"/>
             </div>
             <div class="text-center">
                 <button class="btn btn-success" type="submit" name="login">Se Connecter</button>

@@ -3,10 +3,15 @@
     use \Blog\App\Entity\Session;
     $serializePassword = file_get_contents('store');
     $sessionPassword = unserialize($serializePassword);
+    if($sessionPassword == false){
+
+    }else{
     $key = $sessionPassword->getPassword();
     $session = new Session($key);
     $sessionId = $session->getCookie('id');
     $sessionStatut = $session->getCookie('statut');
+    $sessionUsername = $session->getCookie('username');
+}
 
     $title = $post->getTitle();
     $p_id = $post->getId();
@@ -48,7 +53,7 @@ require_once '../View/layout.php' ; ?>
             if($sessionStatut == 1 || $sessionStatut == 2 ){ ?>
                 <form class="post-comment" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!publish" method="post">
                     <label for="comment" hidden >Commentaire</label>
-                    <textarea type="text" id="comment" name="comment" placeholder="N'hésitez pas à laisser un petit message"></textarea>
+                    <textarea class="border" type="text" id="comment" name="comment" placeholder="N'hésitez pas à laisser un petit message"></textarea>
                     <button class="btn btn-success" type="submit" name="publish">Publier</button>
                     <input type="text" id="id" name="id" hidden value="<?= nl2br($p_id); ?>">
                 </form>

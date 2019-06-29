@@ -9,7 +9,7 @@ require_once '../View/layout.php' ; ?>
     <h1><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></h1>
     <?= filter_var($alert, FILTER_UNSAFE_RAW); ?>
     <div class="d-flex article-page">
-        <div class="article-list col-6 mx-auto">
+        <div class="article-list col-10 mx-auto col-md-6">
             <?php
             foreach($posts as $data)
             {
@@ -26,7 +26,7 @@ require_once '../View/layout.php' ; ?>
                     </h2>
                     <span class="d-flex"><em>Publié le <?= filter_var($date, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></em></span>
 
-                    <p>
+                    <p class="overflow-hidden">
                         <?= filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
                         <br>
                     </p>

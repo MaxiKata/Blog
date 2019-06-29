@@ -27,11 +27,11 @@ if(isset($sessionStatut)){
         <form class="comment" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=comment!update" method="post">
             <div class="d-grid">
                 <label for="content"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></label>
-                <textarea type="text" id="content" name="content"><?= filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
+                <textarea class="border" type="text" id="content" name="content"><?= filter_var($com_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
             </div>
             <div class="text-center">
-                <button class="btn btn-success" type="submit" name="updatecomment">Mettre à jour</button>
-                <button class="btn btn-danger" type="submit" name="deletecomment">Supprimer commentaire</button>
+                <button class="btn btn-success my-1" type="submit" name="updatecomment">Mettre à jour</button>
+                <button class="btn btn-danger my-1" type="submit" name="deletecomment">Supprimer commentaire</button>
             </div>
             <div>
                 <input type="text" id="p_Id" name="p_Id" hidden value="<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>">

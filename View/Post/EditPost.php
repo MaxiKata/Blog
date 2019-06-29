@@ -31,20 +31,20 @@ if(isset($sessionStatut)){
             <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog!updatearticle" method="post">
                 <div class="d-grid">
                     <label for="title">Titre de votre article</label>
-                    <textarea type="text" id="title" name="title"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
+                    <textarea class="border" type="text" id="title" name="title"><?= filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="content">Article</label>
-                    <textarea type="text" id="content" name="content"><?= filter_var($p_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
+                    <textarea class="border" type="text" id="content" name="content"><?= filter_var($p_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="category">Catégorie</label>
-                    <textarea type="text" id="category" name="category"><?= filter_var($p_category, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
+                    <textarea class="border" type="text" id="category" name="category"><?= filter_var($p_category, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?></textarea>
                 </div>
                 <div class="d-inline-grid text-center">
-                    <button class="btn btn-success" type="submit" name="publish">Re-Publier</button>
-                    <button class="btn btn-primary" type="submit" name="updatedraft">Passer en Brouillon</button>
-                    <button class="btn btn-danger" type="submit" name="deletearticle">Supprimer Article</button>
+                    <button class="btn btn-success my-1" type="submit" name="publish">Re-Publier</button>
+                    <button class="btn btn-primary my-1" type="submit" name="updatedraft">Passer en Brouillon</button>
+                    <button class="btn btn-danger my-1" type="submit" name="deletearticle">Supprimer Article</button>
                 </div>
                 <div>
                     <input type="text" id="id" name="id" hidden value="<?= filter_var($p_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>" >

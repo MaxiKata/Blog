@@ -23,15 +23,15 @@ if(isset($sessionStatut)){
             <form action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=blog!newarticle" method="post">
                 <div class="d-grid">
                     <label for="title">Titre de votre article</label>
-                    <textarea type="text" id="title" name="title"></textarea>
+                    <textarea class="border" type="text" id="title" name="title"></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="content">Article</label>
-                    <textarea type="text" id="content" name="content"></textarea>
+                    <textarea class="border" type="text" id="content" name="content"></textarea>
                 </div>
                 <div class="d-grid">
                     <label for="category">Catégorie</label>
-                    <textarea type="text" id="category" name="category"></textarea>
+                    <textarea class="border" type="text" id="category" name="category"></textarea>
                 </div>
                 <div class="text-center">
                     <button class="btn btn-success" type="submit" name="publish">Publier</button>

@@ -66,55 +66,30 @@ require_once 'layout.php'; ?>
     
     <section class="container mx-auto my-5">
         <h2>Demandez que l'on vous recontacte</h2>
-        <form class="my-2 py-3 border border-primary rounded" method="post" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=contact!email">
-            <table class="col-8 mx-auto">
-                <tr>
-                    <td valign="top">
-                        <label for="first_name">First Name *</label>
-                    </td>
-                    <td valign="top">
-                        <input class="w-100"  type="text" name="first_name" maxlength="50" size="30">
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top"">
-                    <label for="last_name">Last Name *</label>
-                    </td>
-                    <td valign="top">
-                        <input class="w-100"  type="text" name="last_name" maxlength="50" size="30">
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">
-                        <label for="email">Email Address *</label>
-                    </td>
-                    <td valign="top">
-                        <input class="w-100"  type="email" name="email_from" maxlength="80" size="30">
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">
-                        <label for="telephone">Telephone Number</label>
-                    </td>
-                    <td valign="top">
-                        <input class="w-100"  type="text" name="telephone" maxlength="30" size="30">
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">
-                        <label for="comments">Comments *</label>
-                    </td>
-                    <td valign="top">
-                        <textarea class="w-100"  name="comments" maxlength="1000" cols="29" rows="6"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td class="text-center">
-                        <button class="btn btn-primary" type="submit" name="email">Envoyer</button>
-                    </td>
-                </tr>
-            </table>
+        <form class=" container my-2 py-3 border border-primary rounded" method="post" action="<?= filter_var($directory, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?>/index.php?access=contact!email">
+            <div class="row">
+                <label class="offset-2 col-8 offset-md-0 col-md-4 text-center" for="first_name">First Name *</label>
+                <input class="col-8 col-md-6 mx-auto border my-2"  type="text" name="first_name" maxlength="50" size="30">
+            </div>
+            <div class="row">
+                <label class="offset-2 col-8 offset-md-0 col-md-4 text-center" for="last_name">Last Name *</label>
+                <input class="col-8 col-md-6 mx-auto border my-2"  type="text" name="last_name" maxlength="50" size="30">
+            </div>
+            <div class="row">
+                <label class="offset-2 col-8 offset-md-0 col-md-4 text-center" for="email">Email Address *</label>
+                <input class="col-8 col-md-6 mx-auto border my-2"  type="email" name="email_from" maxlength="80" size="30">
+            </div>
+            <div class="row">
+                <label class="offset-2 col-8 offset-md-0 col-md-4 text-center" for="telephone">Telephone Number</label>
+                <input class="col-8 col-md-6 mx-auto border my-2"  type="text" name="telephone" maxlength="30" size="30">
+            </div>
+            <div class="row">
+                <label class="offset-2 col-8 offset-md-0 col-md-4 text-center" for="comments">Comments *</label>
+                <textarea class="col-8 col-md-6 mx-auto border my-2"  name="comments" maxlength="1000" cols="29" rows="6"></textarea>
+            </div>
+            <div class="row text-center">
+                <button class="btn btn-primary offset-4 col-4 offset-md-7 col-md-2 my-2" type="submit" name="email">Envoyer</button>
+            </div>
         </form>
     </section>
 

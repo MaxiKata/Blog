@@ -34,7 +34,7 @@ require_once '../View/layout.php'; ?>
                             </h2>
                             <span class="d-flex"><em>Publié le <?= filter_var($date, FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></em></span>
 
-                            <p>
+                            <p class="overflow-hidden">
                                 <?= filter_var($content, FILTER_UNSAFE_RAW); ?>
                                 <br>
                             </p>
