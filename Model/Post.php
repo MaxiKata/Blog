@@ -12,7 +12,7 @@ use Blog\App\Entity\Article;
 class PostManager extends Manager
 {
     /**
-     *
+     * Set the Article Entity (post)
      */
     const setProperties = array(
         "Id" => "id",
@@ -33,6 +33,7 @@ class PostManager extends Manager
     /**
      * @param Article $post
      * @return bool
+     * Add New article
      */
     public function postNewPost(Article $post)
     {
@@ -52,6 +53,7 @@ class PostManager extends Manager
     /**
      * @param $postID
      * @return Article
+     * Get a specific article
      */
     public function getPost($postID)
     {
@@ -73,6 +75,7 @@ class PostManager extends Manager
     /**
      * @param Article $update
      * @return bool
+     * Update an article
      */
     public function updatePost(Article $update)
     {
@@ -93,6 +96,7 @@ class PostManager extends Manager
     /**
      * @param $statut
      * @return mixed
+     * Get the list of article or draft
      */
     public function countPosts($statut)
     {
@@ -109,6 +113,7 @@ class PostManager extends Manager
      * @param $article
      * @param $statut
      * @return array
+     * Get only 10 post per page on the blog
      */
     public function countPostLimit($page, $article, $statut)
     {
@@ -132,6 +137,7 @@ class PostManager extends Manager
     /**
      * @param Article $draft
      * @return bool
+     * Add new draft to database
      */
     public function postNewDraft(Article $draft)
     {
@@ -151,6 +157,7 @@ class PostManager extends Manager
     /**
      * @param Article $update
      * @return bool
+     * Update a draft or update an article to draft
      */
     public function updateDraft(Article $update)
     {
@@ -172,6 +179,7 @@ class PostManager extends Manager
     /**
      * @param $postId
      * @return bool
+     * Delete an article or draft from database
      */
     public function deleteArticle($postId)
     {
@@ -186,6 +194,7 @@ class PostManager extends Manager
      * @param $oldAuthorId
      * @param $newAuthorId
      * @return bool
+     * Update author of an article in database
      */
     public function updateAuthor($newAuthorId, $oldAuthorId)
     {
@@ -198,6 +207,7 @@ class PostManager extends Manager
 
     /**
      * @return array
+     * Count all the categories of the articles
      */
     public function getCategories()
     {
@@ -211,6 +221,7 @@ class PostManager extends Manager
 
     /**
      * @return array
+     * Get all the last articles post by category
      */
     public function getLastArticles()
     {
@@ -224,6 +235,7 @@ class PostManager extends Manager
     /**
      * @param $category
      * @return mixed
+     * Count all the articles from a category
      */
     public function getArticleCategory($category)
     {
@@ -240,6 +252,7 @@ class PostManager extends Manager
      * @param $article
      * @param $category
      * @return array
+     * Get all the article from a category
      */
     public function getCategory($page, $article, $category)
     {
@@ -248,7 +261,8 @@ class PostManager extends Manager
         FROM post p
         LEFT JOIN users u
         ON p.User_id = u.id
-        WHERE p.category = ? 
+        WHERE p.category = ?
+        AND p.Statut_id = 3 
         ORDER BY datePostUpdate DESC 
         LIMIT ". (($page-1)*$article) .",$article");
         $req->execute(array($category));
@@ -262,6 +276,7 @@ class PostManager extends Manager
     /**
      * @param $category
      * @return mixed
+     * Get the color of a specific category
      */
     public function getCategoryColor($category)
     {
@@ -276,6 +291,7 @@ class PostManager extends Manager
 
     /**
      * @return array
+     * Get all the colors of all the categories
      */
     public function getCategoryColors()
     {
@@ -290,6 +306,7 @@ class PostManager extends Manager
     /**
      * @param $posts
      * @return array
+     * Set many article (post) Entities
      */
     private function setPosts($posts){
 
@@ -308,6 +325,7 @@ class PostManager extends Manager
     /**
      * @param $post
      * @return Article
+     * Set one article (post) Entity
      */
     private function setArticle($post){
 

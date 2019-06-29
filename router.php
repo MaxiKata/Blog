@@ -53,7 +53,7 @@ class Router
     }
 
     /**
-     *
+     * Control if there is a get access in url
      */
     public function parseUrl()
     {
@@ -78,7 +78,7 @@ class Router
     }
 
     /**
-     *
+     * Redirect to the good controller
      */
     public function setController()
     {
@@ -97,7 +97,7 @@ class Router
     }
 
     /**
-     *
+     * Redirect to the good action
      */
     public function setAction()
     {
@@ -114,6 +114,7 @@ class Router
 
     /**
      * @return mixed
+     * Launch final url
      */
     public function run()
     {

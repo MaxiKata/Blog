@@ -12,7 +12,7 @@ use Blog\App\Entity\Comment;
 class CommentManager extends Manager
 {
     /**
-     *
+     * Set all the properties used in Comment Entity
      */
     const properties = array(
         "Id" => "com_id",
@@ -29,6 +29,7 @@ class CommentManager extends Manager
     /**
      * @param Comment $comment
      * @return bool
+     * Add a comment to database
      */
     public function postComment(Comment $comment)
     {
@@ -48,6 +49,7 @@ class CommentManager extends Manager
     /**
      * @param $postId
      * @return array
+     * Get all the comments of a specific article
      */
     public function getComments($postId)
     {
@@ -69,6 +71,7 @@ class CommentManager extends Manager
 
     /**
      * @return array
+     * Get all the comment not validated by an Admin
      */
     public function getCommentAwaiting()
     {
@@ -90,6 +93,7 @@ class CommentManager extends Manager
     /**
      * @param Comment $comment
      * @return Comment
+     * Get a specific comment
      */
     public function getComment(Comment $comment)
     {
@@ -117,6 +121,7 @@ class CommentManager extends Manager
     /**
      * @param Comment $comment
      * @return bool
+     * Update a specific comment information in database
      */
     public function updateComment(Comment $comment)
     {
@@ -136,6 +141,7 @@ class CommentManager extends Manager
      * @param $statut
      * @param $comId
      * @return bool
+     * Update statut of a specific comment after update or validation
      */
     public function easyUpdate($statut, $comId)
     {
@@ -149,6 +155,7 @@ class CommentManager extends Manager
     /**
      * @param $comId
      * @return bool
+     * Delete a specific comment
      */
     public function deleteComment($comId)
     {
@@ -162,6 +169,7 @@ class CommentManager extends Manager
     /**
      * @param $postId
      * @return bool
+     * Delete all comments from an article
      */
     public function deleteComments($postId)
     {
@@ -174,6 +182,7 @@ class CommentManager extends Manager
     /**
      * @param $userId
      * @return bool
+     * Delete all comments of a specific user
      */
     public function deleteUserComments($userId)
     {
@@ -187,6 +196,7 @@ class CommentManager extends Manager
      * @param $newEditorId
      * @param $oldEditorId
      * @return bool
+     * Update the Id of the personn who update the comment
      */
     public function updateEditorComments($newEditorId, $oldEditorId)
     {
@@ -200,6 +210,7 @@ class CommentManager extends Manager
     /**
      * @param $userId
      * @return array
+     * Count all comments from a specific user
      */
     public function countComments($userId)
     {
@@ -214,6 +225,7 @@ class CommentManager extends Manager
     /**
      * @param $comments
      * @return array
+     * Set the comment Entity
      */
     private function setComments($comments)
     {

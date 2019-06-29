@@ -9,7 +9,7 @@ namespace Blog\App\Controller;
 class ContactController
 {
     /**
-     *
+     * Redirect to the Home Page
      */
     public function indexAction()
     {
@@ -23,7 +23,7 @@ class ContactController
     <?php }
 
     /**
-     *
+     * Send a form to the admin if email is valid
      */
     public function emailAction()
     {
@@ -76,6 +76,7 @@ class ContactController
     /**
      * @param $string
      * @return mixed
+     * Filter unauthorized word
      */
     private function clean_string($string) {
         $bad = array("content-type","bcc:","to:","cc:","href");

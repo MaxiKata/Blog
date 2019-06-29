@@ -15,7 +15,7 @@ class BlogController
 {
 
     /**
-     *
+     * Redirect to the blog
      */
     public function indexAction()
     {
@@ -39,7 +39,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to the Article view
      */
     public function readAction()
     {
@@ -72,7 +72,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to the page to create a new article
      */
     public function newpostAction()
     {
@@ -97,7 +97,8 @@ class BlogController
     }
 
     /**
-     *
+     * Publish a new Article - post = publish
+     * Save as draft - post = draftPost
      */
     public function newarticleAction()
     {
@@ -219,7 +220,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to Draft List
      */
     public function draftlistAction()
     {
@@ -259,7 +260,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to the page to edit an Article
      */
     public function modifypostAction()
     {
@@ -301,7 +302,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to the page to edit draft
      */
     public function draftAction()
     {
@@ -344,7 +345,9 @@ class BlogController
     }
 
     /**
-     *
+     * Update an article to draft - post = updatedraft
+     * Update a draft to article or re-publish an article - post = publish
+     * Delete an article or a draft - post = deletearticle
      */
     public function updatearticleAction()
     {
@@ -507,7 +510,7 @@ class BlogController
     }
 
     /**
-     *
+     * Redirect to a choosen category list or the blog
      */
     public function categoryAction(){
         $getAlert = new HomeController();
@@ -558,6 +561,7 @@ class BlogController
      * @param $article
      * @param $nbPage
      * @param $statut
+     * Redirect to the good page of the blog or draft list
      */
     private function getPostsPage($page, $article, $nbPage, $statut)
     {
@@ -583,6 +587,7 @@ class BlogController
 
     /**
      * @return string
+     * Generate random color to a new category
      */
     private function randomColor()
     {
@@ -611,6 +616,7 @@ class BlogController
      * @param int $G
      * @param int $B
      * @return float
+     * Ensure that the color generated is lightfull
      */
     private function lightness($REDS = 255, $GREEN = 255, $BLUE = 255)
     {

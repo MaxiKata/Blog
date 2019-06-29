@@ -50,7 +50,7 @@ class UserController
     private $properties;
 
     /**
-     *
+     * Redirect to the login page
      */
     public function indexAction()
     {
@@ -63,7 +63,7 @@ class UserController
     }
 
     /**
-     *
+     * Control registration form before sending datas to database
      */
     public function registerAction()
     {
@@ -121,7 +121,7 @@ class UserController
     }
 
     /**
-     *
+     * Control the datas on the login process
      */
     public function loginAction()
     {
@@ -169,7 +169,7 @@ class UserController
     <?php }
 
     /**
-     *
+     * Manage Logout process
      */
     public function logoutAction()
     {
@@ -187,7 +187,7 @@ class UserController
     <?php }
 
     /**
-     *
+     *  Control access and Redirect to the user list
      */
     public function listAction()
     {
@@ -225,7 +225,7 @@ class UserController
     }
 
     /**
-     *
+     * Redirect to the user profil view or edit user page
      */
     public function profilAction()
     {
@@ -270,7 +270,8 @@ class UserController
     }
 
     /**
-     *
+     * Update user details - post = update
+     * Delete user - post = delete
      */
     public function updateAction()
     {
@@ -390,6 +391,7 @@ class UserController
     }
     /**
      * @return User
+     * Set user properties and User Entity
      */
     private function setUser(){
         $this->properties = array(
@@ -414,6 +416,7 @@ class UserController
     /**
      * @param $user
      * @return bool
+     * Control Username and Email to the registration
      */
     private function controlUser($user)
     {
@@ -471,7 +474,7 @@ class UserController
     }
 
     /**
-     *
+     * Function use when a user is deleting himself
      */
     private function autoDelete()
     {
@@ -522,7 +525,7 @@ class UserController
     }
 
     /**
-     *
+     * Function use to delete a user by an Admin
      */
     private function deleteUser()
     {
@@ -577,6 +580,7 @@ class UserController
      * @param $page
      * @param $perPage
      * @param $nbPage
+     * Redirect to the good page in the userlist
      */
     private function getUsersPage($page, $perPage, $nbPage)
     {
@@ -595,6 +599,7 @@ class UserController
     /**
      * @param $password
      * @param $confirmation
+     * Function used to update the password of a user by the Admin
      */
     private function update($password, $confirmation)
     {
@@ -649,6 +654,7 @@ class UserController
     /**
      * @param $password
      * @param $confirmation
+     * Function used by user to update his password
      */
     private function userUpdate($password, $confirmation)
     {

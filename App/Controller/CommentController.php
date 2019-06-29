@@ -15,7 +15,7 @@ use Model\PostManager;
 class CommentController
 {
     /**
-     *
+     * Redirect to blog page
      */
     public function indexAction()
     {
@@ -29,7 +29,8 @@ class CommentController
     <?php }
 
     /**
-     *
+     * If User send comment to admins for control
+     * If Admin publish publish comment directly
      */
     public function publishAction()
     {
@@ -69,19 +70,29 @@ class CommentController
                                 $url = "index.php?success=commentPost&id=" . $post->getId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                             <?php }
+                            else{
                                 $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
                                 <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                        <?php }
-                        $comment->setStatutId(5);
-                        $result = $publishCom->postComment($comment);
+                            <?php }
+                                }
+                        elseif($session == 2) {
+                            $comment->setStatutId(5);
+                            $result = $publishCom->postComment($comment);
 
-                        if($result == true){
-                            $url = "index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                            if($result == true){
+                                $url = "index.php?success=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
+                            else{
+                                $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
+                                <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+                            <?php }
+                        }
+                        else{
+                            $url = "index.php?error=notAllowed&access=blog"; ?>
                             <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                         <?php }
-                        $url = "index.php?error=commentPublish&id=" . $post->getId() . "&access=blog!read"; ?>
-                        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-                    <?php }
+                     }
                     $url = "index.php?error=emptyFields&id=" . $post->getId() . "&access=blog!read"; ?>
                     <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
                 <?php }
@@ -96,7 +107,7 @@ class CommentController
     <?php }
 
     /**
-     *
+     * Control access to modify comment page
      */
     public function modifyAction()
     {
@@ -137,7 +148,10 @@ class CommentController
     }
 
     /**
-     *
+     * Update comment function
+     * If User update his comment, it will be send for control to admins - post = updatecomment
+     * If Admin update comment, it will update directly - post = updatecomment
+     * Use to delete comment validated
      */
     public function updateAction()
     {
@@ -220,7 +234,7 @@ class CommentController
     <?php }
 
     /**
-     *
+     * Control the access to the comments waiting for validation page
      */
     public function listAction()
     {
@@ -242,12 +256,16 @@ class CommentController
 
             require '../View/Comment/commentList.php';
         }
-        $url = "index.php?error=notAllowed&access=blog"; ?>
-        <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
-    <?php }
+        else{
+            $url = "index.php?error=notAllowed&access=blog"; ?>
+            <script>window.location="<?= filter_var($url, FILTER_SANITIZE_URL) ?>"</script>
+        <?php }
+     }
 
     /**
-     *
+     * Validate comment and publish it - post = publish
+     * Validate update comment - post = update
+     * Delete comment - post = delete
      */
     public function validateAction()
     {
@@ -299,6 +317,7 @@ class CommentController
 
     /**
      * @param $result
+     *  Use to redirect after delete Comment
      */
     private function delete($result)
     {
@@ -312,6 +331,7 @@ class CommentController
 
     /**
      * @param $result
+     * Use to redirect after update Comment
      */
     private function update($result)
     {

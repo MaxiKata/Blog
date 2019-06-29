@@ -13,7 +13,7 @@ use Model\PostManager;
 class HomeController
 {
     /**
-     *
+     * Redirect to HomePage
      */
     public function indexAction()
     {
@@ -32,6 +32,7 @@ class HomeController
 
     /**
      * @return mixed
+     * Manage all the Alert on the Blog
      */
     public function getAlert()
     {
@@ -73,6 +74,7 @@ class HomeController
     /**
      * @param $table
      * @return mixed
+     * Function to use the variables unused to solved quality code errors
      */
     public function useUnused($table)
     {

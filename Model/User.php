@@ -12,7 +12,7 @@ use Blog\App\Entity\User;
 class UserManager extends Manager
 {
     /**
-     *
+     * All the property used in User Entity
      */
     const properties = array(
         "Id" => "id",
@@ -27,6 +27,7 @@ class UserManager extends Manager
 
     /**
      * @return array
+     * Get all users and filter them to have 10 per page
      */
     public function getUsers($page, $perPage)
     {
@@ -43,6 +44,7 @@ class UserManager extends Manager
     /**
      * @param $userid
      * @return User
+     * Get a specific User
      */
     public function getUser($userid)
     {
@@ -59,6 +61,7 @@ class UserManager extends Manager
     /**
      * @param $nickname
      * @return mixed
+     * Search for a specific username
      */
     public function getUsername($nickname)
     {
@@ -73,6 +76,7 @@ class UserManager extends Manager
     /**
      * @param $email
      * @return mixed
+     * Search for a specific email
      */
     public function getEmail($email)
     {
@@ -88,6 +92,7 @@ class UserManager extends Manager
      * @param $email
      * @param $username
      * @return User
+     * Search for specific email or username
      */
     public function getInformation($email, $username)
     {
@@ -104,6 +109,7 @@ class UserManager extends Manager
     /**
      * @param User $user
      * @return bool
+     * Add a new user in database
      */
     public function register (User $user)
     {
@@ -126,6 +132,7 @@ class UserManager extends Manager
     /**
      * @param User $user
      * @return User
+     * Update User information without updating the password
      */
     public function easyUpdateUser(User $user)
     {
@@ -152,6 +159,7 @@ class UserManager extends Manager
     /**
      * @param User $user
      * @return User
+     * Update all User's informations
      */
     public function hardUpdateUser(User $user)
     {
@@ -178,6 +186,7 @@ class UserManager extends Manager
     /**
      * @param $userId
      * @return array
+     * Get all articles of a specific User
      */
     public function getUsersArticle($userId)
     {
@@ -200,6 +209,7 @@ class UserManager extends Manager
     /**
      * @param $userId
      * @return bool
+     * Delete a specific user
      */
     public function deleteUser($userId)
     {
@@ -212,6 +222,7 @@ class UserManager extends Manager
 
     /**
      * @return array
+     * Count the number of Admin
      */
     public function countAdmin()
     {
@@ -224,6 +235,7 @@ class UserManager extends Manager
 
     /**
      * @return mixed
+     * Count the number of User
      */
     public function countUsers()
     {
@@ -237,6 +249,8 @@ class UserManager extends Manager
     /**
      * @param $adminId
      * @return array
+     * Get all the admins except the one connected (Only an admin can send this request)
+     * It is a check if a single admin try to delete himself
      */
     public function getAdmins($adminId)
     {
@@ -253,10 +267,10 @@ class UserManager extends Manager
     /**
      * @param User $user
      * @return array
+     * Search for email and username in database if exits in database while updating his profil
      */
     public function checkUser(User $user)
     {
-
         $db = $this->dbConnect();
         $req = $db->prepare("SELECT nickname, email FROM users WHERE NOT id = ?");
         $req->execute(array($user->getId()));
@@ -268,6 +282,7 @@ class UserManager extends Manager
     /**
      * @param $user
      * @return User
+     * Set a User Entity
      */
     private function setUser($user)
     {
@@ -282,6 +297,7 @@ class UserManager extends Manager
     /**
      * @param $users
      * @return array
+     * Set many User Entity
      */
     private function setUsers($users)
     {
